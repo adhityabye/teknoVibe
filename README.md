@@ -4,7 +4,7 @@
   TeknoVibe
 </h1>
 
-<p align="center">Web App terintegrasi infromasi event</p><br>
+<p align="center">Web App yang mengintegrasikan informasi event di lingkungan Fakultas Teknik UGM</p><br>
 
 ### Anggota Kelompok
 | Nama                     | NIM                |
