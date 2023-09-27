@@ -18,6 +18,7 @@ router.post('/add', async (req, res) => {
             return res.status(201).json({ message: 'Event registered successfully' });
         }catch{error}{
             console.error(error);
+            
             return res.status(500).json({ message: 'Internal server error' });
         }
     }

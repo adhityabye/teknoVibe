@@ -35,6 +35,8 @@ app.use('/api/staff', staffRoutes);
 const searchEventRoutes = require('./routes/searchRoutes');
 app.use('/search', searchEventRoutes);
 
+const eventRoutes = require('./routes/eventRoutes');
+app.use('/event', eventRoutes);
 
 // Start your Express server
 const PORT = process.env.PORT;
