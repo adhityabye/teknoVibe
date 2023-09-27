@@ -12,7 +12,7 @@ router.post('/add', async (req, res) => {
 
             const eventInserted = {eventName,eventDescription, date, divisions, deadlineDate, tnc, open } 
 
-            const newEvent= await Event.create(eventInserted);
+            const newEvent= await eventModel.create(eventInserted);
             await newEvent.save();
 
             return res.status(201).json({ message: 'Event registered successfully' });

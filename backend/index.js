@@ -30,8 +30,11 @@ app.post('/register', (req, res) => {
 })
 
 const staffRoutes = require('./routes/staffRoutes');
-
 app.use('/api/staff', staffRoutes);
+
+const searchEventRoutes = require('./routes/searchRoutes');
+app.use('/search', searchEventRoutes);
+
 
 // Start your Express server
 const PORT = process.env.PORT;
