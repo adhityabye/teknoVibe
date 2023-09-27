@@ -7,6 +7,7 @@ const eventSchema = new mongoose.Schema({
   divisions: { type: String, required: true },
   deadlineDate: { type: Date, required: true },
   tnc: { type: String, required: true },
+  open: { type: Boolean, required: true, default: true },
 });
 
 const eventModel = mongoose.model("event", eventSchema);
