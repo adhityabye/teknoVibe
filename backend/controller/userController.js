@@ -50,7 +50,37 @@ const getUsers = async (req, res) => {
   }
 };
 
+// Function to compare the provided password with the hashed password
+const comparePassword = async (password, hashedPassword) => {
+  return await bcrypt.compare(password, hashedPassword);
+};
+
+// Controller untuk login pengguna
+const loginUser = async (req, res) => {
+  try {
+    const {email, password} = req.body;
+
+    const user = await userModel.findOne({email})
+    
+    // check if user exist
+    if(!user){
+      return res.status(400).json({ message: 'No user found' });
+    }
+
+    //check if password match
+    const match = await comparePassword(password, user.password);
+    if(!match) {
+      return res.status(400).json({ message: 'Password does not match' });
+    }
+    return res.status(200).json({ message: 'Login successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
 module.exports = {
   registerUser,
   getUsers,
+  loginUser
 };
