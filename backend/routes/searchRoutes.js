@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const searchController = require('../controller/searchController');
 
-router.post('/', staffController.addStaff);
+router.post('/', searchController.searchEvent);
 
-  module.exports = router;
+module.exports = router;
