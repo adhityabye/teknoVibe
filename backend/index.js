@@ -29,12 +29,19 @@ app.post('/register', (req, res) => {
   }).catch(err => res.json(err))
 })
 
+// Import and use staffRoutes for staff-related API endpoints
 const staffRoutes = require('./routes/staffRoutes');
 app.use('/api/staff', staffRoutes);
 
+// Import and use userRoutes for user-related API endpoints
+const userRoutes = require('./routes/userRoutes');
+app.use('/user', userRoutes);
+
+// Import and use searchEventRoutes for searchEvent-related API endpoints
 const searchEventRoutes = require('./routes/searchRoutes');
 app.use('/search', searchEventRoutes);
 
+// Import and use eventRoutes for event-related API endpoints
 const eventRoutes = require('./routes/eventRoutes');
 app.use('/event', eventRoutes);
 
