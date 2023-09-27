@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const bcrypt = require('bcrypt');
 const app = express();
 require("dotenv").config();
 const { connectDB } = require('./config/dbConnect');
@@ -18,16 +17,6 @@ connectDB();
 
 // Middleware to parse JSON requests
 app.use(express.json());
-
-app.post('/register', (req, res) => {
-  const {name, email, password} = req.body;
-  bcrypt.hash(password, 6)
-  .then(hash => {
-      userModel.create({name, email, password: hash})
-      .then(user => res.json("Success"))
-      .catch(err => res.json(err))
-  }).catch(err => res.json(err))
-})
 
 // Import and use staffRoutes for staff-related API endpoints
 const staffRoutes = require('./routes/staffRoutes');
