@@ -34,6 +34,11 @@ app.use('/search', searchEventRoutes);
 const eventRoutes = require('./routes/eventRoutes');
 app.use('/event', eventRoutes);
 
+// Import and use deleteRoutes for edit-related API endpoints
+app.use('/delete', require('./routes/deleteRoutes'));
+
+// Import and use editRoutes for edit-related API endpoints
+app.use('/edit', require('./routes/editRoutes'));
 // Start your Express server
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
