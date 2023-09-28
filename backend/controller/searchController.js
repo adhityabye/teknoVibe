@@ -4,7 +4,7 @@ const searchEvent = async (req, res) => {
     try{
         const filter = {}
         const {name, open} = req.query;
-        if(name){filter.eventName = name};
+        if(name){filter.eventName = new RegExp('^'+name+'$', "i")};
         if(open){filter.open = open};
 
         const eventDocs = await eventModel.find(filter);
