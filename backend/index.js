@@ -19,26 +19,22 @@ connectDB();
 app.use(express.json());
 
 // Import and use staffRoutes for staff-related API endpoints
-const staffRoutes = require('./routes/staffRoutes');
-app.use('/api/staff', staffRoutes);
+app.use('/api/staff', require('./routes/eventRequest.routes'));
 
 // Import and use userRoutes for user-related API endpoints
-const userRoutes = require('./routes/userRoutes');
-app.use('/user', userRoutes);
+app.use('/user', require('./routes/user.routes'));
 
 // Import and use searchEventRoutes for searchEvent-related API endpoints
-const searchEventRoutes = require('./routes/searchRoutes');
-app.use('/search', searchEventRoutes);
+app.use('/search', require('./routes/eventRequest.routes'));
 
-// Import and use eventRoutes for event-related API endpoints
-const eventRoutes = require('./routes/eventRoutes');
-app.use('/event', eventRoutes);
+// Import and use eventRoutes for event-related or adding Events API endpoints
+app.use('/event', require('./routes/eventRequest.routes'));
 
 // Import and use deleteRoutes for edit-related API endpoints
-app.use('/delete', require('./routes/deleteRoutes'));
+app.use('/delete', require('./routes/eventRequest.routes'));
 
 // Import and use editRoutes for edit-related API endpoints
-app.use('/edit', require('./routes/editRoutes'));
+app.use('/edit', require('./routes/eventRequest.routes'));
 // Start your Express server
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
