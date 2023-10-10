@@ -19,22 +19,39 @@ const searchEvent = async (req, res) => {
 
 const addStaff = async (req, res) => {
     try {
-        const { namaLengkap, 
-                nim, 
-                emailUGM, 
-                programStudi, 
-                angkatan,
-                idLine,
-                pilihanDivisi,
-                alasan,
-                uploadCV
-                } = req.body
-        
-        //input validation
-        if (!namaLengkap || !nim || !emailUGM || !programStudi || !angkatan || !idLine || !pilihanDivisi || !alasan || !uploadCV) {
-            res.status(400).json({ error: 'Bad request. Missing required fields' })
+        const {
+            namaLengkap, 
+            nim, 
+            emailUGM, 
+            programStudi, 
+            angkatan,
+            idLine,
+            pilihanDivisi,
+            alasan,
+            uploadCV,
+            eventId // Add eventId to the request body
+        } = req.body;
+
+        // Input validation
+        if (!namaLengkap || !nim || !emailUGM || !programStudi || !angkatan || !idLine || !pilihanDivisi || !alasan || !uploadCV || !eventId) {
+            res.status(400).json({ error: 'Bad request. Missing required fields, including eventId' });
+            return; // Return to exit the function early
         }
 
+        // Check if the event is open for registration
+        const event = await eventModel.findById(eventId);
+
+        if (!event) {
+            res.status(404).json({ error: 'Event not found' });
+            return; // Return to exit the function early
+        }
+
+        if (!event.open) {
+            res.status(400).json({ error: 'Event registration is closed' });
+            return; // Return to exit the function early
+        }
+
+        // Create the staff data
         const staffData = {
             namaLengkap,
             nim,
@@ -45,15 +62,47 @@ const addStaff = async (req, res) => {
             pilihanDivisi,
             alasan,
             uploadCV,
-        }
-        const newStaff = await Staff.create(staffData)
-        const savedStaffData = await newStaff.save()
-        res.status(201).json({ message: 'Staff created successfully', staff: savedStaffData })
+        };
+     
+        // Create and save the staff
+        const newStaff = await Staff.create(staffData);
+        const savedStaffData = await newStaff.save();
+        
+        // Add the staff as a reference to the event's registeredParticipants array
+        event.registeredParticipants.push(savedStaffData._id); // Use the _id of the staff member
+        // Save the updated event document
+        await event.save();
+        
+        res.status(201).json({ message: 'Staff created successfully and registered for the event', staff: savedStaffData });
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ error: err })
+        console.error(err);
+        res.status(500).json({ error: err });
     }
-}
+};
+
+
+const getRegisteredParticipants = async (req, res) => {
+    try {
+        const { eventId } = req.params;
+
+        // Find the event by ID
+        const event = await eventModel.findById(eventId);
+
+        if (!event) {
+            return res.status(404).json({ error: 'Event not found' });
+        }
+
+        // Retrieve the registered participants based on the event's registeredParticipants array
+        const participants = await Staff.find({ _id: { $in: event.registeredParticipants } });
+
+        res.status(200).json({ participants });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
 
 const addEvent = async (req, res) => {
     try{
@@ -133,4 +182,5 @@ module.exports = {
     addEvent,
     editEvent,
     deleteEvent,
+    getRegisteredParticipants
 };
