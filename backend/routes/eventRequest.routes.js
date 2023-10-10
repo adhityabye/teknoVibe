@@ -7,5 +7,6 @@ router.get('/', eventRequest.searchEvent);
 router.post('/', eventRequest.addStaff);
 router.delete('/:eventId', eventRequest.deleteEvent);
 router.patch('/:eventId', eventRequest.editEvent);
+router.get('/:eventId/participants', eventRequest.getRegisteredParticipants);
 
 module.exports = router;
