@@ -35,6 +35,10 @@ app.use('/delete', require('./routes/eventRequest.routes'));
 
 // Import and use editRoutes for edit-related API endpoints
 app.use('/edit', require('./routes/eventRequest.routes'));
+
+// Route to retrieve registered participants for a specific event
+app.use('/api/event', require('./routes/eventRequest.routes'));
+
 // Start your Express server
 const PORT = process.env.PORT;
 app.listen(PORT, () => {
