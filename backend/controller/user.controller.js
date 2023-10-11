@@ -102,9 +102,42 @@ const deleteUser = async (req, res) => {
   }
 };
 
+// Controller for updating all user data
+const updateUser = async (req, res) => {
+  const userId = req.params.id;
+  const { name, email, password } = req.body;
+
+  try {
+    // Check if the user with the provided ID exists in the database
+    const user = await userModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update user data based on provided fields
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) {
+      // Hash and update the password
+      const hashedPassword = await bcrypt.hash(password, 6);
+      user.password = hashedPassword;
+    }
+
+    // Save the updated user to the database
+    await user.save();
+
+    return res.status(200).json({ message: "User data updated successfully" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 module.exports = {
   registerUser,
   getUsers,
   loginUser,
+  updateUser,
   deleteUser
 };
