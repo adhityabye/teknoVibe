@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { registerUser, getUsers, loginUser } = require('../controller/user.controller');
+const { registerUser, getUsers, loginUser, deleteUser } = require('../controller/user.controller');
 
 // Define the route for user registration
 router.post('/register', registerUser);
@@ -10,5 +10,8 @@ router.post('/login', loginUser);
 
 // Define the route for listing users
 router.get('/users', getUsers);
+
+// Define the route for deleting user
+router.delete('/users/:id', deleteUser);
 
 module.exports = router;
