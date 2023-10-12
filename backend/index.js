@@ -37,7 +37,7 @@ app.use('/delete', require('./routes/eventRequest.routes'));
 app.use('/edit', require('./routes/eventRequest.routes'));
 
 // Route to retrieve registered participants for a specific event
-app.use('/api/event', require('./routes/eventRequest.routes'));
+app.use('/event', require('./routes/eventRequest.routes'));
 
 // Start your Express server
 const PORT = process.env.PORT;
