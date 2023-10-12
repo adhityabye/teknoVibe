@@ -3,19 +3,34 @@ const Staff = require('../model/staffModels');
 const mongoose = require('mongoose');
 
 const searchEvent = async (req, res) => {
-    try{
-        const filter = {}
-        const {name, open} = req.query;
-        if(name){filter.eventName = new RegExp('^'+name+'$', "i")};
-        if(open){filter.open = open};
-
-        const eventDocs = await eventModel.find(filter);
-        return res.status(200).json(eventDocs);
-    } catch(err){
-        console.error(err);
-        return res.status(500).json({ message: 'Internal server error' });
+    try {
+      const filter = {};
+      const { name, open, sortBy } = req.query;
+  
+      if (name) {
+        // Use a regular expression for exact (case-insensitive) match
+        filter.eventName = new RegExp('^' + name + '$', 'i');
+      }
+      if (open) {
+        filter.open = open;
+      }
+  
+      const sortOptions = {};
+      if (sortBy === 'name') {
+        sortOptions.eventName = 1;
+      } else if (sortBy === 'closest') {
+        sortOptions.deadlineDate = 1;
+      }
+  
+      const eventDocs = await eventModel.find(filter).sort(sortOptions);
+  
+      return res.status(200).json(eventDocs);
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: 'Internal server error' });
     }
-}
+  };
+   
 
 const addStaff = async (req, res) => {
     try {
@@ -80,7 +95,6 @@ const addStaff = async (req, res) => {
     }
 };
 
-
 const getRegisteredParticipants = async (req, res) => {
     try {
         const { eventId } = req.params;
@@ -101,8 +115,6 @@ const getRegisteredParticipants = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
-
 
 const addEvent = async (req, res) => {
     try{
