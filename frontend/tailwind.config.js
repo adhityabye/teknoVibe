@@ -1,19 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        inter: ["Inter", "sans"],
+        josefin: ["Josefin Sans", "sans"],
+      },
       colors: {
-        "blue-100": "#C8E1FF",
-        "blue-200": "#0057BD",
-        "blue-300": "#3692FF",
-        "blue-900": "#1C4188",
+        "white-100": "#FBFBFB",
         "black-800": "#282828",
-        "black-900": "#3A3A3A",
+        "black-900": "#2E2E2E",
+        "gray-100": "#EAEAEA",
+        "gray-200": "#B1B1B1",
+        "gray-300": "#757575",
+        "gray-400": "#D4D4D4",
+        "purple-100": "rgba(86, 75, 188, 0.14)",
+        "purple-200": "#564BBC",
+        "purple-900": "#202B51",
+      },
+      backgroundImage: {
+        "gradient-purple":
+          "linear-gradient(90deg, #564BBC 35.92%, #564BBC 35.92%, #564BBC 35.93%, #393275 118.85%)",
       },
     },
   },
   plugins: [],
-}
+};
