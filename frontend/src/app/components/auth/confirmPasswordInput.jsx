@@ -22,7 +22,7 @@ export default function ConfirmPasswordInput({
           id="confirmPassword"
           name="confirmPassword"
           className={`w-full bg-transparent pt-5 pb-1.5 pl-7 text-base border-0 border-b-2 focus:outline-none focus:ring-0 peer ${
-            confirmPasswordError ? "border-red-500" : "border-b-purple-800"
+            confirmPasswordError ? "border-red-500" : "border-b-purple-200"
           }`}
           onChange={handleConfirmPasswordChange}
         />
