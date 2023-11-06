@@ -22,12 +22,12 @@ export default function ConfirmPasswordInput({
           id="confirmPassword"
           name="confirmPassword"
           className={`w-full bg-transparent pt-5 pb-1.5 pl-7 text-base border-0 border-b-2 focus:outline-none focus:ring-0 peer ${
-            confirmPasswordError ? "border-red-500" : "border-b-purple-200"
+            confirmPasswordError ? "border-red-500" : "border-b-purple-800"
           }`}
           onChange={handleConfirmPasswordChange}
         />
         <label
-          className="absolute appearance-none text-base font-medium text-black-900 pt-2 left-0 duration-200 transform -translate-y-6 scale-[0.8] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:left-8 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-black-900 peer-focus:text-black-900 peer-focus:scale-[0.8] peer-focus:-translate-y-6"
+          className="absolute appearance-none text-base font-medium text-black-900 pt-2 left-0 duration-200 transform -translate-y-6 scale-[0.8] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:left-8 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-gray-500 peer-focus:text-black-900 peer-focus:scale-[0.8] peer-focus:-translate-y-6"
           htmlFor="confirmPassword"
         >
           Konfirmasi Kata Sandi
