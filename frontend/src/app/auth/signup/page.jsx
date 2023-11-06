@@ -9,7 +9,7 @@ import EmailInput from "@/app/components/auth/emailInput";
 import PasswordInput from "@/app/components/auth/passwordInput";
 import ConfirmPasswordInput from "@/app/components/auth/confirmPasswordInput";
 
-function SignUp() {
+export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -160,5 +160,3 @@ function SignUp() {
     </section>
   );
 }
-
-export default SignUp;
