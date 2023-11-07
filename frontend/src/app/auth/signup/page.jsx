@@ -8,6 +8,7 @@ import NameInput from "@/app/components/auth/nameInput";
 import EmailInput from "@/app/components/auth/emailInput";
 import PasswordInput from "@/app/components/auth/passwordInput";
 import ConfirmPasswordInput from "@/app/components/auth/confirmPasswordInput";
+import CircleBackground from "@/app/components/circleBackground";
 
 export default function SignUp() {
   const [name, setName] = useState("");
@@ -113,8 +114,8 @@ export default function SignUp() {
   };
 
   return (
-    <section className="min-h-screen relative bg-cover overflow-hidden mx-auto">
-      <div className="min-h-screen gap-2 flex flex-col justify-center items-center pt-[50px] lg:pt-[30px] 2xl:pt-0 pb-[20px]">
+    <section className="min-h-screen relative overflow-hidden mx-auto">
+      <div className="min-h-screen gap-2 flex flex-col justify-center items-center z-30">
         <div className="font-josefin overflow-hidden w-full max-w-[400px] md:max-w-[500px] xl:max-w-[510px] px-6 sm:px-12 md:px-20">
           <h1 className="text-center text-purple-200 font-bold text-[25px]">
             Daftar Akun
@@ -157,6 +158,7 @@ export default function SignUp() {
           </div>
         </div>
       </div>
+      <CircleBackground />
     </section>
   );
 }
