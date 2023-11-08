@@ -92,7 +92,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9090/register", {
+      const response = await axios.post("http://localhost:9090/user/register", {
         name,
         email,
         password,
@@ -150,7 +150,7 @@ export default function SignUp() {
           <div className="flex flex-wrap justify-center font-normal text-center text-base mt-4">
             <p className="mr-1 text-black-900">Sudah punya akun?</p>
             <Link
-              href="/login"
+              href="/auth/signin"
               className="text-purple-200 hover:underline hover:decoration-[1.5px] hover:underline-offset-2 hover:decoration-purple-800 font-semibold"
             >
               Masuk
