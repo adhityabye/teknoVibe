@@ -57,16 +57,16 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9090/register", {
+      const response = await axios.post("http://localhost:9090/user/login", {
         email,
         password,
       });
 
       if (response.status === 200) {
-        alert("Sign up berhasil");
-        router.push("/login");
+        alert("Sign in berhasil");
+        router.push("/");
       } else if (response.status === 400) {
-        alert("Sign up gagal");
+        alert("Sign in gagal");
         console.log("Validation error: ", response.data);
       } else {
         alert("Terjadi kesalahan");
@@ -106,7 +106,7 @@ export default function SignUp() {
           <div className="flex flex-wrap justify-center font-normal text-center text-base mt-4">
             <p className="mr-1 text-black-900">Belum punya akun?</p>
             <Link
-              href="/signup"
+              href="/auth/signup"
               className="text-purple-200 hover:underline hover:decoration-[1.5px] hover:underline-offset-2 hover:decoration-purple-800 font-semibold"
             >
               Daftar
