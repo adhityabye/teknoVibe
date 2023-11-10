@@ -19,6 +19,7 @@ module.exports = {
         "gray-200": "#B1B1B1",
         "gray-300": "#757575",
         "gray-400": "#D4D4D4",
+        "gray-500": "#5C5C5C",
         "purple-100": "rgba(86, 75, 188, 0.14)",
         "purple-200": "#564BBC",
         "purple-900": "#202B51",
