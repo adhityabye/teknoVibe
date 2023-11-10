@@ -4,8 +4,9 @@ import Tentang from "./tentang/page";
 import Panduan from "./panduan/page";
 
 export default function Home(){
-  return(
+  return (
     <main>
+      <Navbar />
       <Hero />
       <Tentang />
       <Panduan />
