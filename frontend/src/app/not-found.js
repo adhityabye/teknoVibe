@@ -12,7 +12,7 @@ export default function NotFound() {
           Halaman yang Anda cari tidak ada. Silahkan kembali ke Beranda
         </p>
         <Link href="/">
-          <button className="px-4 py-1.5 mt-4 bg-purple-900 text-white-100 text-sm rounded-2xl">
+          <button className="font-josefin px-6 py-1.5 mt-4 bg-purple-900 text-white-100 text-sm rounded-2xl">
             Beranda
           </button>
         </Link>
