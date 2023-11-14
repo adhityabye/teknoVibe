@@ -22,6 +22,8 @@ module.exports = {
         "purple-100": "rgba(86, 75, 188, 0.14)",
         "purple-200": "#564BBC",
         "purple-900": "#202B51",
+        "gray-input": "#EAEAEA",
+        "button-dark": "#202B51",
       },
       backgroundImage: {
         "gradient-purple":
