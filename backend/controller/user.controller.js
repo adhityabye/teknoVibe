@@ -1,5 +1,7 @@
+const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const userModel = require("../model/user");
+const secretKey = process.env.SECRET_KEY || "akAGbc72DA77!@/owmf";
 
 // Controller for user registration
 const registerUser = async (req, res) => {
@@ -71,11 +73,18 @@ const loginUser = async (req, res) => {
     }
 
     //check if password match
-    const match = await comparePassword(password, user.password);
-    if (!match) {
+    const passwordMatch = await comparePassword(password, user.password);
+
+    if (!passwordMatch) {
       return res.status(400).json({ message: "Password does not match" });
     }
-    return res.status(200).json({ message: "Login successful" });
+
+    // create JWT token
+    const token = jwt.sign({ user: { id: user._id } }, secretKey, {
+      expiresIn: "24h",
+    });
+    
+    return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
