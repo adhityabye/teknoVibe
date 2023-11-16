@@ -1,5 +1,5 @@
-const bcrypt = require('bcrypt');
-const userModel = require('../model/user');
+const bcrypt = require("bcrypt");
+const userModel = require("../model/user");
 
 // Controller for user registration
 const registerUser = async (req, res) => {
@@ -7,18 +7,20 @@ const registerUser = async (req, res) => {
 
   // Check if all required fields are filled
   if (!name || !email || !password) {
-    return res.status(400).json({ message: 'All fields are required' });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   // Check if the password length is less than 8 characters
   if (password.length < 8) {
-    return res.status(400).json({ message: 'Password must be at least 8 characters long' });
+    return res
+      .status(400)
+      .json({ message: "Password must be at least 8 characters long" });
   }
 
-  const exist = await userModel.findOne({email});
+  const exist = await userModel.findOne({ email });
 
-  if(exist){
-    return res.status(400).json({ message: 'Email is  already exist' });
+  if (exist) {
+    return res.status(400).json({ message: "Email is  already exist" });
   }
 
   try {
@@ -32,10 +34,10 @@ const registerUser = async (req, res) => {
     await newUser.save();
 
     // Respond with a success message
-    return res.status(201).json({ message: 'User registered successfully' });
+    return res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -47,7 +49,7 @@ const getUsers = async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -59,24 +61,24 @@ const comparePassword = async (password, hashedPassword) => {
 // Controller for user login
 const loginUser = async (req, res) => {
   try {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
-    const user = await userModel.findOne({email})
-    
+    const user = await userModel.findOne({ email });
+
     // check if user exist
-    if(!user){
-      return res.status(400).json({ message: 'No user found' });
+    if (!user) {
+      return res.status(400).json({ message: "No user found" });
     }
 
     //check if password match
     const match = await comparePassword(password, user.password);
-    if(!match) {
-      return res.status(400).json({ message: 'Password does not match' });
+    if (!match) {
+      return res.status(400).json({ message: "Password does not match" });
     }
-    return res.status(200).json({ message: 'Login successful' });
+    return res.status(200).json({ message: "Login successful" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -139,5 +141,5 @@ module.exports = {
   getUsers,
   loginUser,
   updateUser,
-  deleteUser
+  deleteUser,
 };
