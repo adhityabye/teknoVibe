@@ -63,8 +63,8 @@ export default function SignUp() {
     }
 
     // Check if password field are filled
-    if (!password) {
-      setPasswordError("Password is required");
+    if (!password || password.length < 8) {
+      setPasswordError("Password must be at least 8 characters long");
       hasError = true;
     } else {
       setPasswordError("");
@@ -85,12 +85,6 @@ export default function SignUp() {
       return;
     }
 
-    // Check if all required fields are filled
-    if (!name || !email || !password) {
-      alert("Please fill in all required fields");
-      return;
-    }
-
     try {
       const response = await axios.post("http://localhost:9090/user/register", {
         name,
@@ -98,14 +92,14 @@ export default function SignUp() {
         password,
       });
 
-      if (response.status === 200) {
+      if (response.status === 201) {
         alert("Sign up berhasil");
-        router.push("/login");
-      } else if (response.status === 400) {
+        router.push("/auth/signin");
+      } else if (response.status === 500) {
         alert("Sign up gagal");
         console.log("Validation error: ", response.data);
       } else {
-        alert("Terjadi kesalahan");
+        alert(response.data.message);
         console.log("Unexpected error: ", response.status, response.data);
       }
     } catch (error) {

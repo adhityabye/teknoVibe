@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import Cookies from 'js-cookie';
 import EmailInput from "@/app/components/auth/emailInput";
 import PasswordInput from "@/app/components/auth/passwordInput";
 import CircleBackground from "@/app/components/circleBackground";
@@ -50,12 +51,6 @@ export default function SignUp() {
       return;
     }
 
-    // Check if all required fields are filled
-    if (!email || !password) {
-      alert("Please fill in all required fields");
-      return;
-    }
-
     try {
       const response = await axios.post("http://localhost:9090/user/login", {
         email,
@@ -63,6 +58,8 @@ export default function SignUp() {
       });
 
       if (response.status === 200) {
+        const { token } = response.data;
+        Cookies.set('token', token, { expires: 1 });
         alert("Sign in berhasil");
         router.push("/");
       } else if (response.status === 400) {
@@ -100,7 +97,7 @@ export default function SignUp() {
               type="submit"
               className="bg-gradient-purple mt-6 px-3 py-[8px] rounded-[20px] text-base font-bold text-white-100"
             >
-              Daftar
+              Masuk
             </button>
           </form>
           <div className="flex flex-wrap justify-center font-normal text-center text-base mt-4">
