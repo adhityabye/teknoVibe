@@ -16,7 +16,7 @@ export default function EventDetails({ params }) {
           <Image src={wave1} alt='' className=' min-w-full '/>
         </div>
       </div>
-      <div className="flex bg-white outline-2 p-5 self-center outline-black shadow-md rounded-lg mt-20 w-2/3 mb-40">
+      <div className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 w-2/3 mb-40">
         <div className="basis-1/3">
             {/* placeholder */}
           <Image src={ev} alt='' className='w-full m-5 mb-20'/>
@@ -24,9 +24,9 @@ export default function EventDetails({ params }) {
         <div className="basis-2/3 m-5 mx-16">
           <h1 className=" font-bold text-4xl">
             {/* placeholder */}
-            Event Name
+            Teknik Makan
           </h1>
-          <p className="mt-8 ">
+          <p className="mt-7 ">
             {/* placeholder */}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas luctus ipsum lorem, vulputate varius nisl volutpat at. Maecenas maximus auctor leo, et maximus dui maximus ac. Maecenas dignissim urna id mi tincidunt scelerisque. Suspendisse sit amet eleifend est. Phasellus vehicula augue in porta finibus. Nam vel arcu semper, sollicitudin augue ut, varius turpis. Duis faucibus id ipsum a facilisis. Vestibulum vestibulum metus eu condimentum mollis.
           </p>
@@ -65,13 +65,11 @@ export default function EventDetails({ params }) {
 
           </div>
           <div className="mt-40 flex text-purple-200 justify-end self-end">
-            <a href="/" className="flex flex-row">
+            <a href="/editEvent" className="flex flex-row">
               Edit Detail Event
               <Image src={arrow} alt='' className='ml-2'/>
-
             </a>
           </div>
-
         </div>
       </div>
 
