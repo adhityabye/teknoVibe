@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Cookies from "js-cookie";
+import { useRouter } from "next/navigation";
 import Logo from "../../../public/assets/logo-white.svg";
 import { HiUser } from "react-icons/hi2";
 
 export default function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const checkToken = () => {
@@ -23,26 +26,63 @@ export default function Navbar() {
     checkToken();
   }, []);
 
+  const handleSignOut = () => {
+    axios
+      .post("http://localhost:9090/user/logout")
+      .then(() => {
+        Cookies.remove("token");
+        router.push("/");
+      })
+      .catch((error) => {
+        console.error("Error during sign out: ", error);
+      });
+  };  
+
   return (
-    <nav className="bg-purple-200 border-gray-200">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <nav className="min-w-full fixed top-0 z-40 bg-purple-200 border-gray-200 h-16">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-3 px-10">
         <div>
           <Link className="flex items-center gap-4" href="/">
-            <Image src={Logo} className="h-8 w-min" alt="TeknoVibe Logo" />
-            <span className="text-3xl font-bold text-white-100">TeknoVibe</span>
+            <Image src={Logo} className="w-11" alt="TeknoVibe Logo" />
+            <span className="text-2xl font-bold text-white-100">TeknoVibe</span>
           </Link>
         </div>
-        <div class="flex md:order-2">
+        <div className="relative flex md:order-2">
           {isLoggedIn ? (
-            <Link href="/profile" className="flex items-center space-x-2">
-              <HiUser className="w-6 h-6 text-white-100" />
+            <div className="relative w-full">
               <button
-                type="button"
-                className="text-white-100 focus:outline-none font-medium py-2 text-center mr-3 md:mr-0"
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex space-x-2 text-white-100 focus:outline-none font-medium py-2"
               >
-                Akun
+                <HiUser className="w-6 h-6" />
+                <span className="ml-2">Akun</span>
               </button>
-            </Link>
+              {showDropdown && (
+                <div
+                  className="fixed z-40 w-[150px] top-16 right-28 bg-[#7F72FF] shadow-2xl rounded-md p-2"
+                  onClick={() => setShowDropdown(false)}
+                >
+                  <button
+                    onClick={() => {
+                      handleSignOut();
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
+                  >
+                    Sign Out
+                  </button>
+                  <button
+                    onClick={() => {
+                      router.push("profile/[id]");
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
+                  >
+                    Profile
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <Link href="/auth/signin">
               <button
@@ -82,7 +122,7 @@ export default function Navbar() {
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
           id="navbar-cta"
         >
-          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-purple-200 md:flex-row md:space-x-8 md:mt-0 md:border-0">
+          <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <li>
               <a
                 href="#tentang"
