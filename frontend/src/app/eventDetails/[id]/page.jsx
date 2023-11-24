@@ -16,7 +16,7 @@ export default function EventDetails({ params }) {
           <Image src={wave1} alt='' className=' min-w-full '/>
         </div>
       </div>
-      <div className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 w-2/3 mb-40">
+      <div className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40">
         <div className="basis-1/3">
             {/* placeholder */}
           <Image src={ev} alt='' className='w-full m-5 mb-20'/>
@@ -71,6 +71,18 @@ export default function EventDetails({ params }) {
             </a>
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-col self-center mx-60 mb-28">
+        <h1 className="font-bold text-4xl self-center mb-8">
+          Syarat dan Ketentuan
+        </h1>
+        <p className="text-justify">
+          {/* placeholder */}
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
       </div>
 
       <Theme>
