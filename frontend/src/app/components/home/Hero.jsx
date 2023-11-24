@@ -13,7 +13,7 @@ export default function Hero(){
     return(
       <main className="bg-purple-200 w-full">
         <div className='flex flex-col items-center'>
-          <div className='flex flex-row w-[75rem]'>
+          <div className='flex flex-row w-[75rem] mt-32'>
             <div className='w-full md:w-1/2 flex flex-col gap-4 justify-center'>
               <h1 className="text-white-100 text-4xl font-semibold">Cari dan Ajukan Event untuk Seluruh Mahasiswa FT UGM</h1>
               <p className="text-white-100 text-sm">Temukan dan daftarkan event-event di lingkungan Fakultas Teknik UGM dengan mudah dan terintegrasi!</p>

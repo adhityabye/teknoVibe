@@ -8,12 +8,15 @@ import AjukanEvent from "./components/home/AjukanEvent";
 export default function Home(){
   return (
     <main>
-      <Navbar />
-      <Hero />
-      <Tentang />
-      <Panduan />
-      <AjukanEvent/>
-      <Footer/>
+      <div className="flex flex-col gap-60">
+        <Navbar />
+        <Hero />
+        <Tentang />
+        <Panduan />
+        <AjukanEvent/>
+        <Footer/>
+      </div>
+
     </main>
   );
 }

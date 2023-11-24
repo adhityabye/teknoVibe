@@ -8,7 +8,7 @@ import illust3 from '../../../../public/assets/illust3.png'
 export default function AjukanEvent() {
     return (
       <main id="AjukanEvent">
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col items-center justify-center">
 
           <h3 className="bg-purple-200 px-5 py-2.5 text-md text-white-100 font-semibold rounded-md text-center w-fit mb-5">
             Ajukan Event
@@ -19,9 +19,9 @@ export default function AjukanEvent() {
             </h1>
 
           </div>
-          <div className="flex flex-row mt-2 w-1/2 mb-8">
-
-            <div className="flex flex-col basis-1/3 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
+          <div className="flex flex-wrap mt-2 w-2/3 mb-8 items-center justify-center">
+        
+            <div className="flex flex-col w-1/4 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
               <div className='h-3/6 mb-3 mt-3 '>
                 <Image src={illust1} alt='' className='h-full w-auto'/>
               </div>
@@ -31,7 +31,7 @@ export default function AjukanEvent() {
               <div className='rounded-xl bg-purple-200 h-1/6 w-11/12 m-3 '/>
             </div>
 
-            <div className="flex flex-col basis-1/3 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
+            <div className="flex flex-col w-1/4 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
               <div className='h-3/6 mb-3 mt-3 '>
                 <Image src={illust2} alt='' className='h-full w-auto'/>
               </div>
@@ -41,7 +41,7 @@ export default function AjukanEvent() {
               <div className='rounded-xl bg-purple-200 h-1/6 w-11/12 m-3 '/>
             </div>
 
-            <div className="flex flex-col basis-1/3 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
+            <div className="flex flex-col w-1/4 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
               <div className='h-3/6 mb-3 mt-3 '>
                 <Image src={illust3} alt='' className='h-full w-auto'/>
               </div>
