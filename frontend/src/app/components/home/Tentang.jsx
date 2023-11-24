@@ -1,7 +1,7 @@
 export default function Tentang() {
   return (
     <main id="tentang">
-      <div className="flex flex-col gap-4 items-center justify-center h-screen">
+      <div className="flex flex-col gap-4 items-center justify-center ">
         <h3 className="bg-purple-200 px-5 py-2.5 text-md text-white-100 font-semibold rounded-md text-center w-fit">
           Tentang
         </h3>
