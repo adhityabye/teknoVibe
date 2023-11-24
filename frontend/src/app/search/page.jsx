@@ -5,23 +5,39 @@ import React, { useState, useEffect } from "react";
 export default function SearchEvent() {
   const [activeButton, setActiveButton] = useState(null);
   const [data, setData] = useState([]);
+  const [searchString, setSearchString] = useState("");
 
   const departments = ["DTETI", "DTK", "DTMI", "DTAP", "DTNTF", "DTGL", "DTSL", "DTGD"];
 
   const handleClick = (buttonIndex) => {
     setActiveButton(buttonIndex);
   };
+
   useEffect(() => {
-    fetch("http://localhost:9090/search")
+    let url = "http://localhost:9090/search";
+
+    const params = new URLSearchParams();
+    if (searchString !== "") params.append("name", searchString);
+    if (activeButton !== null) params.append("department", departments[activeButton]);
+
+    if (params.size > 0) url = url + "?" + params.toString();
+
+    console.log(url);
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setData(data);
       });
-  }, []);
+  }, [activeButton, searchString]);
 
   const handleSearch = (search) => {
-    fetch(`http://localhost:9090/search?name=${encodeURI(search)}`)
+    const params = new URLSearchParams();
+    if (searchString !== "") params.append("name", searchString);
+    if (activeButton !== null) params.append("department", departments[activeButton]);
+
+    fetch("http://localhost:9090/search?" + params.toString())
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
@@ -40,7 +56,7 @@ export default function SearchEvent() {
           type="text"
           placeholder="Cari event yang anda inginkan"
           className="p-2 border border-gray-200 rounded-md w-1/2"
-          onKeyDown={(event) => {if (event.key === "Enter") handleSearch(event.target.value)}}
+          onKeyDown={(event) => {if (event.key === "Enter") setSearchString(event.target.value)}}
         />
 
 
