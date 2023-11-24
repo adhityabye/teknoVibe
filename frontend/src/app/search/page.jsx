@@ -22,7 +22,7 @@ export default function SearchEvent() {
     <div>
       <Navbar />
       <div className="flex flex-col items-center justify-center m-10">
-        <h1 className="text-2xl font-bold mb-5">
+        <h1 className="text-2xl font-bold mb-5 mt-10">
           Temukan Event Menarik dan Daftarkan Diri Anda!
         </h1>
         <input
@@ -112,12 +112,12 @@ export default function SearchEvent() {
             DTAP
           </button>
         </div>
-      </div>
+      </div>3
 
       {/*non template*/}
        
-      <section class="searchEvent flex-wrap flex justify-center items-center mt-10">
-        <div class="maincards flex space-x-8 ">
+      <section class="searchEvent flex-wrap flex justify-center items-center mt-5">
+        <div class="maincards grid grid-cols-4 gap-8">
           {data.map((rows) => (
             <>
               <div
@@ -130,9 +130,12 @@ export default function SearchEvent() {
                   alt=""
                 />
                 <div class="p-2">
-                  <h2 class="font-bold text-lg mb-2 ">{rows.eventName}</h2>
+                  <h2 class="font-bold text-xl mb-2 ">{rows.eventName}</h2>
+                  {/* <h3 className="font-bold text-xs mt-1">{rows.department}</h3> */}
+                  <h3 class="bg-purple-200 px-1 py-1 text-xs text-white-100 rounded-md text-center w-fit">{rows.department}</h3>
 
                   <p class="text-sm text-gray-600">{rows.eventDescription}</p>
+                  {/* <p class="text-xs text-gray-600 mt-1">{rows.tnc}</p> */}
                 </div>
 
                 <div>
