@@ -6,6 +6,8 @@ export default function SearchEvent() {
   const [activeButton, setActiveButton] = useState(null);
   const [data, setData] = useState([]);
 
+  const departments = ["DTETI", "DTK", "DTMI", "DTAP", "DTNTF", "DTGL", "DTSL", "DTGD"];
+
   const handleClick = (buttonIndex) => {
     setActiveButton(buttonIndex);
   };
@@ -18,6 +20,15 @@ export default function SearchEvent() {
       });
   }, []);
 
+  const handleSearch = (search) => {
+    fetch(`http://localhost:9090/search?name=${encodeURI(search)}`)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setData(data);
+    });
+  }
+
   return (
     <div>
       <Navbar />
@@ -29,95 +40,32 @@ export default function SearchEvent() {
           type="text"
           placeholder="Cari event yang anda inginkan"
           className="p-2 border border-gray-200 rounded-md w-1/2"
+          onKeyDown={(event) => {if (event.key === "Enter") handleSearch(event.target.value)}}
         />
+
+
         <div className="flex mt-4">
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 1 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(1)}
-          >
-            Fakultas
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 2 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(2)}
-          >
-            DTETI
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 3 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(3)}
-          >
-            DTK
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 4 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(4)}
-          >
-            DTMI
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 5 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(5)}
-          >
-            DTGL
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 6 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(6)}
-          >
-            DTNTF
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 7 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(7)}
-          >
-            DTGD
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 8 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(8)}
-          >
-            DTSL
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 9 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(9)}
-          >
-            DTAP
-          </button>
+          {
+            departments.map((fakultas, index) =>{
+              return (
+                <button 
+                className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
+                  activeButton === index ? "bg-button-dark text-white" : ""
+                }`}
+                onClick={() => handleClick(index)}
+              >
+                  {fakultas}
+                </button>
+              )
+            })
+          }
         </div>
-      </div>3
+      </div>
 
-      {/*non template*/}
-       
+
+      {/*non template cards*/} 
       <section class="searchEvent flex-wrap flex justify-center items-center mt-5">
-        <div class="maincards grid grid-cols-4 gap-8">
+        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8">
           {data.map((rows) => (
             <>
               <div
