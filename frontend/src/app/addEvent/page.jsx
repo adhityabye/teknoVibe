@@ -1,14 +1,76 @@
 'use client'
+import { useState } from "react";
 import Image from 'next/image';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import wave2 from '../../../public/assets/wave2.svg'
 import pp from '../../../public/assets/profile-placeholder.svg'
-// import CustomDatePicker from '../components/DatePicker';
-
 
 export default function addEvent(){
+  const [eventName, setEventName] = useState('');
+  const [eventDescription, setEventDescription] = useState('');
+  const [department, setDepartment] = useState('');
+  const [eventProfileUrl, setEventProfileUrl] = useState('');
+  const [date, setDate] = useState(Date.now());
+  const [divisions, setDivisions] = useState('');
+  const [deadlineDate, setDeadlineDate] = useState('');
+  const [tnc, setTnc] = useState('');
+  const [open, setOpen] = useState(true);
+  const [error, setError] = useState([]);
+  const [success, setSuccess] = useState(false);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try{
+      const res = await fetch("http://localhost:9090/event/add", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+          eventName,
+          eventDescription,
+          department,
+          eventProfileUrl,
+          date,
+          divisions,
+          deadlineDate,
+          tnc,
+          open
+        }),
+      });
+
+      console.log(JSON.stringify({
+        eventName,
+        eventDescription,
+        department,
+        eventProfileUrl,
+        date,
+        divisions,
+        deadlineDate,
+        tnc,
+        open
+      }),)
+  
+      const {msg, success} = await res.json();
+      setError(msg);
+      setSuccess(success);
+  
+      setEventName("");
+      setEventDescription("");
+      setDepartment("");
+      setEventProfileUrl("");
+      setDate("");
+      setDivisions("");
+      setDeadlineDate("");
+      setTnc("");
+      setOpen("");
+    } catch(err){
+      console.error(err);
+    }
+  }
+  
   const getBase64 =( fileInput, callback )=> {
     if (fileInput.files.length > 0) {
       const reader = new FileReader();
@@ -19,11 +81,12 @@ export default function addEvent(){
       reader.readAsDataURL(fileInput.files[0]);
     }
   }
-  const handleChange=(e)=>{
+  const handleChangeee=(e)=>{
   getBase64(e.target, (e)=>{
-    console.log(e)
+    setEventProfileUrl(e)
   })
   }
+
   return (
     <main className="flex flex-col justify-between w-full">
         <Navbar />
@@ -33,7 +96,8 @@ export default function addEvent(){
           <div className='absolute -z-10 min-w-full h-screen'>
             <Image src={wave2} alt='' className=' min-w-full '/>
           </div>
-
+          <form onSubmit={handleSubmit}>
+            
           <div className='max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 mt-10 bg-transparent'>
             
             <h1 className='font-bold text-4xl py-10'>
@@ -43,8 +107,14 @@ export default function addEvent(){
             <div className='flex flex-row place-items-center'>
 
               <label className='w-2/12 m-3 ' htmlFor='files'>
-                <input type='file'className='mt-6 items-center justify-center rounded-xl border-none absolute hidden' id='files' accept='image/png, image/gif, image/jpeg' onChange={handleChange}/>
-                <Image src={pp} alt='' className='w-full'/>
+                <input 
+                  type='file'
+                  className='mt-6 items-center justify-center rounded-xl border-none absolute hidden ' 
+                  id='files' 
+                  accept='image/png, image/gif, image/jpeg' 
+                  onChange={handleChangeee}
+                />
+                <Image src={pp} alt='' className='w-full cursor-pointer'/>
               </label>
 
               <div className='basis-2/6 ml-8'>
@@ -57,6 +127,8 @@ export default function addEvent(){
                     type="text"
                     color = "#EAEAEA"
                     placeholder="Nama Event"
+                    onChange={(e)=>setEventName(e.target.value)}
+                    value={eventName}
                     className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black" 
                   />
                 </div>
@@ -65,7 +137,12 @@ export default function addEvent(){
                   Lingkup Event
                 </p>
                 <div className="w-full mb-6">
-                  <select className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black">
+                  <select 
+                    onChange={e => setDepartment(e.target.value)}
+                    value={department}
+                    className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black"
+                                        
+                    >
                     <option>TEKNIK</option>
                     <option>DTETI</option>
                     <option>DTMI</option>
@@ -85,13 +162,14 @@ export default function addEvent(){
             </p>
             <div className="w-full px-3  ">
               <textarea
+              type="text"
                 placeholder="Deskripsi"
+                onChange={(e)=>setEventDescription(e.target.value)}
+                value={eventDescription}
                 className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-40"
-              ></textarea>
+              />
             </div>
   
-            
-
             <div className="w-full mt-60 mb-20 text-black">
 
               <h1 className='font-bold text-4xl'>
@@ -103,14 +181,14 @@ export default function addEvent(){
                   Penutupan Open Recruitment
                 </p>
                 <div className="w-full mb-6">
-                <input  name="requested_order_ship_date"  type="date" className='p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black'/>
-
-                  {/* <input 
-                    type="text"
-                    color = "#EAEAEA"
-                    placeholder="Date"
-                    className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black" 
-                  /> */}
+                <input  
+                  name="requested_order_ship_date"  
+                  type="date" 
+                  datatype="Date"
+                  onChange={e => setDeadlineDate(e.target.value)}
+                  value={deadlineDate}
+                  className='p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black'
+                />
                 </div>
               </div>
 
@@ -123,6 +201,8 @@ export default function addEvent(){
                     type="text"
                     color = "#EAEAEA"
                     placeholder="Divisi"
+                    onChange={e => setDivisions(e.target.value)}
+                    value={divisions}
                     className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black" 
                   />
                 </div>
@@ -133,9 +213,12 @@ export default function addEvent(){
               </p>
               <div className="w-full mt-25 ">
                 <textarea
+                  type="text"
                   placeholder="Syarat dan Ketentuan"
-                  className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-60"
-                ></textarea>
+                  onChange={e => setTnc(e.target.value)}
+                  value={tnc}
+                  className="p-2 bg-gray-input border border-gray-200 rounded w-full h-60"
+                />
               </div>
 
               <div className="w-full mb-10 mt-5 flex justify-end items-end">
@@ -150,6 +233,8 @@ export default function addEvent(){
 
 
           </div>
+          </form>
+
         </div>
 
         <Footer/>
