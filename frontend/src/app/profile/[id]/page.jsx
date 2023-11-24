@@ -94,20 +94,22 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-purple-200 relative">
       <Navbar />
-      <div className="max-w-screen-xl mx-auto py-10 px-4">
-        <Link
-          href="/"
-          className="w-fit flex items-center justify-start space-x-3"
+      <div className="max-w-screen-xl mx-auto pt-20 px-4">
+        <button
+          type="button"
+          className="w-fit flex items-center justify-start space-x-3 pl-5"
+          onClick={() => router.back()}
         >
           <HiArrowLongLeft className="w-8 h-8 text-white-100" />
           <p className="text-base text-white-100">Kembali</p>
-        </Link>
+        </button>
         <div className="mx-auto relative">
           <h1 className="text-[30px] text-center font-bold text-white-100 pt-5">
             Profile Dashboard
           </h1>
           <div className="flex justify-center space-x-5 py-8">
             <button
+              type="button"
               className={`px-5 py-1.5 font-josefin rounded-lg ${
                 isUpdateFormVisible
                   ? "bg-purple-900 text-white-100"
@@ -118,6 +120,7 @@ export default function Profile() {
               Update akun
             </button>
             <button
+              type="button"
               className={`px-5 py-1.5 font-josefin rounded-lg ${
                 isUpdateFormVisible
                   ? "bg-purple-200 text-white-100 border-2 border-white-100"
@@ -218,7 +221,7 @@ export default function Profile() {
                 bawah ini.
               </p>
               <button
-                type="submit"
+                type="button"
                 className="mx-auto w-32 bg-red-900 mt-10 px-3 py-1.5 rounded-[20px] text-base font-medium font-josefin text-white-100"
                 onClick={handleDeleteClick}
               >
@@ -234,12 +237,14 @@ export default function Profile() {
                 </p>
                 <div className="flex justify-center space-x-4">
                   <button
+                    type="button"
                     onClick={handleDeleteConfirm}
                     className="bg-red-900 px-8 py-1.5 rounded-[20px] text-base font-medium font-josefin text-white-100"
                   >
                     Yakin
                   </button>
                   <button
+                    type="button"
                     onClick={handleDeleteCancel}
                     className="px-8 py-1.5 rounded-[20px] text-base font-medium font-josefin bg-gray-400 text-black "
                   >

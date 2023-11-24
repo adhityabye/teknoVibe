@@ -27,16 +27,10 @@ export default function Navbar() {
   }, []);
 
   const handleSignOut = () => {
-    axios
-      .post("http://localhost:9090/user/logout")
-      .then(() => {
-        Cookies.remove("token");
-        router.push("/");
-      })
-      .catch((error) => {
-        console.error("Error during sign out: ", error);
-      });
-  };  
+    Cookies.remove("token");
+    setIsLoggedIn(false);
+    router.push("/");
+  };
 
   return (
     <nav className="min-w-full fixed top-0 z-40 bg-purple-200 border-gray-200 h-16">
@@ -64,21 +58,21 @@ export default function Navbar() {
                 >
                   <button
                     onClick={() => {
+                      router.push("/profile/[id]");
+                      setShowDropdown(false);
+                    }}
+                    className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
+                  >
+                    Profile
+                  </button>
+                  <button
+                    onClick={() => {
                       handleSignOut();
                       setShowDropdown(false);
                     }}
                     className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
                   >
                     Sign Out
-                  </button>
-                  <button
-                    onClick={() => {
-                      router.push("profile/[id]");
-                      setShowDropdown(false);
-                    }}
-                    className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
-                  >
-                    Profile
                   </button>
                 </div>
               )}
