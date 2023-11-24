@@ -5,119 +5,83 @@ import React, { useState, useEffect } from "react";
 export default function SearchEvent() {
   const [activeButton, setActiveButton] = useState(null);
   const [data, setData] = useState([]);
+  const [searchString, setSearchString] = useState("");
+
+  const departments = ["DTETI", "DTK", "DTMI", "DTAP", "DTNTF", "DTGL", "DTSL", "DTGD"];
 
   const handleClick = (buttonIndex) => {
     setActiveButton(buttonIndex);
   };
+
   useEffect(() => {
-    fetch("http://localhost:9090/search")
+    let url = "http://localhost:9090/search";
+
+    const params = new URLSearchParams();
+    if (searchString !== "") params.append("name", searchString);
+    if (activeButton !== null) params.append("department", departments[activeButton]);
+
+    if (params.size > 0) url = url + "?" + params.toString();
+
+    console.log(url);
+
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
         setData(data);
       });
-  }, []);
+  }, [activeButton, searchString]);
+
+  const handleSearch = (search) => {
+    const params = new URLSearchParams();
+    if (searchString !== "") params.append("name", searchString);
+    if (activeButton !== null) params.append("department", departments[activeButton]);
+
+    fetch("http://localhost:9090/search?" + params.toString())
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      setData(data);
+    });
+  }
 
   return (
     <div>
       <Navbar />
       <div className="flex flex-col items-center justify-center m-10">
-        <h1 className="text-2xl font-bold mb-5">
+        <h1 className="text-2xl font-bold mb-5 mt-10">
           Temukan Event Menarik dan Daftarkan Diri Anda!
         </h1>
         <input
           type="text"
           placeholder="Cari event yang anda inginkan"
           className="p-2 border border-gray-200 rounded-md w-1/2"
+          onKeyDown={(event) => {if (event.key === "Enter") setSearchString(event.target.value)}}
         />
+
+
         <div className="flex mt-4">
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 1 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(1)}
-          >
-            Fakultas
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 2 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(2)}
-          >
-            DTETI
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 3 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(3)}
-          >
-            DTK
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 4 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(4)}
-          >
-            DTMI
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 5 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(5)}
-          >
-            DTGL
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 6 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(6)}
-          >
-            DTNTF
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 7 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(7)}
-          >
-            DTGD
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 8 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(8)}
-          >
-            DTSL
-          </button>
-
-          <button
-            className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
-              activeButton === 9 ? "bg-button-dark text-white" : ""
-            }`}
-            onClick={() => handleClick(9)}
-          >
-            DTAP
-          </button>
+          {
+            departments.map((fakultas, index) =>{
+              return (
+                <button 
+                className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
+                  activeButton === index ? "bg-button-dark text-white" : ""
+                }`}
+                onClick={() => handleClick(index)}
+              >
+                  {fakultas}
+                </button>
+              )
+            })
+          }
         </div>
       </div>
 
-      {/*non template*/}
-       
-      <section class="searchEvent flex-wrap flex justify-center items-center mt-10">
-        <div class="maincards flex space-x-8 ">
+
+      {/*non template cards*/} 
+      <section class="searchEvent flex-wrap flex justify-center items-center mt-5">
+        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8">
           {data.map((rows) => (
             <>
               <div
@@ -130,9 +94,12 @@ export default function SearchEvent() {
                   alt=""
                 />
                 <div class="p-2">
-                  <h2 class="font-bold text-lg mb-2 ">{rows.eventName}</h2>
+                  <h2 class="font-bold text-xl mb-2 ">{rows.eventName}</h2>
+                  {/* <h3 className="font-bold text-xs mt-1">{rows.department}</h3> */}
+                  <h3 class="bg-purple-200 px-1 py-1 text-xs text-white-100 rounded-md text-center w-fit">{rows.department}</h3>
 
                   <p class="text-sm text-gray-600">{rows.eventDescription}</p>
+                  {/* <p class="text-xs text-gray-600 mt-1">{rows.tnc}</p> */}
                 </div>
 
                 <div>
