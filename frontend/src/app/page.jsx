@@ -3,6 +3,7 @@ import Hero from "./components/home/Hero";
 import Tentang from "./components/home/Tentang";
 import Panduan from "./components/home/Panduan";
 import Footer from "./components/Footer";
+import AjukanEvent from "./components/home/AjukanEvent";
 
 export default function Home(){
   return (
@@ -11,6 +12,7 @@ export default function Home(){
       <Hero />
       <Tentang />
       <Panduan />
+      <AjukanEvent/>
       <Footer/>
     </main>
   );

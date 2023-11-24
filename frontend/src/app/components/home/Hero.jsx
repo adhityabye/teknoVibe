@@ -1,3 +1,4 @@
+import Link from "next/link";
 import Image from 'next/image';
 import MainImage from '../../../../public/assets/hero-image.svg'
 import Wave from '../../../../public/assets/wave.svg'
@@ -17,8 +18,12 @@ export default function Hero(){
               <h1 className="text-white-100 text-4xl font-semibold">Cari dan Ajukan Event untuk Seluruh Mahasiswa FT UGM</h1>
               <p className="text-white-100 text-sm">Temukan dan daftarkan event-event di lingkungan Fakultas Teknik UGM dengan mudah dan terintegrasi!</p>
               <div className="relative flex flex-row gap-4">
-                <Button title={"Cari Event"}/>
-                <Button title={"Ajukan Event"}/>
+                <Link href="/">
+                  <Button title={"Cari Event"}/>
+                </Link>
+                <Link href="/addEvent">
+                  <Button title={"Ajukan Event"}/>
+                </Link>
               </div>
             </div>
             <div className='w-1/2 justify-end hidden md:flex'>
