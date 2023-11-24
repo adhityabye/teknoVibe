@@ -125,7 +125,7 @@ export default function Navbar() {
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0">
             <li>
               <a
-                href="#tentang"
+                href="/#tentang"
                 className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
               >
                 Tentang
@@ -133,7 +133,7 @@ export default function Navbar() {
             </li>
             <li>
               <a
-                href="#panduan"
+                href="/#panduan"
                 className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
               >
                 Panduan
@@ -141,7 +141,7 @@ export default function Navbar() {
             </li>
             <li>
               <a
-                href="/"
+                href="/search"
                 className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
               >
                 Cari Event

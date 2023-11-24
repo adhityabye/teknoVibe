@@ -18,7 +18,7 @@ export default function Hero(){
               <h1 className="text-white-100 text-4xl font-semibold">Cari dan Ajukan Event untuk Seluruh Mahasiswa FT UGM</h1>
               <p className="text-white-100 text-sm">Temukan dan daftarkan event-event di lingkungan Fakultas Teknik UGM dengan mudah dan terintegrasi!</p>
               <div className="relative flex flex-row gap-4">
-                <Link href="/">
+                <Link href="/search">
                   <Button title={"Cari Event"}/>
                 </Link>
                 <Link href="/addEvent">
