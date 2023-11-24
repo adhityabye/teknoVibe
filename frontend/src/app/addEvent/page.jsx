@@ -8,10 +8,21 @@ import pp from '../../../public/assets/profile-placeholder.svg'
 
 
 export default function addEvent(){
+
+  const getBase64 =( fileInput, callback )=> {
+    if (fileInput.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Image = event.target.result;
+        callback(base64Image);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
   const handleChange=(e)=>{
-  // TODO: COnvert image to base 64
-  // getBase64(event.target.files[0]).then(file =>
-  //   this.setState({ image: file })
+  getBase64(e.target, (e)=>{
+    console.log(e)
+  })
   }
   return (
     <main className="flex flex-col justify-between w-full">
@@ -23,7 +34,7 @@ export default function addEvent(){
             <Image src={wave2} alt='' className=' min-w-full '/>
           </div>
 
-          <div className='max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 bg-transparent'>
+          <div className='max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 mt-10 bg-transparent'>
             
             <h1 className='font-bold text-4xl py-10'>
               About Your Event!
@@ -31,10 +42,10 @@ export default function addEvent(){
 
             <div className='flex flex-row place-items-center'>
 
-              <div className='w-2/12 m-3 '>
+              <label className='w-2/12 m-3 ' htmlFor='files'>
+                <input type='file'className='mt-6 items-center justify-center rounded-xl border-none absolute hidden' id='files' accept='image/png, image/gif, image/jpeg' onChange={handleChange}/>
                 <Image src={pp} alt='' className='w-full'/>
-                <input type='file'className='mt-6 items-center justify-center rounded-xl' accept='image/png, image/gif, image/jpeg' onChange={handleChange}/>
-              </div>
+              </label>
 
               <div className='basis-2/6 ml-8'>
 
@@ -53,7 +64,7 @@ export default function addEvent(){
                 <p className='mb-2'>
                   Lingkup Event
                 </p>
-                <div className="w-full mb-16">
+                <div className="w-full mb-6">
                   <select className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black">
                     <option>TEKNIK</option>
                     <option>DTETI</option>
