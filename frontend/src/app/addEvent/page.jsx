@@ -1,12 +1,29 @@
+'use client'
 import Image from 'next/image';
-import react from 'react';
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import CircleBackground from "../components/circleBackground";
 import wave2 from '../../../public/assets/wave2.svg'
 import pp from '../../../public/assets/profile-placeholder.svg'
+// import CustomDatePicker from '../components/DatePicker';
+
 
 export default function addEvent(){
+
+  const getBase64 =( fileInput, callback )=> {
+    if (fileInput.files.length > 0) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const base64Image = event.target.result;
+        callback(base64Image);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    }
+  }
+  const handleChange=(e)=>{
+  getBase64(e.target, (e)=>{
+    console.log(e)
+  })
+  }
   return (
     <main className="flex flex-col justify-between w-full">
         <Navbar />
@@ -17,7 +34,7 @@ export default function addEvent(){
             <Image src={wave2} alt='' className=' min-w-full '/>
           </div>
 
-          <div className='max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 bg-transparent'>
+          <div className='max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 mt-10 bg-transparent'>
             
             <h1 className='font-bold text-4xl py-10'>
               About Your Event!
@@ -25,11 +42,12 @@ export default function addEvent(){
 
             <div className='flex flex-row place-items-center'>
 
-              <div className='basis-2/12 m-5 '>
-                <Image src={pp} alt='' className='w-10/12'/>
-              </div>
+              <label className='w-2/12 m-3 ' htmlFor='files'>
+                <input type='file'className='mt-6 items-center justify-center rounded-xl border-none absolute hidden' id='files' accept='image/png, image/gif, image/jpeg' onChange={handleChange}/>
+                <Image src={pp} alt='' className='w-full'/>
+              </label>
 
-              <div className='basis-2/6'>
+              <div className='basis-2/6 ml-8'>
 
                 <p className='mb-2'>
                   Nama Event
@@ -46,7 +64,7 @@ export default function addEvent(){
                 <p className='mb-2'>
                   Lingkup Event
                 </p>
-                <div className="w-full mb-5">
+                <div className="w-full mb-6">
                   <select className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black">
                     <option>TEKNIK</option>
                     <option>DTETI</option>
@@ -62,17 +80,17 @@ export default function addEvent(){
               </div>
 
             </div>
-
             <p className='m-3'>
               Deskripsi Event
             </p>
-            <div className="w-full px-3 mt-25 ">
+            <div className="w-full px-3  ">
               <textarea
-                placeholder="Event Description"
-                className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-60"
+                placeholder="Deskripsi"
+                className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-40"
               ></textarea>
             </div>
-
+  
+            
 
             <div className="w-full mt-60 mb-20 text-black">
 
@@ -85,12 +103,14 @@ export default function addEvent(){
                   Penutupan Open Recruitment
                 </p>
                 <div className="w-full mb-6">
-                  <input 
+                <input  name="requested_order_ship_date"  type="date" className='p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black'/>
+
+                  {/* <input 
                     type="text"
                     color = "#EAEAEA"
                     placeholder="Date"
                     className="p-2 bg-gray-input border border-gray-200 rounded w-full text-black" 
-                  />
+                  /> */}
                 </div>
               </div>
 
