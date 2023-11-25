@@ -47,7 +47,7 @@ export default function SearchEvent() {
 
   return (
     <div>
-      <Navbar />
+      <Navbar cari={true}/>
       <div className="flex flex-col items-center justify-center m-10">
         <h1 className="text-2xl font-bold mb-5 mt-10">
           Temukan Event Menarik dan Daftarkan Diri Anda!
