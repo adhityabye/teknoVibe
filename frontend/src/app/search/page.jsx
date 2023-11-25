@@ -7,7 +7,16 @@ export default function SearchEvent() {
   const [data, setData] = useState([]);
   const [searchString, setSearchString] = useState("");
 
-  const departments = ["DTETI", "DTK", "DTMI", "DTAP", "DTNTF", "DTGL", "DTSL", "DTGD"];
+  const departments = [
+    "DTETI",
+    "DTK",
+    "DTMI",
+    "DTAP",
+    "DTNTF",
+    "DTGL",
+    "DTSL",
+    "DTGD",
+  ];
 
   const handleClick = (buttonIndex) => {
     setActiveButton(buttonIndex);
@@ -18,7 +27,8 @@ export default function SearchEvent() {
 
     const params = new URLSearchParams();
     if (searchString !== "") params.append("name", searchString);
-    if (activeButton !== null) params.append("department", departments[activeButton]);
+    if (activeButton !== null)
+      params.append("department", departments[activeButton]);
 
     if (params.size > 0) url = url + "?" + params.toString();
 
@@ -35,19 +45,20 @@ export default function SearchEvent() {
   const handleSearch = (search) => {
     const params = new URLSearchParams();
     if (searchString !== "") params.append("name", searchString);
-    if (activeButton !== null) params.append("department", departments[activeButton]);
+    if (activeButton !== null)
+      params.append("department", departments[activeButton]);
 
     fetch("http://localhost:9090/search?" + params.toString())
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      setData(data);
-    });
-  }
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      });
+  };
 
   return (
     <div>
-      <Navbar />
+      <Navbar cari={true} />
       <div className="flex flex-col items-center justify-center m-10">
         <h1 className="text-2xl font-bold mb-5 mt-10">
           Temukan Event Menarik dan Daftarkan Diri Anda!
@@ -56,32 +67,30 @@ export default function SearchEvent() {
           type="text"
           placeholder="Cari event yang anda inginkan"
           className="p-2 border border-gray-200 rounded-md w-1/2"
-          onKeyDown={(event) => {if (event.key === "Enter") setSearchString(event.target.value)}}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") setSearchString(event.target.value);
+          }}
         />
 
-
         <div className="flex mt-4">
-          {
-            departments.map((fakultas, index) =>{
-              return (
-                <button 
+          {departments.map((fakultas, index) => {
+            return (
+              <button
                 className={`font-bold filter-item px-4 py-2 border border-gray-200 rounded-full m-2 transform transition-all hover:-translate-y-1 duration-100 ${
                   activeButton === index ? "bg-button-dark text-white" : ""
                 }`}
                 onClick={() => handleClick(index)}
               >
-                  {fakultas}
-                </button>
-              )
-            })
-          }
+                {fakultas}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-
-      {/*non template cards*/} 
+      {/*non template cards*/}
       <section class="searchEvent flex-wrap flex justify-center items-center mt-5">
-        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8 cursor-pointer hover:cursor-pointer">
           {data.map((rows) => (
             <>
               <div
@@ -93,15 +102,16 @@ export default function SearchEvent() {
                   src="./pewdstream.jpg"
                   alt=""
                 />
+
                 <div class="p-2">
-                  <h2 class="font-bold text-xl mb-2 ">{rows.eventName}</h2>
+                  <h2 class="font-bold text-[19px]">{rows.eventName}</h2>
                   {/* <h3 className="font-bold text-xs mt-1">{rows.department}</h3> */}
-                  <h3 class="bg-purple-200 px-1 py-1 text-xs text-white-100 rounded-md text-center w-fit">{rows.department}</h3>
+                  {/* <h3 class="bg-purple-200 px-1 py-1 text-xs text-white-100 rounded-md text-center w-fit flex">{rows.department}</h3> */}
 
                   <p class="text-sm text-gray-600">{rows.eventDescription}</p>
-                  {/* <p class="text-xs text-gray-600 mt-1">{rows.tnc}</p> */}
-                </div>
+                  <span class="bg-purple-200 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">{rows.department}</span>
 
+                </div>
                 <div>
                   <div class="flex space-x-2"></div>
                 </div>
@@ -112,4 +122,4 @@ export default function SearchEvent() {
       </section>
     </div>
   );
-          }
+}

@@ -8,11 +8,12 @@ import { useRouter } from "next/navigation";
 import Logo from "../../../public/assets/logo-white.svg";
 import { HiUser } from "react-icons/hi2";
 
-export default function Navbar() {
+export default function Navbar({cari, ajukan}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
 
+  // boolean Cari = cari;
   useEffect(() => {
     const checkToken = () => {
       try {
@@ -34,7 +35,7 @@ export default function Navbar() {
 
   return (
     <nav className="min-w-full fixed top-0 z-40 bg-purple-200 border-gray-200 h-16">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-3 px-10">
+      <div className="max-w-screen-xl h-full flex flex-wrap items-center justify-between mx-auto px-10">
         <div>
           <Link className="flex items-center gap-4" href="/">
             <Image src={Logo} className="w-11" alt="TeknoVibe Logo" />
@@ -81,7 +82,7 @@ export default function Navbar() {
             <Link href="/auth/signin">
               <button
                 type="button"
-                className="text-black bg-white-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0"
+                className="text-black bg-white-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center mr-3 md:mr-0 hover:bg-button-dark hover:text-white"
               >
                 Masuk
               </button>
@@ -117,37 +118,67 @@ export default function Navbar() {
           id="navbar-cta"
         >
           <ul className="flex flex-col font-medium p-4 md:p-0 mt-4 md:flex-row md:space-x-8 md:mt-0 md:border-0">
-            <li>
+            <li className="group hover:bg-black/30">
               <a
                 href="/#tentang"
-                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
+                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-3 md:mt-2"
               >
                 Tentang
               </a>
+              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
+              <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
             </li>
-            <li>
+            <li className="group hover:bg-black/30">
               <a
                 href="/#panduan"
-                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
+                className="block py-2 spl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-3 md:mt-2"
               >
                 Panduan
               </a>
+              <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
+
+              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
             </li>
-            <li>
+            <li className="group hover:bg-black/30">
               <a
                 href="/search"
-                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
+                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-3 md:mt-2"
               >
                 Cari Event
               </a>
+              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
+              {
+                cari && 
+                  <div className="block self-end h-1 mt-1 w-full bg-white"/> 
+              }
+              {/* {
+                ajukan &&
+                <div className="block  self-end h-1 w-full bg-transparent"/>
+              } */}
+              {/* <div className={`self-end h-1 w-full bg-white${
+                {cari}? 'block' : 'hidden'
+              }
+                `}/> */}
             </li>
-            <li>
+            <li className="group hover:bg-black/30">
               <a
                 href="/addEvent"
-                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-0 hover:underline"
+                className="block py-2 pl-3 pr-4 text-white-100 rounded hover:bg-gray-100 md:hover:bg-transparent md:p-3 md:mt-2"
               >
                 Ajukan Event
               </a>
+              {
+                ajukan && 
+                  <div className="block self-end h-1 mt-1 w-full bg-white"/> 
+              }
+              {/* <div className={`self-end h-1 w-full bg-white${
+                {ajukan}? 'block' : 'hidden'
+              }
+                `}/> */}
+              {/* {
+                cari &&
+                <div className="block  self-end h-1 w-full bg-purple-200"/>
+              } */}
             </li>
           </ul>
         </div>
