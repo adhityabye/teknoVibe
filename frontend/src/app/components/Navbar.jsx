@@ -8,13 +8,20 @@ import { useRouter } from "next/navigation";
 import Logo from "../../../public/assets/logo-white.svg";
 import { HiUser } from "react-icons/hi2";
 
-export default function Navbar({cari, ajukan}) {
+export default function Navbar({ cari, ajukan }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
+  const [user, setUser] = useState("");
 
-  // boolean Cari = cari;
   useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      router.refresh();
+      router.push("/");
+    } else {
+      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+    }
+
     const checkToken = () => {
       try {
         const token = Cookies.get("token");
@@ -29,6 +36,7 @@ export default function Navbar({cari, ajukan}) {
 
   const handleSignOut = () => {
     Cookies.remove("token");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
     router.push("/");
   };
@@ -59,7 +67,7 @@ export default function Navbar({cari, ajukan}) {
                 >
                   <button
                     onClick={() => {
-                      router.push("/profile/[id]");
+                      router.push("/profile/" + user._id);
                       setShowDropdown(false);
                     }}
                     className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
