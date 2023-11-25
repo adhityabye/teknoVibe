@@ -154,7 +154,7 @@ export default function addEvent(){
 
   return (
     <main className="flex flex-col justify-between w-full">
-        <Navbar />
+        <Navbar ajukan='true'/>
 
         <div className='relative w-full '>
           <Modal isOpen={isModalOpen} onClose={closeModal}>
