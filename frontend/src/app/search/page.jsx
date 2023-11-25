@@ -81,7 +81,7 @@ export default function SearchEvent() {
 
       {/*non template cards*/} 
       <section class="searchEvent flex-wrap flex justify-center items-center mt-5">
-        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8">
+        <div class="maincards grid lg:grid-cols-4 md:grid-cols-2 gap-8 cursor-pointer hover:cursor-pointer">
           {data.map((rows) => (
             <>
               <div
