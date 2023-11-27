@@ -2,6 +2,8 @@
 import Navbar from "../components/Navbar";
 import React, { useState, useEffect } from "react";
 
+import CircleBgSearchpg from "@/app/components/circleBgSearchpg";
+
 export default function SearchEvent() {
   const [activeButton, setActiveButton] = useState(null);
   const [data, setData] = useState([]);
@@ -59,6 +61,7 @@ export default function SearchEvent() {
   return (
     <div>
       <Navbar cari={true} />
+      <CircleBgSearchpg />
       <div className="flex flex-col items-center justify-center m-10">
         <h1 className="text-2xl font-bold mb-5 mt-10">
           Temukan Event Menarik dan Daftarkan Diri Anda!
