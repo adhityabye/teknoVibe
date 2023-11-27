@@ -21,8 +21,9 @@ export default function SearchEvent() {
   ];
 
   const handleClick = (buttonIndex) => {
-    setActiveButton(buttonIndex);
-  };
+    if (activeButton == buttonIndex) setActiveButton(null);
+    else setActiveButton(buttonIndex);
+  }; 
 
   useEffect(() => {
     let url = "http://localhost:9090/search";
