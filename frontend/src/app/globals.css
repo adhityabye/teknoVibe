@@ -42,3 +42,7 @@ input[type="password"]::-o-clear,
 input[type="password"]::-o-reveal {
   display: none;
 }
+
+div[type="circle"]{
+  aspect-ratio: 1/1;
+}

@@ -133,7 +133,6 @@ export default function Navbar({ cari, ajukan }) {
               >
                 Tentang
               </a>
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
               <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
             </li>
             <li className="group hover:bg-black/30">
@@ -144,8 +143,6 @@ export default function Navbar({ cari, ajukan }) {
                 Panduan
               </a>
               <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
-
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
             </li>
             <li className="group hover:bg-black/30">
               <a
@@ -154,19 +151,10 @@ export default function Navbar({ cari, ajukan }) {
               >
                 Cari Event
               </a>
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
               {
                 cari && 
                   <div className="block self-end h-1 mt-1 w-full bg-white"/> 
               }
-              {/* {
-                ajukan &&
-                <div className="block  self-end h-1 w-full bg-transparent"/>
-              } */}
-              {/* <div className={`self-end h-1 w-full bg-white${
-                {cari}? 'block' : 'hidden'
-              }
-                `}/> */}
             </li>
             <li className="group hover:bg-black/30">
               <a
@@ -179,14 +167,6 @@ export default function Navbar({ cari, ajukan }) {
                 ajukan && 
                   <div className="block self-end h-1 mt-1 w-full bg-white"/> 
               }
-              {/* <div className={`self-end h-1 w-full bg-white${
-                {ajukan}? 'block' : 'hidden'
-              }
-                `}/> */}
-              {/* {
-                cari &&
-                <div className="block  self-end h-1 w-full bg-purple-200"/>
-              } */}
             </li>
           </ul>
         </div>
