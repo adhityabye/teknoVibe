@@ -8,13 +8,26 @@ import { useRouter } from "next/navigation";
 import Logo from "../../../public/assets/logo-white.svg";
 import { HiUser } from "react-icons/hi2";
 
-export default function Navbar({cari, ajukan}) {
+export default function Navbar({ cari, ajukan }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
+  const [user, setUser] = useState("");
 
-  // boolean Cari = cari;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      router.refresh();
+      router.push("/");
+    } else {
+      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+    }
+
     const checkToken = () => {
       try {
         const token = Cookies.get("token");
@@ -29,6 +42,7 @@ export default function Navbar({cari, ajukan}) {
 
   const handleSignOut = () => {
     Cookies.remove("token");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
     router.push("/");
   };
@@ -59,7 +73,7 @@ export default function Navbar({cari, ajukan}) {
                 >
                   <button
                     onClick={() => {
-                      router.push("/profile/[id]");
+                      router.push("/profile/" + user._id);
                       setShowDropdown(false);
                     }}
                     className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
@@ -94,6 +108,7 @@ export default function Navbar({cari, ajukan}) {
             className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
             aria-controls="navbar-cta"
             aria-expanded="false"
+            onClick={toggleMenu}
           >
             <span className="sr-only">Open main menu</span>
             <svg
@@ -104,14 +119,47 @@ export default function Navbar({cari, ajukan}) {
               viewBox="0 0 17 14"
             >
               <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
+                stroke="white"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
                 d="M1 1h15M1 7h15M1 13h15"
               />
             </svg>
           </button>
+          {isOpen && (
+              <div className="text-sm absolute block bg-white mt-16 w-32 rounded-lg px-1.5 md:hidden flex flex-col items-center shadow-xl">
+                <div className="flex my-1.5 flex-col items-center w-full hover:bg-gray-100 rounded-lg">
+                  <a href="/" className="block text-black py-2">
+                    Home
+                  </a>
+                </div>
+                <div className="w-5/6 h-0.5 rounded-2xl bg-purple-200 "/>
+                <div className="flex my-1.5 flex-col items-center w-full hover:bg-gray-100 rounded-lg">
+                  <a href="/#tentang" className="block text-black py-2 ">
+                    Tentang
+                  </a>
+                </div>
+                <div className="w-5/6 h-0.5 rounded-2xl bg-purple-200 "/>
+                <div className="flex my-1.5 flex-col  items-center w-full hover:bg-gray-100 rounded-lg">
+                  <a href="/#panduan" className="block text-black py-2">
+                    Panduan
+                  </a>
+                </div>
+                <div className="w-5/6 h-0.5 rounded-2xl bg-purple-200 "/>
+                <div className="flex my-1.5 flex-col items-center w-full hover:bg-gray-100 rounded-lg">
+                  <a href="/search" className="block text-black py-2">
+                    Cari Event
+                  </a>
+                </div>
+                <div className="w-5/6 h-0.5 rounded-2xl bg-purple-200 "/>
+                <div className="flex my-1.5 flex-col items-center w-full hover:bg-gray-100 rounded-lg">
+                  <a href="/addEvent" className="block text-black py-2">
+                    Ajukan Event
+                  </a>
+                </div>
+              </div>
+            )}
         </div>
         <div
           className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
@@ -125,7 +173,6 @@ export default function Navbar({cari, ajukan}) {
               >
                 Tentang
               </a>
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
               <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
             </li>
             <li className="group hover:bg-black/30">
@@ -136,8 +183,6 @@ export default function Navbar({cari, ajukan}) {
                 Panduan
               </a>
               <div className="block group-hover:hidden self-end h-1 mt-1 w-full bg-purple-200"/>
-
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
             </li>
             <li className="group hover:bg-black/30">
               <a
@@ -146,19 +191,10 @@ export default function Navbar({cari, ajukan}) {
               >
                 Cari Event
               </a>
-              {/* <div className="hidden group-hover:block self-end h-1 mt-1 w-full bg-white"/> */}
               {
                 cari && 
                   <div className="block self-end h-1 mt-1 w-full bg-white"/> 
               }
-              {/* {
-                ajukan &&
-                <div className="block  self-end h-1 w-full bg-transparent"/>
-              } */}
-              {/* <div className={`self-end h-1 w-full bg-white${
-                {cari}? 'block' : 'hidden'
-              }
-                `}/> */}
             </li>
             <li className="group hover:bg-black/30">
               <a
@@ -171,14 +207,6 @@ export default function Navbar({cari, ajukan}) {
                 ajukan && 
                   <div className="block self-end h-1 mt-1 w-full bg-white"/> 
               }
-              {/* <div className={`self-end h-1 w-full bg-white${
-                {ajukan}? 'block' : 'hidden'
-              }
-                `}/> */}
-              {/* {
-                cari &&
-                <div className="block  self-end h-1 w-full bg-purple-200"/>
-              } */}
             </li>
           </ul>
         </div>

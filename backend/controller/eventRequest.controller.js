@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const searchEvent = async (req, res) => {
     try {
       const filter = {};
-      const { name, open, sortBy, department } = req.query;
+      const { name, open, sortBy, department, id } = req.query;
   
       if (name) {
         // Use a regular expression for exact (case-insensitive) match
@@ -17,7 +17,10 @@ const searchEvent = async (req, res) => {
       if (department) {
         filter.department = department;
       }
-  
+      if(id){
+        filter._id = id;
+      }
+      
       const sortOptions = {};
       if (sortBy === 'name') {
         sortOptions.eventName = 1;

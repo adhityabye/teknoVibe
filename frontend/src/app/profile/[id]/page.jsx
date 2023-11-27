@@ -1,46 +1,115 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { HiArrowLongLeft } from "react-icons/hi2";
 import Navbar from "@/app/components/Navbar";
+import { HiArrowLongLeft } from "react-icons/hi2";
+import { HiEye, HiEyeSlash } from "react-icons/hi2";
 
 export default function Profile() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [isUpdateFormVisible, setUpdateFormVisible] = useState(true);
   const [isDeleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [togglePassword, setTogglePassword] = useState(false);
+  const [toggleConfirmPassword, setToggleConfirmPassword] = useState(false);
+  const [user, setUser] = useState("");
   const router = useRouter();
-  const userId = router.query?.id;
+
+  useEffect(() => {
+    if (!localStorage.getItem("user")) {
+      router.refresh();
+      router.push("/");
+    } else {
+      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+    }
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUserData({
+      name: user.name,
+      email: user.email,
+      password: user.password,
+    });
+  }, []);
 
   const handleDeleteConfirm = async () => {
     try {
-      if (!userId) {
+      if (!user._id) {
         console.error("User ID not found in the URL");
         return;
       }
 
       const response = await axios.delete(
-        `http://localhost:9090/user/users/${userId}`
+        `http://localhost:9090/user/users/${user._id}`
       );
 
       if (response.status === 200) {
         alert("Akun berhasil dihapus");
         Cookies.remove("token");
+        localStorage.removeItem("user");
         router.push("/");
-      } else {
-        alert("Terjadi kesalahan saat menghapus akun");
-        console.log("Unexpected error: ", response.status, response.data);
       }
     } catch (error) {
+      alert("Terjadi kesalahan saat menghapus akun");
       console.error("Error during account deletion: ", error);
     } finally {
       setDeleteModalVisible(false);
     }
+  };
+
+  const [userData, setUserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const handleSubmitUpdate = async (e) => {
+    e.preventDefault();
+
+    if (userData.password.length < 8 || confirmPassword.length < 8) {
+      alert("Kata sandi dan konfirmasi kata sandi harus lebih dari 7");
+      return;
+    }
+
+    if (userData.password !== confirmPassword) {
+      alert("Kata sandi dan konfirmasi kata sandi tidak sama");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:9090/user/users/${user._id}`,
+        {
+          name: userData.name,
+          email: userData.email,
+          password: userData.password,
+        }
+      );
+
+      if (response.status === 200) {
+        alert("Berhasil memperbarui data akun");
+        router.refresh();
+      }
+    } catch (error) {
+      alert("Data akun tidak berhasil diperbarui");
+      console.error("Error during user data update: ", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setUserData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleTogglePassword = () => {
+    setTogglePassword(!togglePassword);
+  };
+
+  const handleToggleConfirmPassword = () => {
+    setToggleConfirmPassword(!toggleConfirmPassword);
   };
 
   const handleDeleteClick = () => {
@@ -51,44 +120,8 @@ export default function Profile() {
     setDeleteModalVisible(false);
   };
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
   const handleConfirmPasswordChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleSubmitUpdate = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.put(
-        `http://localhost:9090/user/users/${userId}`,
-        {
-          name,
-          email,
-          password,
-        }
-      );
-
-      if (response.status === 200) {
-        alert("Data berhasil disimpan");
-      } else {
-        alert("Terjadi kesalahan");
-        console.log("Unexpected error: ", response.status, response.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+    setConfirmPassword(e.target.value);
   };
 
   return (
@@ -149,9 +182,10 @@ export default function Profile() {
                   autoComplete="off"
                   id="name"
                   name="name"
-                  value={name}
+                  value={userData.name}
                   className="w-full bg-white-100 text-purple-900 py-1.5 px-3 text-base rounded-md border-0 focus:outline-none focus:ring-0"
-                  onChange={handleNameChange}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
               <div className="w-full font-josefin mt-5">
@@ -162,50 +196,76 @@ export default function Profile() {
                   Email
                 </label>
                 <input
-                  type="text"
+                  type="email"
                   placeholder=""
                   autoComplete="off"
                   id="email"
                   name="email"
-                  value={email}
+                  value={userData.email}
                   className="w-full bg-white-100 text-purple-900 py-1.5 px-3 text-base rounded-md border-0 focus:outline-none focus:ring-0"
-                  onChange={handleEmailChange}
+                  onChange={handleInputChange}
+                  required
                 />
               </div>
-              <div className="w-full font-josefin mt-5">
+              <div className="w-full relative font-josefin mt-5">
                 <label
                   className="text-base font-medium text-white-100"
-                  htmlFor="email"
+                  htmlFor="password"
                 >
                   Kata Sandi
                 </label>
                 <input
-                  type="text"
+                  type={togglePassword === false ? "password" : "text"}
                   placeholder=""
                   autoComplete="off"
                   id="password"
                   name="password"
-                  value={password}
-                  className="w-full bg-white-100 text-purple-900 py-1.5 px-3 text-base rounded-md border-0 focus:outline-none focus:ring-0"
-                  onChange={handlePasswordChange}
+                  className="w-full bg-white-100 text-purple-900 py-1.5 pl-3 pr-8 text-base rounded-md border-0 focus:outline-none focus:ring-0"
+                  onChange={handleInputChange}
                 />
+                {togglePassword === false ? (
+                  <HiEye
+                    className="absolute right-2 bottom-[10px] cursor-pointer text-purple-200"
+                    size="18px"
+                    onClick={handleTogglePassword}
+                  />
+                ) : (
+                  <HiEyeSlash
+                    className="absolute right-2 bottom-[10px] cursor-pointer text-purple-200"
+                    size="18px"
+                    onClick={handleTogglePassword}
+                  />
+                )}
               </div>
-              <div className="w-full font-josefin mt-5">
+              <div className="w-full relative font-josefin mt-5">
                 <label
                   className="text-base font-medium text-white-100"
-                  htmlFor="email"
+                  htmlFor="password"
                 >
                   Konfirmasi Kata Sandi
                 </label>
                 <input
-                  type="text"
+                  type={toggleConfirmPassword === false ? "password" : "text"}
                   placeholder=""
                   autoComplete="off"
                   id="confirmPassword"
                   name="confirmPassword"
-                  className="w-full bg-white-100 text-purple-900 py-1.5 px-3 text-base rounded-md border-0 focus:outline-none focus:ring-0"
+                  className="w-full bg-white-100 text-purple-900 py-1.5 pl-3 pr-8 text-base rounded-md border-0 focus:outline-none focus:ring-0"
                   onChange={handleConfirmPasswordChange}
                 />
+                {toggleConfirmPassword === false ? (
+                  <HiEye
+                    className="absolute right-2 bottom-[10px] cursor-pointer text-purple-200"
+                    size="18px"
+                    onClick={handleToggleConfirmPassword}
+                  />
+                ) : (
+                  <HiEyeSlash
+                    className="absolute right-2 bottom-[10px] cursor-pointer text-purple-200"
+                    size="18px"
+                    onClick={handleToggleConfirmPassword}
+                  />
+                )}
               </div>
               <button
                 type="submit"
