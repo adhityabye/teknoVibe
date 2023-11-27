@@ -17,6 +17,7 @@ export default function addEvent(){
   const [deadlineDate, setDeadlineDate] = useState('');
   const [tnc, setTnc] = useState('');
   const [open, setOpen] = useState(true);
+  
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
@@ -31,9 +32,17 @@ export default function addEvent(){
   const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
   const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
 
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(!user._id){
+      setError("Id Not Found");
+      return;
+    }
+
+    const adminId = user._id;
     let hasError = false;
 
     if(!eventName){
@@ -75,7 +84,6 @@ export default function addEvent(){
       setError('All fields are required');
       return;
     } 
-
     
     try{
       const res = await fetch("http://localhost:9090/event/add", {
@@ -92,6 +100,7 @@ export default function addEvent(){
           divisions,
           deadlineDate,
           tnc,
+          adminId,
           open
         }),
       });
@@ -105,6 +114,7 @@ export default function addEvent(){
         divisions,
         deadlineDate,
         tnc,
+        adminId,
         open
       }),)
   

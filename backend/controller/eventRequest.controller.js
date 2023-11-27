@@ -124,13 +124,13 @@ const getRegisteredParticipants = async (req, res) => {
 
 const addEvent = async (req, res) => {
     try{
-        const {eventName,eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, tnc, open } = req.body;
+        const {eventName,eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId, tnc, open } = req.body;
 
-        if (!eventName || !eventDescription || !department || !eventProfileUrl || !date || !divisions || !deadlineDate || !tnc) {
+        if (!eventName || !eventDescription || !department || !eventProfileUrl || !date || !divisions || !deadlineDate || !tnc || !adminId) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, tnc, open } 
+        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId, tnc, open } 
 
         const newEvent= await eventModel.create(eventInserted);
         await newEvent.save();
