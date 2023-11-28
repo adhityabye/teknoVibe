@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import EmailInput from "@/app/components/auth/emailInput";
 import PasswordInput from "@/app/components/auth/passwordInput";
 import CircleBackground from "@/app/components/circleBackground";
@@ -31,7 +31,6 @@ export default function SignUp() {
 
     let hasError = false;
 
-    // Check if email field are filled
     if (!email) {
       setEmailError("Email is required");
       hasError = true;
@@ -39,7 +38,6 @@ export default function SignUp() {
       setEmailError("");
     }
 
-    // Check if password field are filled
     if (!password) {
       setPasswordError("Password is required");
       hasError = true;
@@ -59,18 +57,14 @@ export default function SignUp() {
 
       if (response.status === 200) {
         const { token } = response.data;
-        Cookies.set('token', token, { expires: 1 });
+        Cookies.set("token", token, { expires: 1 });
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         alert("Sign in berhasil");
         router.push("/");
-      } else if (response.status === 400) {
-        alert("Sign in gagal");
-        console.log("Validation error: ", response.data);
-      } else {
-        alert("Terjadi kesalahan");
-        console.log("Unexpected error: ", response.status, response.data);
       }
     } catch (error) {
-      console.error(error);
+      alert("Sign in gagal");
+      console.log("Validation error: ", error.message);
     }
   };
 
