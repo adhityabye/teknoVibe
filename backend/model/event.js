@@ -9,6 +9,7 @@ const eventSchema = new mongoose.Schema({
   divisions: { type: String, required: true },
   deadlineDate: { type: Date, required: true },
   tnc: { type: String, required: true },
+  adminId: { type: String, required: true },
   open: { type: Boolean, required: true, default: true },
   registeredParticipants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Staff' }],
 });

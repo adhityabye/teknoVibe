@@ -17,6 +17,7 @@ export default function addEvent(){
   const [deadlineDate, setDeadlineDate] = useState('');
   const [tnc, setTnc] = useState('');
   const [open, setOpen] = useState(true);
+  
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
 
@@ -28,9 +29,20 @@ export default function addEvent(){
   const [errorDeadlineDate, seterrorDeadlineDate] = useState('');
   const [errorTnc, seterrorTnc] = useState('');
 
+  const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
+  const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if(!user._id){
+      setError("Id Not Found");
+      return;
+    }
+
+    const adminId = user._id;
     let hasError = false;
 
     if(!eventName){
@@ -68,8 +80,10 @@ export default function addEvent(){
       seterrorTnc('error');
     }else seterrorTnc('');
 
-    if(hasError) return;
-
+    if(hasError){
+      setError('All fields are required');
+      return;
+    } 
     
     try{
       const res = await fetch("http://localhost:9090/event/add", {
@@ -86,6 +100,7 @@ export default function addEvent(){
           divisions,
           deadlineDate,
           tnc,
+          adminId,
           open
         }),
       });
@@ -99,6 +114,7 @@ export default function addEvent(){
         divisions,
         deadlineDate,
         tnc,
+        adminId,
         open
       }),)
   
@@ -116,6 +132,7 @@ export default function addEvent(){
       setDeadlineDate("");
       setTnc("");
       setOpen("");
+      setThisEventProfileUrl(pp);
 
       setIsModalOpen(true);
 
@@ -132,14 +149,18 @@ export default function addEvent(){
       reader.onload = (event) => {
         const base64Image = event.target.result;
         callback(base64Image);
-      };
+        setThisEventProfileUrl(base64Image);
+  };
       reader.readAsDataURL(fileInput.files[0]);
     }
   }
+
   const handleChangeee=(e)=>{
-  getBase64(e.target, (e)=>{
-    setEventProfileUrl(e)
-  })
+    getBase64(e.target, (e)=>{
+      setEventProfileUrl(e)
+    });
+    console.log(thisEventProfileUrl);
+    setHasEventProfileUrl(true);
   }
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -160,9 +181,10 @@ export default function addEvent(){
           <Modal isOpen={isModalOpen} onClose={closeModal}>
             <p>Your data has been succesfully inserted</p>
           </Modal>
+          <div className='absolute -z-10 bg-purple-200 w-screen h-[30rem] place-items-center block md:hidden'/>
 
-          <div className='absolute -z-10 min-w-full h-screen'>
-            <Image src={wave2} alt='' className=' min-w-full '/>
+          <div className='absolute -z-10 w-screen h-screen place-items-center md:mt-0 mt-24 py-96 md:py-0'>
+            <Image src={wave2} alt='' className=' md:w-screen items-center '/>
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -174,7 +196,7 @@ export default function addEvent(){
 
               <div className='flex flex-row place-items-center'>
 
-                <label className='w-2/12 m-3 ' htmlFor='files'>
+                <label className='w-4/12 md:w-2/12 m-3 ' htmlFor='files'>
                   <input 
                     type='file'
                     className='mt-6 items-center justify-center rounded-xl border-none absolute hidden ' 
@@ -182,10 +204,33 @@ export default function addEvent(){
                     accept='image/png, image/gif, image/jpeg' 
                     onChange={handleChangeee}
                   />
-                  <Image src={pp} alt='' className='w-full cursor-pointer'/>
+                  <div type='circle' className={`relative w-full cursor-pointer  rounded-full ${
+                      errorEventProfileUrl? 'p-1 bg-red-400': 'p-0 bg-transparent'
+                      }`}>
+                    <Image 
+                      id="true"
+                      src={thisEventProfileUrl} 
+                      width={30}
+                      height={30}
+                      alt='' 
+                      className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
+                        hasEventProfileUrl? 'hidden' : 'block'
+                      }`}
+                          />
+                    <Image 
+                      id='base64image' 
+                      src={thisEventProfileUrl} 
+                      height={30}
+                      width={30}
+                      alt=''
+                      className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
+                        hasEventProfileUrl? 'block' : 'hidden'
+                      }`}
+                    />
+                  </div>
                 </label>
 
-                <div className='basis-2/6 ml-8'>
+                <div className='basis-3/6 md:basis-2/6 ml-8'>
 
                   <p className='mb-2'>
                     Nama Event
@@ -228,6 +273,7 @@ export default function addEvent(){
                 </div>
 
               </div>
+
               <p className='m-3'>
                 Deskripsi Event
               </p>
@@ -239,7 +285,6 @@ export default function addEvent(){
                   value={eventDescription}
                   className={`p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-40 ${
                     errorEventDescription? "border-red-600" : "border-gray-200" 
-
                   }`}
                 />
               </div>
@@ -250,18 +295,17 @@ export default function addEvent(){
                   About Your Open Recruitment!
                 </h1>
 
-                <div className='w-1/4 mt-8'>
+                <div className='w-1/2 md:w-1/4 mt-8'>
                   <p className='mb-2'>
                     Penutupan Open Recruitment
                   </p>
                   <div className="w-full mb-6">
                   <input  
-                    name="requested_order_ship_date"  
                     type="date" 
                     datatype="Date"
                     onChange={e => setDeadlineDate(e.target.value)}
                     value={deadlineDate}
-                    className={`p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black ${
+                    className={`p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black hover:cursor-pointer ${
                       errorDeadlineDate? "border-red-600" : "border-gray-200" 
                     }`}
                   />
@@ -276,7 +320,7 @@ export default function addEvent(){
                     <input 
                       type="text"
                       color = "#EAEAEA"
-                      placeholder="Divisi"
+                      placeholder="Divisi1, Divisi2, Divisi3, ..."
                       onChange={e => setDivisions(e.target.value)}
                       value={divisions}
                       className={` p-2 bg-gray-input border rounded w-full text-black ${
