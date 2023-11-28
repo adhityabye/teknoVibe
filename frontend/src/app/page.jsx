@@ -8,7 +8,7 @@ import AjukanEvent from "./components/home/AjukanEvent";
 export default function Home(){
   return (
     <main>
-      <div className="flex flex-col gap-60">
+      <div className="flex flex-col gap-28 overflow-hidden">
         <Navbar />
         <Hero />
         <Tentang />
@@ -16,7 +16,6 @@ export default function Home(){
         <AjukanEvent/>
         <Footer/>
       </div>
-
     </main>
   );
 }
