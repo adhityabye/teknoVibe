@@ -46,7 +46,6 @@ export default function SignUp() {
 
     let hasError = false;
 
-    // Check if name field are filled
     if (!name) {
       setNameError("Name is required");
       hasError = true;
@@ -54,7 +53,6 @@ export default function SignUp() {
       setNameError("");
     }
 
-    // Check if email field are filled
     if (!email) {
       setEmailError("Email is required");
       hasError = true;
@@ -62,7 +60,6 @@ export default function SignUp() {
       setEmailError("");
     }
 
-    // Check if password field are filled
     if (!password || password.length < 8) {
       setPasswordError("Password must be at least 8 characters long");
       hasError = true;
@@ -70,7 +67,6 @@ export default function SignUp() {
       setPasswordError("");
     }
 
-    // Check if confirm password field are filled
     if (!confirmPassword) {
       setConfirmPasswordError("Confirm Password is required");
       hasError = true;
@@ -92,18 +88,13 @@ export default function SignUp() {
         password,
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         alert("Sign up berhasil");
         router.push("/auth/signin");
-      } else if (response.status === 500) {
-        alert("Sign up gagal");
-        console.log("Validation error: ", response.data);
-      } else {
-        alert(response.data.message);
-        console.log("Unexpected error: ", response.status, response.data);
-      }
+      } 
     } catch (error) {
-      console.error(error);
+      alert("Sign up gagal, email sudah digunakan");
+      console.log("Registration account error: ", error);
     }
   };
 

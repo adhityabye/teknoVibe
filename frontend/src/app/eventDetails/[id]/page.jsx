@@ -17,27 +17,36 @@ export default function EventDetails({ params }) {
   const [data, setData] = useState([]);
   const [divisionList, setDivisionList] = useState([]);
 
+  const [isAdmin, setIsAdmin] = useState(false);
+  const user = JSON.parse(localStorage.getItem("user"));
+
   useEffect(() => {
-      try{
-        if(loaded!=true){
-  
-          const param = new URLSearchParams();
-          param.append("id", Id);
-          fetch("http://localhost:9090/search?" + param.toString())
-            .then((response) => response.json())
-            .then((data) => {
-              console.log(data);
-              setData(data);
-              setLoaded(true);
-        });
-          setLoaded(true);
-          seperateDivisions();
-        } 
-      }catch(err){
-        window.location.href = "https://localhost:3000";
-        console.error(err);
-      }
+    try{
+      if(loaded!=true){
+        const param = new URLSearchParams();
+        param.append("id", Id);
+        fetch("http://localhost:9090/search?" + param.toString())
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            setData(data);
+            setLoaded(true);
+      });
+        setLoaded(true);
         seperateDivisions();
+      } 
+    }catch(err){
+      window.location.href = "https://localhost:3000";
+      console.error(err);
+    }
+    seperateDivisions();
+    const AdminId = data.map((e) => (e.adminId)).toString();
+
+    if(user._id == AdminId){
+      setIsAdmin(true);
+    }
+
+
   }, []);
     
   const getMonth = (monthNum) => {
@@ -135,13 +144,17 @@ export default function EventDetails({ params }) {
                         </div>
             ))}
           </div>
-
-          <div className="mt-40 flex text-purple-200 justify-end self-end">
-            <a href="/editEvent" className="flex flex-row">
-              Edit Detail Event
-              <Image src={arrow} alt='' className='ml-2'/>
-            </a>
+          <div className="mt-40">
+            <div className={`flex text-purple-200 justify-end self-end ${
+              isAdmin? 'block' : 'hidden'
+            }`}>
+              <a href="/editEvent" className="flex flex-row">
+                Edit Detail Event
+                <Image src={arrow} alt='' className='ml-2'/>
+              </a>
+            </div>
           </div>
+
         </div>
       </div>
 
