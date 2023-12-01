@@ -11,7 +11,7 @@ export default function AjukanEvent() {
         <div className="flex flex-col items-center justify-center">
 
           <h3 className="bg-purple-200 px-5 py-2.5 text-md text-white-100 font-semibold rounded-md text-center w-fit mb-5">
-            Ajukan Event
+            AJUKAN
           </h3>
           <div className="mb-5 text-center">
             <h1 className="text-black-900 text-2xl font-bold">

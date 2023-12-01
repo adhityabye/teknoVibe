@@ -41,38 +41,35 @@ export default function ViewParticipant() {
     ],
   ];
 
-  const renderParticipantData = (participantData, index) => {
-    return (
-      <div key={index} className="flex flex-wrap justify-start mb-4">
-        {participantData.map((data, dataIndex) => (
-          <div key={dataIndex} className="flex-grow flex flex-col justify-start items-start mr-8 mb-2">
-            <p>{data}</p>
-          </div>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <div>
       <Navbar />
       <main className="flex justify-center">
-        <div>
-          <h1 className="text-2xl font-bold text-center mt-20 mb-10">Daftar Pendaftar</h1>
+        <div className="mx-4 md:mx-10 lg:mx-20 mt-10"> {/* Adjusted margin for the table container */}
+          <h1 className="text-2xl font-bold text-center mb-6">Daftar Pendaftar</h1>
           
-          <div className="flex flex-wrap justify-start mb-2">
-            {labels.map((label, index) => (
-              <div key={index} className="flex-grow flex flex-col justify-center items-start mr-8">
-                <p className="font-bold">{label}</p>
-              </div>
-            ))}
-          </div>
-          
-          {participants.map((participantData, pIndex) => (
-            <div key={pIndex} className="flex flex-wrap justify-start mb-4">
-              {renderParticipantData(participantData, pIndex)}
-            </div>
-          ))}
+          <table className="mx-auto">
+            <thead>
+              <tr>
+                {labels.map((label, index) => (
+                  <th key={index} className="py-2 px-4 text-center">
+                    {label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {participants.map((participantData, pIndex) => (
+                <tr key={pIndex} className="text-center">
+                  {participantData.map((data, dataIndex) => (
+                    <td key={dataIndex} className="py-2 px-4">
+                      {data}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </main>
     </div>

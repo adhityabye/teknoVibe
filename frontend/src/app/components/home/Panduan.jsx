@@ -3,7 +3,7 @@ export default function Panduan() {
     <main id="panduan">
       <div className="flex flex-col gap-4 items-center justify-center ">
         <h3 className="bg-purple-200 px-5 py-2.5 text-md text-white-100 font-semibold rounded-md text-center w-fit">
-          Panduan
+          PANDUAN
         </h3>
         <div className="gap-4 text-center">
           <h1 className="text-black-900 text-2xl font-semibold">
