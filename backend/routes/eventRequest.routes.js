@@ -23,4 +23,7 @@ router.patch('/:eventId', eventRequest.editEvent);
 // Retrieve the participants registered for a specific event
 router.get('/:eventId/participants', eventRequest.getRegisteredParticipants);
 
+// Compare Event Admin Id and current User Id
+router.post('/compareId', eventRequest.compareId);
+
 module.exports = router;

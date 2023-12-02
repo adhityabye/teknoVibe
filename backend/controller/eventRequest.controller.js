@@ -19,7 +19,7 @@ const searchEvent = async (req, res) => {
       if (department) {
         filter.department = department;
       }
-      if(id){
+      if (id){
         filter._id = id;
       }
       
@@ -30,7 +30,7 @@ const searchEvent = async (req, res) => {
         sortOptions.deadlineDate = 1;
       }
   
-      const eventDocs = await eventModel.find(filter).sort(sortOptions);
+      const eventDocs = await eventModel.find(filter);
   
       return res.status(200).json(eventDocs);
     } catch (err) {
@@ -134,9 +134,9 @@ const addEvent = async (req, res) => {
 
         // Access the user ID from token
         const decodedToken = jwt.verify(adminId, secretKey);
-        const userId = decodedToken.user.id;
+        const decodedAdminId = decodedToken.user.id;
 
-        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId: userId, tnc, open } 
+        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId: decodedAdminId, tnc, open } 
 
         const newEvent= await eventModel.create(eventInserted);
         await newEvent.save();
@@ -149,7 +149,22 @@ const addEvent = async (req, res) => {
     }
 }
 
+const compareId = async (req, res) => {
+  try{
+    const {token, AdminId} = req.body;
 
+    const decodedToken = jwt.verify(token, secretKey);
+    const decodedAdminId = decodedToken.user.id;
+
+    if(AdminId == decodedAdminId){
+      return res.status(200).json({ isAdmin: true, user: decodedAdminId, admin: AdminId });
+    }else{
+      return res.status(200).json({ isAdmin: false, user: decodedAdminId, admin: AdminId });
+    }
+  }catch(err){
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
 
 const editEvent = async (req, res) => {
     const { eventId } = req.params; // Correct the parameter name to 'eventId'
@@ -208,5 +223,6 @@ module.exports = {
     addEvent,
     editEvent,
     deleteEvent,
-    getRegisteredParticipants
+    getRegisteredParticipants,
+    compareId
 };
