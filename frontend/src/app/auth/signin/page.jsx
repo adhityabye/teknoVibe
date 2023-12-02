@@ -58,7 +58,7 @@ export default function SignUp() {
       if (response.status === 200) {
         const { token } = response.data;
         Cookies.set("token", token, { expires: 1 });
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(response.data.token));
         alert("Sign in berhasil");
         router.push("/");
       }

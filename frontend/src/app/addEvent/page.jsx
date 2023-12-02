@@ -33,27 +33,19 @@ export default function addEvent() {
 
   const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
   const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
-  const [user, setUser] = useState("");
   const router = useRouter();
 
   useEffect(() => {
-    if (!localStorage.getItem("user")) {
-      router.refresh();
-      router.push("/");
-    } else {
-      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
-    }
+    const test = localStorage.getItem("user").slice(1, -1);
+    console.log(test);
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!user._id) {
-      setError("Id Not Found");
-      return;
-    }
+    const adminId = localStorage.getItem("user").slice(1, -1);
+    console.log(adminId);
 
-    const adminId = user._id;
     let hasError = false;
 
     if (!eventName) {

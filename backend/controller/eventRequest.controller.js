@@ -1,6 +1,8 @@
+const jwt = require("jsonwebtoken");
 const eventModel = require('../model/event');
 const Staff = require('../model/staffModels');
 const mongoose = require('mongoose');
+const secretKey = process.env.SECRET_KEY || "akAGbc72DA77!@/owmf";
 
 const searchEvent = async (req, res) => {
     try {
@@ -130,18 +132,24 @@ const addEvent = async (req, res) => {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
-        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId, tnc, open } 
+        // Access the user ID from token
+        const decodedToken = jwt.verify(adminId, secretKey);
+        const userId = decodedToken.user.id;
+
+        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId: userId, tnc, open } 
 
         const newEvent= await eventModel.create(eventInserted);
         await newEvent.save();
 
         return res.status(201).json({ message: 'Event registered successfully' });
-    }catch{error}{
+    }catch(error){
         console.error(error);
         
         return res.status(500).json({ message: 'Internal server error' });
     }
 }
+
+
 
 const editEvent = async (req, res) => {
     const { eventId } = req.params; // Correct the parameter name to 'eventId'
