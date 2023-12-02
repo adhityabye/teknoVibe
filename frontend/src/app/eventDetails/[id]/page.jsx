@@ -1,4 +1,5 @@
 "use client";
+
 import { Theme } from "@radix-ui/themes";
 import React, { useState, useEffect } from "react";
 import Image from 'next/image';
@@ -14,40 +15,63 @@ export default function EventDetails({ params }) {
   // const router = useRouter();
   // const Id = router.query?._id;
   const [loaded, setLoaded] = useState(false);
-  const [data, setData] = useState([]);
+  const [Data, setData] = useState([]);
   const [divisionList, setDivisionList] = useState([]);
 
   const [isAdmin, setIsAdmin] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [eventAdmin, setEventAdmin] = useState("");
 
   useEffect(() => {
-    try{
-      if(loaded!=true){
+    const load = async () =>{
+      try{
+        let url = "http://localhost:9090/search";
         const param = new URLSearchParams();
         param.append("id", Id);
-        fetch("http://localhost:9090/search?" + param.toString())
+        console.log(Id);
+        url = url + "?" + param.toString();
+        console.log(url);
+        await fetch(url)
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             setData(data);
-            setLoaded(true);
-      });
-        setLoaded(true);
-        seperateDivisions();
-      } 
-    }catch(err){
-      window.location.href = "https://localhost:3000";
-      console.error(err);
+            console.log(data);
+          });
+      }catch(err){
+        window.location.href = "https://localhost:3000";
+        console.error(err);
+      }
     }
-    seperateDivisions();
-    const AdminId = data.map((e) => (e.adminId)).toString();
+    load();
+  }, [loaded]);
 
-    if(user._id == AdminId){
-      setIsAdmin(true);
-    }
+  const loadAdmin = () =>{
+    setEventAdmin(Data.map((e) => (e.adminId)).toString());
 
+    // console.log("event admin: ", eventAdmin);
+    const AdminId = eventAdmin;
 
-  }, []);
+    const token = localStorage.getItem("user").slice(1, -1);
+    // console.log("token: ", token);
+    fetch("http://localhost:9090/event/compareId", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        token,
+        AdminId
+      }),
+    })
+    .then(response => response.json())
+    .then((response) => {
+      if(response.isAdmin == true){
+        setIsAdmin(true);
+      }
+    })
+    .catch(error => {
+      console.error("couldn't get admin: ", error);
+    });
+  }
     
   const getMonth = (monthNum) => {
     if(monthNum == '01'){
@@ -78,16 +102,14 @@ export default function EventDetails({ params }) {
   }
 
   const seperateDivisions = () => {
-    // useEffect(() => {
-      const arr = data.map((e) => (e.divisions)).toString().split(', ');
+      const arr = Data.map((e) => (e.divisions)).toString().split(', ');
       setDivisionList(arr);
       // console.log(divisionList);
       return;
-    // }, []);
   }
 
   return (
-    <main className="flex flex-col w-full" >
+    <main className="flex flex-col w-full" onLoad={() => loadAdmin()} >
       <Navbar/>
       <div className='relative w-full '>
         <div className='absolute -z-10 min-w-full h-screen'>
@@ -102,35 +124,34 @@ export default function EventDetails({ params }) {
             <div className="relative rounded-lg w-full h-5/6 m-5 mb-20 bg-center" >
               <img 
                 id='base64image' 
-                src={data.map((e) => (e.eventProfileUrl))} 
+                src={Data.map((e) => (e.eventProfileUrl))} 
                 alt=''
                 className="object-cover w-full h-full rounded-lg"
-                
                 />
             </div>
         </div>
         <div className="basis-2/3 m-5 mx-16">
           <h1 className=" font-bold text-4xl">
-            {data.map((e) => (e.eventName))}
+            {Data.map((e) => (e.eventName))}
           </h1>
           <p className="mt-7 ">
-            {data.map((e) => (e.eventDescription))}
+            {Data.map((e) => (e.eventDescription))}
           </p>
           <p className="font-bold mt-8 mb-1">
             Tanggal Pendaftaran
           </p>
           <p>
-          {data.map((e) => (e.date)).toString().substring(8, 10)}
+          {Data.map((e) => (e.date)).toString().substring(8, 10)}
           { ' ' }
-          {getMonth(data.map((e) => (e.date)).toString().substring(5, 7))}
+          {getMonth(Data.map((e) => (e.date)).toString().substring(5, 7))}
           { ' ' }
-          {data.map((e) => (e.date)).toString().substring(0, 4)}
+          {Data.map((e) => (e.date)).toString().substring(0, 4)}
           { ' s/d ' }
-          {data.map((e) => (e.deadlineDate)).toString().substring(8, 10)}
+          {Data.map((e) => (e.deadlineDate)).toString().substring(8, 10)}
           { ' ' }
-          {getMonth(data.map((e) => (e.deadlineDate)).toString().substring(5, 7))}
+          {getMonth(Data.map((e) => (e.deadlineDate)).toString().substring(5, 7))}
           { ' ' }
-          {data.map((e) => (e.deadlineDate)).toString().substring(0, 4)}
+          {Data.map((e) => (e.deadlineDate)).toString().substring(0, 4)}
           </p>
           <p className="font-bold mt-8 mb-1" >
             Divisi yang Dibutuhkan
@@ -144,11 +165,13 @@ export default function EventDetails({ params }) {
                         </div>
             ))}
           </div>
-          <div className="mt-40">
+          <div className="mt-40" >
             <div className={`flex text-purple-200 justify-end self-end ${
               isAdmin? 'block' : 'hidden'
             }`}>
-              <a href="/editEvent" className="flex flex-row">
+              <a href="/editEvent" className="flex flex-row"> {/*buat sementara*/}
+              {/*kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D*/}
+              {/* <a href={`/editEvent/${Data.map((e) => (e._id)).toString()}`} className="flex flex-row"> */}
                 Edit Detail Event
                 <Image src={arrow} alt='' className='ml-2'/>
               </a>
@@ -162,8 +185,8 @@ export default function EventDetails({ params }) {
         <h1 className="font-bold text-4xl self-center mb-8">
           Syarat dan Ketentuan
         </h1>
-        <p className="text-justify self-center" onload={() => seperateDivisions()}>
-          {data.map((e) => (e.tnc))}
+        <p className="text-justify self-center" >
+          {Data.map((e) => (e.tnc))}
         </p>
       </div>
 
