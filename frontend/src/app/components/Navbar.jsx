@@ -21,12 +21,12 @@ export default function Navbar({ cari, ajukan }) {
   };
 
   useEffect(() => {
-    // if (!localStorage.getItem("user")) {
-    //   router.refresh();
-    //   router.push("/");
-    // } else {
-    //   setUser(JSON.parse(localStorage.getItem("user") || "{}"));
-    // }
+    if (!localStorage.getItem("user")) {
+      router.refresh();
+      router.push("/");
+    } else {
+      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+    }
 
     const checkToken = () => {
       try {

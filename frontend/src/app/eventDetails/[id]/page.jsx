@@ -10,48 +10,62 @@ import Footer from "../../components/Footer";
 import ApplicationForm from "./sections/ApplicationForm";
 
 export default function EventDetails({ params }) {
-  const currentURL = window.location.href;
-  const Id = currentURL.split('/').pop();
-  // const router = useRouter();
-  // const Id = router.query?._id;
-  const [loaded, setLoaded] = useState(false);
-  const [Data, setData] = useState([]);
+  const [eventData, setEventData] = useState([]);
   const [divisionList, setDivisionList] = useState([]);
-
   const [isAdmin, setIsAdmin] = useState(false);
-  const [eventAdmin, setEventAdmin] = useState("");
+
+  const monthList = {
+    "01" : "Januari",
+    "02" : "Fabruari",
+    "03" : "Maret",
+    "04" : "April",
+    "05" : "Mei",
+    "06" : "Juni",
+    "07" : "Juli",
+    "08" : "Agustus",
+    "09" : "September",
+    "10" : "Oktober",
+    "11" : "November",
+    "12" : "Desember"
+  }
 
   useEffect(() => {
     const load = async () =>{
       try{
+        // Mengambil id dari url
+        const currentURL = window.location.href;
+        const Id = currentURL.split('/').pop();
+
+        // Membuat url untuk mengakses API
         let url = "http://localhost:9090/search";
         const param = new URLSearchParams();
         param.append("id", Id);
-        console.log(Id);
         url = url + "?" + param.toString();
         console.log(url);
+
+        // Fetch data dari API
         await fetch(url)
           .then((response) => response.json())
           .then((data) => {
-            setData(data);
             console.log(data);
-          });
+            setEventData(data);
+            setDivisionList(data[0]["divisions"].split(", "));
+            loadAdmin(data);
+        });
       }catch(err){
-        window.location.href = "https://localhost:3000";
+        window.location.href = "https://localhost:3000/404";
         console.error(err);
       }
     }
     load();
-  }, [loaded]);
+  }, []);
 
-  const loadAdmin = () =>{
-    setEventAdmin(Data.map((e) => (e.adminId)).toString());
-
-    // console.log("event admin: ", eventAdmin);
-    const AdminId = eventAdmin;
-
+  // Function untuk menentukan apakah user adalah admin untuk event tersebut
+  const loadAdmin = (o) =>{
+    const AdminId = o.map((e) => (e.adminId)).toString();
     const token = localStorage.getItem("user").slice(1, -1);
-    // console.log("token: ", token);
+    
+    // Melakukan fetch ke API dengan POST
     fetch("http://localhost:9090/event/compareId", {
       method: "POST",
       headers: {
@@ -64,6 +78,7 @@ export default function EventDetails({ params }) {
     })
     .then(response => response.json())
     .then((response) => {
+      // Menentukan apakah user admin atau tidak
       if(response.isAdmin == true){
         setIsAdmin(true);
       }
@@ -72,45 +87,11 @@ export default function EventDetails({ params }) {
       console.error("couldn't get admin: ", error);
     });
   }
-    
-  const getMonth = (monthNum) => {
-    if(monthNum == '01'){
-      return 'Januari';
-    }else if(monthNum == '02'){
-      return 'Februari';
-    }else if(monthNum == '03'){
-      return 'Maret';
-    }else if(monthNum == '04'){
-      return 'April';
-    }else if(monthNum == '05'){
-      return 'Mei';
-    }else if(monthNum == '06'){
-      return 'Juni';
-    }else if(monthNum == '07'){
-      return 'Juli';
-    }else if(monthNum == '08'){
-      return 'Agustus';
-    }else if(monthNum == '09'){
-      return 'September';
-    }else if(monthNum == '10'){
-      return 'Oktober';
-    }else if(monthNum == '11'){
-      return 'November';
-    }else if(monthNum == '12'){
-      return 'Desember';
-    }
-  }
-
-  const seperateDivisions = () => {
-      const arr = Data.map((e) => (e.divisions)).toString().split(', ');
-      setDivisionList(arr);
-      // console.log(divisionList);
-      return;
-  }
 
   return (
-    <main className="flex flex-col w-full" onLoad={() => loadAdmin()} >
+    <main className="flex flex-col w-full" >
       <Navbar/>
+
       <div className='relative w-full '>
         <div className='absolute -z-10 min-w-full h-screen'>
           <Image src={wave1} alt='' className=' min-w-full '/>
@@ -118,66 +99,66 @@ export default function EventDetails({ params }) {
       </div>
 
       <div 
-        className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40 " 
-        onLoad={() => seperateDivisions()}>
+        className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40 ">
         <div className="basis-1/3">
             <div className="relative rounded-lg w-full h-5/6 m-5 mb-20 bg-center" >
               <img 
                 id='base64image' 
-                src={Data.map((e) => (e.eventProfileUrl))} 
+                src={eventData.map((e) => (e.eventProfileUrl))} 
                 alt=''
                 className="object-cover w-full h-full rounded-lg"
                 />
             </div>
         </div>
+
         <div className="basis-2/3 m-5 mx-16">
           <h1 className=" font-bold text-4xl">
-            {Data.map((e) => (e.eventName))}
+            {eventData.map((e) => (e.eventName))}
           </h1>
           <p className="mt-7 ">
-            {Data.map((e) => (e.eventDescription))}
+            {eventData.map((e) => (e.eventDescription))}
           </p>
           <p className="font-bold mt-8 mb-1">
             Tanggal Pendaftaran
           </p>
           <p>
-          {Data.map((e) => (e.date)).toString().substring(8, 10)}
+          {eventData.map((e) => (e.date)).toString().substring(8, 10)}
           { ' ' }
-          {getMonth(Data.map((e) => (e.date)).toString().substring(5, 7))}
+          {monthList[eventData.map((e) => (e.date)).toString().substring(5, 7)]}
           { ' ' }
-          {Data.map((e) => (e.date)).toString().substring(0, 4)}
+          {eventData.map((e) => (e.date)).toString().substring(0, 4)}
           { ' s/d ' }
-          {Data.map((e) => (e.deadlineDate)).toString().substring(8, 10)}
+          {eventData.map((e) => (e.deadlineDate)).toString().substring(8, 10)}
           { ' ' }
-          {getMonth(Data.map((e) => (e.deadlineDate)).toString().substring(5, 7))}
+          {monthList[eventData.map((e) => (e.deadlineDate)).toString().substring(5, 7)]}
           { ' ' }
-          {Data.map((e) => (e.deadlineDate)).toString().substring(0, 4)}
+          {eventData.map((e) => (e.deadlineDate)).toString().substring(0, 4)}
           </p>
           <p className="font-bold mt-8 mb-1" >
             Divisi yang Dibutuhkan
           </p>
           <div className="flex flex-row" >
             {divisionList.map((points) => (
-                          <div key={points} className="rounded-xl bg-purple-200 text-white p-1 px-3 mr-2">
-                          <p>
-                            {points}
-                          </p>
-                        </div>
+              <div key={points} className="rounded-xl bg-purple-200 text-white p-1 px-3 mr-2">
+              <p>
+                {points}
+              </p>
+            </div>
             ))}
           </div>
+
           <div className="mt-40" >
             <div className={`flex text-purple-200 justify-end self-end ${
               isAdmin? 'block' : 'hidden'
             }`}>
               <a href="/editEvent" className="flex flex-row"> {/*buat sementara*/}
               {/*kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D*/}
-              {/* <a href={`/editEvent/${Data.map((e) => (e._id)).toString()}`} className="flex flex-row"> */}
+              {/* <a href={`/editEvent/${eventData.map((e) => (e._id)).toString()}`} className="flex flex-row"> */}
                 Edit Detail Event
                 <Image src={arrow} alt='' className='ml-2'/>
               </a>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -186,7 +167,7 @@ export default function EventDetails({ params }) {
           Syarat dan Ketentuan
         </h1>
         <p className="text-justify self-center" >
-          {Data.map((e) => (e.tnc))}
+          {eventData.map((e) => (e.tnc))}
         </p>
       </div>
 
