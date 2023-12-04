@@ -5,9 +5,30 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import Modal from "../components/modalAddEvent";
 import wave2 from "../../../public/assets/wave2.svg";
 import pp from "../../../public/assets/profile-placeholder.svg";
+
+const Modal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+  
+  return (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-md"/>
+      <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg ">
+        <p className='font-bold text-purple-200 text-2xl mb-4'>
+          Notice  
+        </p>
+        {children}
+        <button 
+          className="mt-10 p-2 px-4 bg-purple-200 text-white rounded-2xl transition-transform duration-300 transform hover:bg-purple-900 hover:scale-110 active:scale-95" 
+          onClick={onClose}
+        >
+          Okay
+        </button>
+      </div>
+    </div>
+  );
+};
 
 export default function addEvent() {
   const [eventName, setEventName] = useState("");
@@ -34,11 +55,6 @@ export default function addEvent() {
   const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
   const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
   const router = useRouter();
-
-  useEffect(() => {
-    const test = localStorage.getItem("user").slice(1, -1);
-    console.log(test);
-  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -179,63 +195,69 @@ export default function addEvent() {
 
   return (
     <main className="flex flex-col justify-between w-full">
-      <Navbar ajukan="true" />
+      <Navbar ajukan="true"/>
 
-      <div className="relative w-full ">
+      <div className="relative w-full">
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <p>Your data has been succesfully inserted</p>
         </Modal>
-        <div className="absolute -z-10 bg-purple-200 w-screen h-[30rem] place-items-center block md:hidden" />
+        <div className="absolute -z-10 bg-purple-200 w-screen h-[20rem] place-items-center block"/>
 
-        <div className="absolute -z-10 w-screen h-screen place-items-center md:mt-0 mt-24 py-96 md:py-0">
-          <Image src={wave2} alt="" className=" md:w-screen items-center " />
+        <div className="absolute -z-10 w-screen h-screen place-items-center xl:mt-0 mt-0 py-60 xl:py-0">
+          <Image src={wave2} alt="" className="w-screen items-center"/>
         </div>
 
         <form onSubmit={handleSubmit}>
           <div className="max-w-screen-xl mx-auto p-4 py-10 text-white-100 mb-30 mt-10 bg-transparent">
             <h1 className="font-bold text-4xl py-10">About Your Event!</h1>
 
-            <div className="flex flex-row place-items-center">
-              <label className="w-4/12 md:w-2/12 m-3 " htmlFor="files">
-                <input
-                  type="file"
-                  className="mt-6 items-center justify-center rounded-xl border-none absolute hidden "
-                  id="files"
-                  accept="image/png, image/gif, image/jpeg"
-                  onChange={handleChangeee}
-                />
-                <div
-                  type="circle"
-                  className={`relative w-full cursor-pointer  rounded-full ${
-                    errorEventProfileUrl
-                      ? "p-1 bg-red-400"
-                      : "p-0 bg-transparent"
-                  }`}
-                >
-                  <Image
-                    id="true"
-                    src={thisEventProfileUrl}
-                    width={30}
-                    height={30}
-                    alt=""
-                    className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
-                      hasEventProfileUrl ? "hidden" : "block"
-                    }`}
-                  />
-                  <Image
-                    id="base64image"
-                    src={thisEventProfileUrl}
-                    height={30}
-                    width={30}
-                    alt=""
-                    className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
-                      hasEventProfileUrl ? "block" : "hidden"
-                    }`}
-                  />
-                </div>
-              </label>
+            <div className="flex flex-row items-center">
 
-              <div className="basis-3/6 md:basis-2/6 ml-8">
+              <div className="grid w-3/12 lg:w-2/12 mx-3 mt-3">
+                <label className="hover:cursor-pointer rounded-full w-full" htmlFor="files">
+                  <input
+                    type="file"
+                    className="mt-6 items-center justify-center rounded-xl border-none absolute hidden "
+                    id="files"
+                    accept="image/png, image/gif, image/jpeg"
+                    onChange={handleChangeee}
+                  />
+                  <div
+                    type="circle"
+                    className={`-z-10 relative w-full hover:cursor-pointer rounded-full ${
+                      errorEventProfileUrl
+                        ? "p-0.5 bg-red-600"
+                        : "p-0 bg-white"
+                    }`}
+                  >
+                    <Image
+                      id="true"
+                      src={thisEventProfileUrl}
+                      width={30}
+                      height={30}
+                      alt=""
+                      className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
+                        hasEventProfileUrl ? "hidden" : "block"
+                      }`}
+                    />
+                    <Image
+                      id="base64image"
+                      src={thisEventProfileUrl}
+                      height={30}
+                      width={30}
+                      alt=""
+                      className={`object-cover h-full w-full cursor-pointer rounded-full border border-black ${
+                        hasEventProfileUrl ? "block" : "hidden"
+                      }`}
+                    />
+                  </div>
+                </label>
+                <p className="mt-3 text-xs ">
+                    max size: 100kb
+                </p>
+              </div>
+
+              <div className="basis-3/4 md:basis-2/6 ml-8 mr-">
                 <p className="mb-2">Nama Event</p>
                 <div className="w-full mb-6">
                   <input
@@ -244,8 +266,8 @@ export default function addEvent() {
                     placeholder="Nama Event"
                     onChange={(e) => setEventName(e.target.value)}
                     value={eventName}
-                    className={`p-2 bg-gray-input border border-gray-200 rounded w-full text-black ${
-                      errorEventName ? "border-red-600" : "border-gray-200"
+                    className={`p-2 bg-gray-input border rounded w-full text-black ${
+                      errorEventName ? "border-red-600 border-2" : "border-gray-200"
                     }`}
                   />
                 </div>
@@ -255,8 +277,8 @@ export default function addEvent() {
                   <select
                     onChange={(e) => setDepartment(e.target.value)}
                     value={department}
-                    className={`p-2 bg-gray-input border border-gray-200 rounded w-full text-black ${
-                      errorDepartment ? "border-red-600" : "border-gray-200"
+                    className={`p-2 bg-gray-input border rounded w-full text-black cursor-pointer ${
+                      errorDepartment ? "border-red-600 border-2" : "border-gray-200"
                     } `}
                   >
                     <option>TEKNIK</option>
@@ -280,28 +302,30 @@ export default function addEvent() {
                 placeholder="Deskripsi"
                 onChange={(e) => setEventDescription(e.target.value)}
                 value={eventDescription}
-                className={`p-2 bg-gray-input border border-gray-200 rounded w-full text-black h-40 ${
-                  errorEventDescription ? "border-red-600" : "border-gray-200"
+                className={`p-2 bg-gray-input border rounded w-full text-black h-40 ${
+                  errorEventDescription ? "border-red-600 border-2" : "border-gray-200"
                 }`}
               />
             </div>
 
             <div className="w-full mt-60 mb-20 text-black">
+
               <h1 className="font-bold text-4xl">
                 About Your Open Recruitment!
               </h1>
 
-              <div className="w-1/2 md:w-1/4 mt-8">
+              <div className="w-1/2 lg:w-1/4 mt-8">
                 <p className="mb-2">Penutupan Open Recruitment</p>
-                <div className="w-full mb-6">
+                <div className="w-full mb-6 cursor-pointer">
                   <input
                     type="date"
                     datatype="Date"
                     onChange={(e) => setDeadlineDate(e.target.value)}
                     value={deadlineDate}
-                    className={`p-2 bg-gray-input border border-gray-200 rounded w-2/3 text-black hover:cursor-pointer ${
-                      errorDeadlineDate ? "border-red-600" : "border-gray-200"
+                    className={`p-2 bg-gray-input border rounded w-2/3 text-black hover:cursor-pointer ${
+                      errorDeadlineDate ? "border-red-600 border-2" : "border-gray-200"
                     }`}
+                    placeholder="hello"
                   />
                 </div>
               </div>
@@ -315,9 +339,9 @@ export default function addEvent() {
                     placeholder="Divisi1, Divisi2, Divisi3, ..."
                     onChange={(e) => setDivisions(e.target.value)}
                     value={divisions}
-                    className={` p-2 bg-gray-input border rounded w-full text-black ${
-                      errorDivisions ? "border-red-600" : "border-gray-200"
-                    } `}
+                    className={`p-2 bg-gray-input border rounded w-full text-black ${
+                      errorDivisions ? "border-red-600 border-2" : "border-gray-200"
+                    }`}
                   />
                 </div>
               </div>
@@ -329,8 +353,8 @@ export default function addEvent() {
                   placeholder="Syarat dan Ketentuan"
                   onChange={(e) => setTnc(e.target.value)}
                   value={tnc}
-                  className={`p-2 bg-gray-input border border-gray-200 rounded w-full h-60 ${
-                    errorTnc ? "border-red-600" : "border-gray-200"
+                  className={`p-2 bg-gray-input border rounded w-full h-60 ${
+                    errorTnc ? "border-red-600 border-2" : "border-gray-200"
                   }`}
                 />
               </div>
@@ -338,23 +362,22 @@ export default function addEvent() {
               <div className="flex flex-col w-full mb-10 mt-5 justify-end items-end">
                 {
                   error && (
-                    // error.map((e) => (
                     <p className={"text-red-600 text-lb mb-2"}>
                       {error.toString()}
                     </p>
                   )
-                  // ))
                 }
 
-                <button className="bg-button-dark text-white py-2 px-4 rounded hover:bg-purple-200">
+                <button className="bg-button-dark text-white py-2 px-4 rounded hover:bg-purple-200 transition-transform duration-300 transform hover:scale-110 active:scale-95">
                   Ajukan Event
                 </button>
+
               </div>
             </div>
           </div>
         </form>
       </div>
-      <Footer />
+      <Footer/>
     </main>
   );
 }
