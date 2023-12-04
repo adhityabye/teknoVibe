@@ -100,7 +100,7 @@ export default function SearchEvent() {
                     <h2 className="font-bold text-[19px]">{rows.eventName}</h2>
 
                     <p className="text-sm text-gray-600">
-                      {rows.eventDescription}
+                      {rows.eventDescription.length > 20 ? `${rows.eventDescription.slice(0,20)} ...`: rows.eventDescription}
                     </p>
                     <span className="bg-purple-200 text-white text-xs font-medium me-2 px-2.5 py-0.5 rounded">
                       {rows.department}

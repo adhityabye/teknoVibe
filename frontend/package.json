@@ -19,7 +19,8 @@
     "react-datepicker": "^4.23.0",
     "react-dom": "^18",
     "react-icons": "^4.11.0",
-    "react-router-dom": "^6.17.0"
+    "react-router-dom": "^6.17.0",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
