@@ -46,3 +46,7 @@ input[type="password"]::-o-reveal {
 div[type="circle"]{
   aspect-ratio: 1/1;
 }
+
+div[type="card"]{
+  aspect-ratio: 1/1.3;
+}

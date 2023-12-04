@@ -5,7 +5,7 @@ import Wave from "../../../../public/assets/wave.svg";
 
 const Button = ({ title }) => {
   return (
-    <button className="bg-purple-900 text-white-100 font-josefin px-5 py-2.5 text-sm rounded-[13px] z-10 active:scale-95">
+    <button className="bg-purple-900 text-white-100 font-josefin px-5 py-2.5 text-sm rounded-[13px] z-10 shadow-lg active:scale-95 hover:bg-white hover:text-purple-900 transition-transform duration-300 transform hover:scale-110">
       {title}
     </button>
   );
@@ -29,7 +29,7 @@ export default function Hero() {
                 <Button title={"Cari Event"} />
               </Link>
               <Link href="/addEvent">
-                <Button title={"Ajukan Event"} />
+                <Button title={"Ajukan Event"}/>
               </Link>
             </div>
           </div>
