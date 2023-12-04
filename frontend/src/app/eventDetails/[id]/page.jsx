@@ -4,7 +4,6 @@ import { Theme } from "@radix-ui/themes";
 import React, { useState, useEffect } from "react";
 import Image from 'next/image';
 import wave1 from '../../../../public/assets/wave1.svg';
-import arrow from '../../../../public/assets/arrow.svg';
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ApplicationForm from "./sections/ApplicationForm";
@@ -27,7 +26,7 @@ export default function EventDetails({ params }) {
     "10" : "Oktober",
     "11" : "November",
     "12" : "Desember"
-  }
+  };
 
   useEffect(() => {
     // Execute on load
@@ -88,7 +87,7 @@ export default function EventDetails({ params }) {
     .catch(error => {
       console.error("couldn't get admin: ", error);
     });
-  }
+  };
 
   return (
     <main className="flex flex-col w-full" >
@@ -101,9 +100,10 @@ export default function EventDetails({ params }) {
       </div>
 
       <div 
-        className="flex bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40 ">
-        <div className="basis-1/3">
-            <div className="relative rounded-lg w-full h-5/6 m-5 mb-20 bg-center" >
+        className="flex flex-col lg:flex-row bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40 ">
+        <div className="basis-5/12 flex">
+          <div className="w-full mb-0 lg:mb-20">
+            <div type="card" className="relative rounded-lg m-5 bg-center" >
               <img 
                 id='base64image' 
                 src={eventData.map((e) => (e.eventProfileUrl))} 
@@ -111,9 +111,10 @@ export default function EventDetails({ params }) {
                 className="object-cover w-full h-full rounded-lg"
                 />
             </div>
+          </div>
         </div>
 
-        <div className="basis-2/3 m-5 mx-16">
+        <div className="basis-2/3 m-5 mx-7 flex flex-col">
           <h1 className=" font-bold text-4xl">
             {eventData.map((e) => (e.eventName))}
           </h1>
@@ -139,9 +140,9 @@ export default function EventDetails({ params }) {
           <p className="font-bold mt-8 mb-1" >
             Divisi yang Dibutuhkan
           </p>
-          <div className="flex flex-row" >
+          <div className="flex flex-row flex-wrap" >
             {divisionList.map((points) => (
-              <div key={points} className="rounded-xl bg-purple-200 text-white p-1 px-3 mr-2">
+              <div key={points} className="rounded-xl bg-purple-200 text-white p-1 px-3 mr-2 mb-1.5">
               <p>
                 {points}
               </p>
@@ -149,16 +150,28 @@ export default function EventDetails({ params }) {
             ))}
           </div>
 
-          <div className="mt-40" >
-            <div className={`flex text-purple-200 justify-end self-end ${
+          <div className="mt-20 flex-shrink-0 lg:mt-auto" >
+            <div className={`flex text-purple-200 justify-end self-end mt-0 lg:mt-20 ${
               isAdmin? 'block' : 'hidden'
             }`}>
-              <a href="/editEvent" className="flex flex-row"> {/*buat sementara*/}
-              {/*kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D*/}
-              {/* <a href={`/editEvent/${eventData.map((e) => (e._id)).toString()}`} className="flex flex-row"> */}
-                Edit Detail Event
-                <Image src={arrow} alt='' className='ml-2'/>
+
+              {/*buat sementara*/}
+              <a href="/viewParticipants"> 
+                Lihat Data Pendaftar
               </a>
+              <a href="/editEvent" className="ml-14"> 
+                Edit Detail Event
+              </a>
+
+              {/* kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D */}
+
+              {/* <a href={`/viewParticipants/${eventData.map((e) => (e._id)).toString()}`}> 
+                Lihat Data Pendaftar
+              </a>
+              <a href={`/editEvent/${eventData.map((e) => (e._id)).toString()}`} className="ml-14">
+                Edit Detail Event
+              </a> */}
+
             </div>
           </div>
         </div>
@@ -176,6 +189,7 @@ export default function EventDetails({ params }) {
       <Theme>
         <ApplicationForm eventId={params.id} />
       </Theme>
+
       <Footer/>
     </main>
   );
