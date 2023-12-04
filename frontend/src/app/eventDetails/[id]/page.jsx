@@ -30,23 +30,25 @@ export default function EventDetails({ params }) {
   }
 
   useEffect(() => {
+    // Execute on load
     const load = async () =>{
       try{
-        // Mengambil id dari url
+        // Get id from url
         const currentURL = window.location.href;
         const Id = currentURL.split('/').pop();
 
-        // Membuat url untuk mengakses API
+        // Create url to access API
         let url = "http://localhost:9090/search";
         const param = new URLSearchParams();
         param.append("id", Id);
         url = url + "?" + param.toString();
         console.log(url);
 
-        // Fetch data dari API
+        // Fetch data from API
         await fetch(url)
           .then((response) => response.json())
           .then((data) => {
+            // Set data to some variables
             console.log(data);
             setEventData(data);
             setDivisionList(data[0]["divisions"].split(", "));
@@ -60,12 +62,12 @@ export default function EventDetails({ params }) {
     load();
   }, []);
 
-  // Function untuk menentukan apakah user adalah admin untuk event tersebut
+  // Function to decide if user's an admin for the event
   const loadAdmin = (o) =>{
     const AdminId = o.map((e) => (e.adminId)).toString();
     const token = localStorage.getItem("user").slice(1, -1);
     
-    // Melakukan fetch ke API dengan POST
+    // Fetch to API using POST
     fetch("http://localhost:9090/event/compareId", {
       method: "POST",
       headers: {
@@ -78,7 +80,7 @@ export default function EventDetails({ params }) {
     })
     .then(response => response.json())
     .then((response) => {
-      // Menentukan apakah user admin atau tidak
+      // Decide whether user's an admin or not
       if(response.isAdmin == true){
         setIsAdmin(true);
       }
