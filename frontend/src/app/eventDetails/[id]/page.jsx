@@ -100,7 +100,7 @@ export default function EventDetails({ params }) {
       </div>
 
       <div 
-        className="flex flex-col lg:flex-row bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 mb-24 w-2/3 mb-40 ">
+        className="flex flex-col lg:flex-row bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 w-2/3 mb-40 ">
         <div className="basis-5/12 flex">
           <div className="w-full mb-0 lg:mb-20">
             <div type="card" className="relative rounded-lg m-5 bg-center" >
@@ -154,23 +154,20 @@ export default function EventDetails({ params }) {
             <div className={`flex text-purple-200 justify-end self-end mt-0 lg:mt-20 ${
               isAdmin? 'block' : 'hidden'
             }`}>
-
               {/*buat sementara*/}
-              <a href="/viewParticipants"> 
+              {/* <a href="/viewParticipants"> 
                 Lihat Data Pendaftar
               </a>
               <a href="/editEvent" className="ml-14"> 
                 Edit Detail Event
-              </a>
-
+              </a> */}
               {/* kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D */}
-
-              {/* <a href={`/viewParticipants/${eventData.map((e) => (e._id)).toString()}`}> 
+              <a href={`/eventDetails/${eventData.map((e) => (e._id)).toString()}/viewParticipants`}> 
                 Lihat Data Pendaftar
               </a>
-              <a href={`/editEvent/${eventData.map((e) => (e._id)).toString()}`} className="ml-14">
+              <a href={`/eventDetails/${eventData.map((e) => (e._id)).toString()}/editEvent`} className="ml-14">
                 Edit Detail Event
-              </a> */}
+              </a>
 
             </div>
           </div>

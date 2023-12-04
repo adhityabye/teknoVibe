@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from "../../../components/Navbar";
 
 export default function ViewParticipant() {
   const labels = [
@@ -45,9 +45,8 @@ export default function ViewParticipant() {
     <div>
       <Navbar />
       <main className="flex justify-center">
-        <div className="mx-4 md:mx-10 lg:mx-20 mt-10"> {/* Adjusted margin for the table container */}
-          <h1 className="text-2xl font-bold text-center mb-6">Daftar Pendaftar</h1>
-          
+        <div className="mx-4 md:mx-10 lg:mx-20 mt-10">
+          <h1 className="text-2xl font-bold text-center mb-6 mt-10">Daftar Pendaftar</h1>
           <table className="mx-auto">
             <thead>
               <tr>
