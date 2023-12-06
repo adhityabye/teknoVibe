@@ -37,7 +37,7 @@ const WarningNotification = ({ isOpen, onClose, message }) => {
   if (!isOpen) return null;
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="absolute inset-0 bg-yellow-300 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
       <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg">
         <p className="font-bold text-yellow-800 text-2xl mb-4">Warning</p>
         <p className="bg-white p-4 rounded-md">{message}</p>
