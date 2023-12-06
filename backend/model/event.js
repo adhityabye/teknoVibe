@@ -1,3 +1,4 @@
+const { truncate } = require("fs");
 const mongoose = require("mongoose");
 
 const eventSchema = new mongoose.Schema({

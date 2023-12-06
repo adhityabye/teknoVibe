@@ -1,107 +1,128 @@
-'use client';
+"use client";
 import Navbar from "../../../components/Navbar";
-import { useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import axios from "axios";
 
 export default function EditEvent() {
-  const pathname = window.location.pathname;
-  const segoGoreng = window.location.pathname.split('/')
-  const eventId = segoGoreng[segoGoreng.length - 2]
+  const pathName = window.location.pathname.split("/");
+  const eventId = pathName[pathName.length - 2];
 
   useEffect(() => {
-    console.log('Event ID:', eventId);
+    console.log("Event ID:", eventId);
   }, [eventId]);
 
   const [formData, setFormData] = useState({
-    eventName: '',
-    closingDate: '',
-    eventDescription: '',
-    division: '',
-    termsAndConditions: '',
+    eventName: "",
+    deadlineDate: "",
+    eventDescription: "",
+    division: "",
+    tnc: "",
+    divisions: "", // State untuk divisions
   });
-
-  const [customDivision, setCustomDivision] = useState('');
-  const [showCustomDivisionInput, setShowCustomDivisionInput] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-  
-  const handleSelectChange = (e) => {
-    const value = e.target.value;
-    if (value === 'custom') {
-      setShowCustomDivisionInput(true);
-    } else {
-      setShowCustomDivisionInput(false);
-      setFormData({ ...formData, division: value });
-    }
-  };
-  
-  const handleCustomDivisionChange = (e) => {
-    setCustomDivision(e.target.value);
-  };
-  
-  const handleAddCustomDivision = () => {
-    setFormData({ ...formData, division: customDivision });
-    setShowCustomDivisionInput(false);
-  };
-  
+
+  const [toastMessage, setToastMessage] = useState(null);
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
-      const response = await axios.patch(`http://localhost:9090/edit/${eventId}`, formData);
-      console.log('Event updated:', response.data);
+      const response = await axios.patch(
+        `http://localhost:9090/edit/${eventId}`,
+        formData
+      );
+      console.log("Event updated:", response.data);
       // Handle update success, misalnya kembali ke halaman detail event
+      if (response.status === 200) {
+        setToastMessage("Event updated successfully");
+      }
     } catch (error) {
-      console.error('Error updating event:', error);
+      console.error("Error updating event:", error);
       // Handle update error, misalnya tampilkan pesan kesalahan
+      setToastMessage("Failed to update event");
     }
   };
 
-  const handleDelete = async eventId => {
-    console.log('Event ID:', eventId); // Add this line to check the value of eventId
+  const handleDelete = async (eventId) => {
+    console.log("Event ID:", eventId);
     try {
-      const response = await axios.delete(`http://localhost:9090/delete/${eventId}`);
-      console.log('Event deleted:', response.data);
-      // Handle deletion success, e.g., redirect or show a success message
+      const response = await axios.delete(
+        `http://localhost:9090/delete/${eventId}`
+      );
+      console.log("Event deleted:", response.data);
+      // Hanya menampilkan toast jika penghapusan berhasil
+      if (response.status === 200) {
+        setToastMessage("Event deleted successfully");
+        // Handle deletion success, e.g., redirect or show a success message
+      } else {
+        // Handle deletion failure
+        setToastMessage("Failed to delete event");
+      }
     } catch (error) {
-      console.error('Error deleting event:', error);
+      console.error("Error deleting event:", error);
       // Handle deletion error, e.g., show an error message
+      setToastMessage("Failed to delete event");
     }
   };
-  
+
+  useEffect(() => {
+    if (toastMessage) {
+      toast.success(toastMessage);
+      setToastMessage(null);
+    }
+  }, [toastMessage]);
+
+  const handleGoBack = () => {
+    window.history.back(); // Menggunakan fungsi dari window.history untuk kembali ke halaman sebelumnya
+  };
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <main className="flex justify-center">
         <div>
-          <h1 className="text-2xl font-bold text-center mt-20 mb-10">Edit Detail Event</h1>
+          <h1 className="text-2xl font-bold text-center mt-20 mb-10">
+            Edit Detail Event
+          </h1>
+          <ToastContainer />
           <form className="flex flex-wrap -mx-3" onSubmit={handleFormSubmit}>
+          <div className="flex justify-between w-full mb-4">
+            <button
+              onClick={handleGoBack}
+              className="text-blue-500 hover:text-blue-600 px-4 py-2 rounded"
+            >
+              Kembali
+            </button>
+            <div></div>
+          </div>
             <div className="w-full md:w-1/2 px-3 mb-5">
               <div className="flex flex-wrap -mx-3 mb-5">
                 <div className="w-full px-3 mb-5">
-                  <input 
+                  <input
                     type="text"
                     name="eventName"
                     value={formData.eventName}
                     onChange={handleInputChange}
-                    color = "#EAEAEA"
                     placeholder="Nama Event"
-                    className="p-3 bg-gray-input border border-gray-200 rounded w-full" 
+                    className="p-3 bg-gray-input border border-gray-200 rounded w-full"
                   />
                 </div>
                 <div className="w-full px-3 mb-5">
                   <input
-                    type="text"
-                    name="closingDate"
-                    value={formData.closingDate}
+                    type="date"
+                    name="deadlineDate"
+                    value={formData.deadlineDate}
                     onChange={handleInputChange}
                     placeholder="Tanggal Penutupan Pendaftaran"
-                    className="p-3 bg-gray-input border border-gray-200 rounded w-full" 
+                    className="p-3 bg-gray-input border border-gray-200 rounded w-full"
                   />
                 </div>
                 <div className="w-full px-3 mb-5">
@@ -118,41 +139,25 @@ export default function EditEvent() {
 
             <div className="w-full md:w-1/2 px-3 mb-5">
               <div className="flex flex-wrap -mx-3">
-              <div className="w-full px-3 mb-5">
-                <select
-                  name="division"
-                  value={showCustomDivisionInput ? 'custom' : formData.division}
-                  onChange={handleSelectChange}
-                  className="p-3 bg-gray-input border border-gray-200 rounded w-full"
-                >
-                  <option value="">Pilihan Divisi</option>
-                  <option value="Acara">Acara</option>
-                  <option value="Perlengkapan">Perlengkapan</option>
-                  <option value="custom">Tambah Divisi Baru</option>
-                </select>
-                {showCustomDivisionInput && (
-                  <div>
+                  <div className="w-full px-3 mb-5">
                     <input
                       type="text"
-                      value={customDivision}
-                      onChange={handleCustomDivisionChange}
-                      placeholder="Nama Divisi Baru"
-                      className="p-3 bg-gray-input border border-gray-200 rounded w-full mt-3"
+                      placeholder="Divisi1, Divisi2, Divisi3, ..."
+                      onChange={(e) =>
+                        setFormData({ ...formData, divisions: e.target.value })
+                      }
+                      value={formData.divisions}
+                      className="p-2 bg-gray-input border rounded w-full text-black border-gray-200"
                     />
-                    <button onClick={handleAddCustomDivision} className="bg-button-dark text-white py-2 px-4 rounded mt-3">
-                      Tambah
-                    </button>
                   </div>
-                )}
-              </div>
                 <div className="w-full px-3 mb-5">
                   <textarea
-                    name="termsAndConditions"
-                    value={formData.termsAndConditions}
+                    name="tnc"
+                    value={formData.tnc}
                     onChange={handleInputChange}
                     placeholder="Terms & Conditions"
                     className="p-3 bg-gray-input border border-gray-200 rounded w-full"
-                  ></textarea>  
+                  ></textarea>
                 </div>
               </div>
             </div>
@@ -172,9 +177,9 @@ export default function EditEvent() {
                 Delete
               </button>
             </div>
-          </form>     
+          </form>
         </div>
       </main>
     </div>
-  )
+  );
 }
