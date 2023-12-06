@@ -1,9 +1,10 @@
+const { truncate } = require("fs");
 const mongoose = require("mongoose");
 
 const eventSchema = new mongoose.Schema({
   eventName: { type: String, required: true },
   eventDescription: { type: String, required: true },
-  department: { type: String, required: true },
+  department: { type: String, required: false },
   eventProfileUrl: { type: String, required: false },
   date: { type: Date, required: false, default: Date.now() },
   divisions: { type: String, required: true },
