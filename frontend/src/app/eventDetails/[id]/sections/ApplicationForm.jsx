@@ -21,11 +21,28 @@ const Notification = ({ isOpen, onClose, message }) => {
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
       <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg">
         <p className="font-bold text-purple-200 text-2xl mb-4">Notice</p>
-        <p className="bg-white p-4 rounded-md">
-          Your data has been successfully inserted
-        </p>
+        <p className="bg-white p-4 rounded-md">{message}</p>
         <button
           className="mt-10 p-2 px-4 bg-purple-200 text-white rounded-2xl transition-transform duration-300 transform hover:bg-purple-900 hover:scale-110 active:scale-95"
+          onClick={onClose}
+        >
+          Okay
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const WarningNotification = ({ isOpen, onClose, message }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 bg-yellow-300 backdrop-blur-md" />
+      <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg">
+        <p className="font-bold text-yellow-800 text-2xl mb-4">Warning</p>
+        <p className="bg-white p-4 rounded-md">{message}</p>
+        <button
+          className="mt-10 p-2 px-4 bg-yellow-500 text-white rounded-2xl transition-transform duration-300 transform hover:bg-yellow-700 hover:scale-110 active:scale-95"
           onClick={onClose}
         >
           Okay
@@ -62,7 +79,9 @@ export default function ApplicationForm({ eventId }) {
   } = applicantInfo;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWarningOpen, setIsWarningOpen] = useState(false);
   const [notificationMessage, setNotificationMessage] = useState("");
+  const [warningMessage, setWarningMessage] = useState("");
 
   const handleChange = ({ target }) => {
     const { value, name } = target;
@@ -84,22 +103,31 @@ export default function ApplicationForm({ eventId }) {
       setIsModalOpen(true);
     } catch (err) {
       console.error(err);
+      // Handle error, show error message, etc.
+      setWarningMessage("An error occurred. Please try again.");
+      setIsWarningOpen(true);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Check if all fields are filled
+    const allFieldsFilled = Object.values(applicantInfo).every(
+      (value) => value !== undefined && value !== null && value !== ""
+    );
+
+    if (!allFieldsFilled) {
+      // Show a warning or handle the case where not all fields are filled
+      setWarningMessage("Please fill in all fields");
+      setIsWarningOpen(true);
+      return;
+    }
+
     applicantInfo.angkatan = parseInt(applicantInfo.angkatan);
 
     try {
-      const res = await fetch("http://localhost:9090/api/staff", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(applicantInfo),
-      });
-
-      const _data = await res.json();
-      console.log(_data);
+      await postApplicantInfo(applicantInfo);
 
       // Reset form fields
       setApplicantInfo({
@@ -115,9 +143,7 @@ export default function ApplicationForm({ eventId }) {
         eventId: eventId,
       });
 
-      // Show notification after successful submission
-      setNotificationMessage("Your data has been successfully submitted!");
-      setIsModalOpen(true);
+      // Show success notification or perform other actions
     } catch (err) {
       console.error(err);
     }
@@ -133,7 +159,6 @@ export default function ApplicationForm({ eventId }) {
           Form Pendaftaran
         </h1>
       </div>
-
       <form className="flex flex-col gap-8" onSubmit={(e) => handleSubmit(e)}>
         <div className="flex flex-row gap-8">
           <div className="flex flex-col gap-4">
@@ -246,7 +271,12 @@ export default function ApplicationForm({ eventId }) {
         <Notification
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
-          message={notificationMessage}
+          message={notificationMessage || ""}
+        />
+        <WarningNotification
+          isOpen={isWarningOpen}
+          onClose={() => setIsWarningOpen(false)}
+          message={warningMessage || ""}
         />
       </form>
     </div>
