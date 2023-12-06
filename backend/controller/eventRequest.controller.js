@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+const imageModel = require('../model/image');
 const eventModel = require('../model/event');
 const Staff = require('../model/staffModels');
 const mongoose = require('mongoose');
+const multer = require('multer');
 const secretKey = process.env.SECRET_KEY || "akAGbc72DA77!@/owmf";
 
 const searchEvent = async (req, res) => {
@@ -39,6 +41,7 @@ const searchEvent = async (req, res) => {
     }
   };
    
+
 
 const addStaff = async (req, res) => {
     try {
@@ -124,11 +127,104 @@ const getRegisteredParticipants = async (req, res) => {
     }
 };
 
+const uploadImage = async (req, res) => {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage });
+
+  const uploadImage = upload.single('image');
+
+  const {eventId} = req.params;
+  const event = await eventModel.findById(eventId);
+
+  try {
+    uploadImage(req, res, async (err) => {
+      if (err instanceof multer.MulterError) {
+        return res.status(400).json({ error: 'Multer error' });
+      } else if (err) {
+        return res.status(500).json({ error: 'Internal Server Error' });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+      }
+
+      const image = await imageModel.create({
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      });
+      const newImage = await image.save();
+
+      event.eventProfileUrl.push(newImage._id);
+      await event.save();
+
+      console.log('Image saved to MongoDB');
+      res.status(200).json({ message: 'Image uploaded and saved successfully' });
+    });
+  } catch (error) {
+    console.error('Error handling image upload:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  };
+};
+
+const getImage = async(req, res)=> {
+
+  try{
+    const {eventId} = req.params;
+
+    const event = await eventModel.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ error: 'Event not found' });
+    }
+
+    const image = await imageModel.findById({ _id: event.eventProfileUrl.toString() });
+    if (!image) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    return res.status(200).json({
+      data: image.data,
+      contentType: image.contentType,
+    });
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+const delImage = async (req, res) => {
+  try {
+      const result = await imageModel.deleteMany({});
+
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ message: 'No images found to delete' });
+      }
+  
+      return res.status(204).send();
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
+
+const getAllImage = async(req, res)=> {
+  try{
+    const images = await imageModel.find();
+    
+    console.log(images)
+    return res.status(200).json(images);
+  }catch(err){
+    console.error(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+}
+
 const addEvent = async (req, res) => {
     try{
-        const {eventName,eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId, tnc, open } = req.body;
+        const {eventName,eventDescription, department, date, divisions, deadlineDate, adminId, tnc, open } = req.body;
 
-        if (!eventName || !eventDescription || !department || !eventProfileUrl || !date || !divisions || !deadlineDate || !tnc || !adminId) {
+        if (!eventName || !eventDescription || !department || !date || !divisions || !deadlineDate || !tnc || !adminId) {
             return res.status(400).json({ message: 'All fields are required' });
         }
 
@@ -136,12 +232,12 @@ const addEvent = async (req, res) => {
         const decodedToken = jwt.verify(adminId, secretKey);
         const decodedAdminId = decodedToken.user.id;
 
-        const eventInserted = { eventName, eventDescription, department, eventProfileUrl, date, divisions, deadlineDate, adminId: decodedAdminId, tnc, open } 
+        const eventInserted = { eventName, eventDescription, department, date, divisions, deadlineDate, adminId: decodedAdminId, tnc, open } 
 
         const newEvent= await eventModel.create(eventInserted);
         await newEvent.save();
 
-        return res.status(201).json({ message: 'Event registered successfully' });
+        return res.status(201).json({ message: 'Event registered successfully', thisEventId: newEvent._id });
     }catch(error){
         console.error(error);
         
@@ -224,5 +320,9 @@ module.exports = {
     editEvent,
     deleteEvent,
     getRegisteredParticipants,
-    compareId
+    compareId,
+    uploadImage,
+    getImage,
+    delImage,
+    getAllImage
 };

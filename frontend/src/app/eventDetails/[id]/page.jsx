@@ -8,10 +8,30 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import ApplicationForm from "./sections/ApplicationForm";
 
+const LoadingIcon = () => {
+  return (
+    <div className="absolute inset-0 flex flex-col items-center justify-center">
+      <div className="mb-10 ">
+        <h1 className="text-xl text-black ">
+          Loading...
+        </h1>     
+      </div>
+      <div className="loader">
+        <div className="loader-circle loader-circle1"/>
+        <div className="loader-circle loader-circle2"/>
+        <div className="loader-circle loader-circle3"/>
+        <div className="loader-circle loader-circle4"/>
+      </div>
+    </div>
+  );
+};
+
 export default function EventDetails({ params }) {
   const [eventData, setEventData] = useState([]);
   const [divisionList, setDivisionList] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [imageData, setImageData] = useState(null);
+  const [imageContent, setImageContent] = useState(null);
 
   const monthList = {
     "01" : "Januari",
@@ -52,14 +72,36 @@ export default function EventDetails({ params }) {
             setEventData(data);
             setDivisionList(data[0]["divisions"].split(", "));
             loadAdmin(data);
+            loadImage();
         });
       }catch(err){
         window.location.href = "https://localhost:3000/404";
         console.error(err);
-      }
-    }
+      };
+    };
+
     load();
+    loadImage();
   }, []);
+
+
+  const loadImage = async () => {
+    try {
+      const currentURL = window.location.href;
+      const Id = currentURL.split('/').pop();
+
+      await fetch(`http://localhost:9090/event/${Id}/getImage`)
+      .then((response) => response.json())
+      .then((data) => {
+        setImageData(data.data.data);
+        setImageContent(data.contentType);
+        // console.log(imageData);
+        // console.log(imageContent);
+      });
+    } catch (error) {
+      console.error('Error fetching image data:', error);
+    }
+  };
 
   // Function to decide if user's an admin for the event
   const loadAdmin = (o) =>{
@@ -90,7 +132,7 @@ export default function EventDetails({ params }) {
   };
 
   return (
-    <main className="flex flex-col w-full" >
+    <main className="flex flex-col w-full">
       <Navbar/>
 
       <div className='relative w-full '>
@@ -99,21 +141,28 @@ export default function EventDetails({ params }) {
         </div>
       </div>
 
-      <div 
-        className="flex flex-col lg:flex-row bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 w-2/3 mb-40 ">
+      <div className="flex flex-col lg:flex-row bg-white outline-2 p-5 self-center outline-black shadow-2xl rounded-lg mt-36 w-2/3 mb-40 ">
         <div className="basis-5/12 flex">
           <div className="w-full mb-0 lg:mb-20">
-            <div type="card" className="relative rounded-lg m-5 bg-center" >
-              <img 
+            <div type="card" className="relative rounded-lg m-5 bg-center bg-gray-100" >
+              {
+                !imageData && (
+                  <LoadingIcon/>
+                )
+              }
+
+              {
+                imageData && (
+                <img 
                 id='base64image' 
-                src={eventData.map((e) => (e.eventProfileUrl))} 
-                alt=''
+                src={`data:${imageContent};base64,${Buffer.from(imageData).toString('base64')}`} 
+                alt="Uploaded Image"
                 className="object-cover w-full h-full rounded-lg"
-                />
+                />)
+              }
             </div>
           </div>
         </div>
-
         <div className="basis-2/3 m-5 mx-7 flex flex-col">
           <h1 className=" font-bold text-4xl">
             {eventData.map((e) => (e.eventName))}
@@ -154,14 +203,6 @@ export default function EventDetails({ params }) {
             <div className={`flex text-purple-200 justify-end self-end mt-0 lg:mt-20 ${
               isAdmin? 'block' : 'hidden'
             }`}>
-              {/*buat sementara*/}
-              {/* <a href="/viewParticipants"> 
-                Lihat Data Pendaftar
-              </a>
-              <a href="/editEvent" className="ml-14"> 
-                Edit Detail Event
-              </a> */}
-              {/* kalau page editEvent perlu diarahin ke idnya, ^atas hapus aja & vganti sama yang bawah. tinggal hapus comment :D */}
               <a href={`/eventDetails/${eventData.map((e) => (e._id)).toString()}/viewParticipants`}> 
                 Lihat Data Pendaftar
               </a>

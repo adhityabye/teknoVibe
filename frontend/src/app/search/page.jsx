@@ -1,5 +1,6 @@
 "use client";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import CircleBgSearchpg from "@/app/components/circleBgSearchpg";
 
 import React, { useState, useEffect } from "react";
@@ -8,6 +9,9 @@ export default function SearchEvent() {
   const [activeButton, setActiveButton] = useState(null);
   const [data, setData] = useState([]);
   const [searchString, setSearchString] = useState("");
+
+  const [imageData, setImageData] = useState(null);
+  const [imageContent, setImageContent] = useState(null);
 
   const departments = [
     "TEKNIK",
@@ -43,11 +47,32 @@ export default function SearchEvent() {
       .then((data) => {
         console.log(data);
         setData(data);
+        loadImage();
       });
+      
+    loadImage();
   }, [activeButton, searchString]);
 
+  const loadImage = async () => {
+    try {
+      const currentURL = window.location.href;
+      const Id = currentURL.split('/').pop();
+
+      await fetch(`http://localhost:9090/event/${Id}/getImage`)
+      .then((response) => response.json())
+      .then((data) => {
+        setImageData(data.data.data);
+        setImageContent(data.contentType);
+        // console.log(imageData);
+        // console.log(imageContent);
+      });
+    } catch (error) {
+      console.error('Error fetching image data:', error);
+    }
+  };
+
   return (
-    <div>
+    <div className="flex flex-col h-screen justify-between">
       <Navbar cari={true} />
       <CircleBgSearchpg />
       <div className="flex flex-col items-center justify-center m-10">
@@ -80,21 +105,32 @@ export default function SearchEvent() {
       </div>
 
       {/*non template cards*/}
-      <section className="searchEvent flex-wrap flex justify-center items-center mt-5">
+      <section className="searchEvent flex-wrap flex justify-center items-center mt-5 mb-24">
         <div className="grid lg:grid-cols-4 md:grid-cols-2 auto-rows-max gap-8 cursor-pointer">
           {data.map((rows) => (
             <>
               <a href={`/eventDetails/${rows._id}`} key={rows._id}>
                 <div
                   key={rows._id}
-                  className=" w-60 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 drop-shadow-[0_20px_10px_rgba(0,0,0,0.25)] hover:shadow-2xl hover:cursor-pointer"
+                  className="flex flex-col w-60 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 drop-shadow-[0_20px_10px_rgba(0,0,0,0.25)] hover:shadow-2xl hover:cursor-pointer"
                   // onClick={() =>}
                 >
-                  <img
-                    className="h-40 object-cover rounded-xl"
-                    src={rows.eventProfileUrl}
-                    alt="none"
-                  />
+                  <div className="relative h-40 w-full rounded-xl bg-gray-100">
+                  {
+                    imageData && (
+                    <img 
+                    id='base64image' 
+                    src={`data:${imageContent};base64,${Buffer.from(imageData).toString('base64')}`} 
+                    alt="Uploaded Image"
+                    className="object-cover w-full h-full rounded-lg"
+                    />)
+                  }
+                    {/* <img
+                      className="object-cover w-full h-full rounded-xl"
+                      src={rows.eventProfileUrl}
+                      alt="none"
+                    /> */}
+                  </div>
 
                   <div className="p-2">
                     <h2 className="font-bold text-[19px]">{rows.eventName}</h2>
@@ -116,6 +152,7 @@ export default function SearchEvent() {
           ))}
         </div>
       </section>
+      <Footer/>
     </div>
   );
 }

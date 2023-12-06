@@ -4,6 +4,10 @@ import React, { useState, useEffect } from "react";
 export default function Search() {
   const [data, setData] = useState([]);
 
+  const [imageData, setImageData] = useState(null);
+  const [imageContent, setImageContent] = useState(null);
+
+
   useEffect(() => {
     let url = "http://localhost:9090/search";
 
@@ -14,8 +18,29 @@ export default function Search() {
       .then((data) => {
         console.log(data);
         setData(data);
+        loadImage();
       });
+    
+    loadImage();
   }, []);
+
+  const loadImage = async () => {
+    try {
+      const currentURL = window.location.href;
+      const Id = currentURL.split('/').pop();
+
+      await fetch(`http://localhost:9090/event/${Id}/getImage`)
+      .then((response) => response.json())
+      .then((data) => {
+        setImageData(data.data.data);
+        setImageContent(data.contentType);
+        // console.log(imageData);
+        // console.log(imageContent);
+      });
+    } catch (error) {
+      console.error('Error fetching image data:', error);
+    }
+  };
 
   return (
     <main id="search">
@@ -39,11 +64,22 @@ export default function Search() {
                   key={rows._id}
                   className=" w-60 p-2 bg-white rounded-xl transform transition-all hover:-translate-y-2 duration-300 drop-shadow-[0_20px_10px_rgba(0,0,0,0.25)] hover:shadow-2xl hover:cursor-pointer"
                 >
-                  <img
-                    className="h-40 object-cover rounded-xl"
-                    src={rows.eventProfileUrl}
-                    alt="none"
-                  />
+                  <div className="relative h-40 w-full rounded-xl bg-gray-100">
+                  {
+                    imageData && (
+                    <img 
+                    id='base64image' 
+                    src={`data:${imageContent};base64,${Buffer.from(imageData).toString('base64')}`} 
+                    alt="Uploaded Image"
+                    className="object-cover w-full h-full rounded-lg"
+                    />)
+                  }
+                    {/* <img
+                      className="object-cover w-full h-full rounded-xl"
+                      src={rows.eventProfileUrl}
+                      alt="none"
+                    /> */}
+                  </div>
 
                   <div className="p-2">
                     <h2 className="font-bold text-[19px]">{rows.eventName}</h2>

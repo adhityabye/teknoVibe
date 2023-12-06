@@ -1,18 +1,38 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import wave2 from "../../../public/assets/wave2.svg";
 import pp from "../../../public/assets/profile-placeholder.svg";
 
+const LoadingIcon = ({ isOpen }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="z-10 fixed inset-0 flex flex-col items-center justify-center">
+    <div className="absolute inset-0 bg-black/30 backdrop-blur-md"/>
+      <div className="mb-10 z-20">
+        <h1 className="text-xl text-white ">
+          Loading...
+        </h1>     
+      </div>
+      <div className="loader">
+        <div className="loader-circle loader-circle1"/>
+        <div className="loader-circle loader-circle2"/>
+        <div className="loader-circle loader-circle3"/>
+        <div className="loader-circle loader-circle4"/>
+      </div>
+    </div>
+  );
+};
+
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
   
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
+    <div className="z-10 fixed inset-0 flex items-center justify-center">
       <div className="absolute inset-0 bg-black/30 backdrop-blur-md"/>
       <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg ">
         <p className='font-bold text-purple-200 text-2xl mb-4'>
@@ -33,16 +53,13 @@ const Modal = ({ isOpen, onClose, children }) => {
 export default function addEvent() {
   const [eventName, setEventName] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-  const [department, setDepartment] = useState("");
+  const [department, setDepartment] = useState("TEKNIK");
   const [eventProfileUrl, setEventProfileUrl] = useState("");
   const [date, setDate] = useState(Date.now());
   const [divisions, setDivisions] = useState("");
   const [deadlineDate, setDeadlineDate] = useState("");
   const [tnc, setTnc] = useState("");
   const [open, setOpen] = useState(true);
-
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
 
   const [errorEventName, seterrorEventName] = useState("");
   const [errorEventDescription, seterrorEventDescription] = useState("");
@@ -52,9 +69,8 @@ export default function addEvent() {
   const [errorDeadlineDate, seterrorDeadlineDate] = useState("");
   const [errorTnc, seterrorTnc] = useState("");
 
-  const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
-  const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
-  const router = useRouter();
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -104,6 +120,8 @@ export default function addEvent() {
       return;
     }
 
+    openLoading();
+
     try {
       const res = await fetch("http://localhost:9090/event/add", {
         method: "POST",
@@ -114,7 +132,6 @@ export default function addEvent() {
           eventName,
           eventDescription,
           department,
-          eventProfileUrl,
           date,
           divisions,
           deadlineDate,
@@ -129,7 +146,6 @@ export default function addEvent() {
           eventName,
           eventDescription,
           department,
-          eventProfileUrl,
           date,
           divisions,
           deadlineDate,
@@ -139,28 +155,65 @@ export default function addEvent() {
         })
       );
 
-      const { msg, success } = await res.json();
+    const { thisEventId, msg, success } = await res.json();
+    console.log(thisEventId);
+
+    const formData = new FormData();
+    formData.append('image', selectedImage);
+    console.log(formData);
+
+    try {
+      const response = await fetch(`http://localhost:9090/event/${thisEventId}/uploadImage`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (response.ok) {
+        console.log('Image uploaded successfully');
+      } else {
+        console.error('Failed to upload image');
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+
       setError(msg);
-      console.log(error);
       setSuccess(success);
 
       setEventName("");
       setEventDescription("");
-      setDepartment("");
+      setDepartment("TEKNIK");
       setEventProfileUrl("");
-      setDate("");
+      setDate(Date.now());
       setDivisions("");
       setDeadlineDate("");
       setTnc("");
-      setOpen("");
+      setOpen(true);
       setThisEventProfileUrl(pp);
 
-      setIsModalOpen(true);
+      closeLoading();
+      openModal();
     } catch (err) {
       console.error(err);
       setError(err);
       console.log(error);
     }
+  };
+
+  const [hasEventProfileUrl, setHasEventProfileUrl] = useState(false);
+  const [thisEventProfileUrl, setThisEventProfileUrl] = useState(pp);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    getBase64(e.target, (e) => {
+      setEventProfileUrl(e);
+    });
+    console.log(thisEventProfileUrl);
+    setHasEventProfileUrl(true);
+    
+    const file = e.target.files[0];
+    console.log(file);
+    setSelectedImage(file);
   };
 
   const getBase64 = (fileInput, callback) => {
@@ -175,15 +228,16 @@ export default function addEvent() {
     }
   };
 
-  const handleChangeee = (e) => {
-    getBase64(e.target, (e) => {
-      setEventProfileUrl(e);
-    });
-    console.log(thisEventProfileUrl);
-    setHasEventProfileUrl(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingOpen, setIsLoadingOpen] = useState(false);
+
+  const openLoading = () => {
+    setIsLoadingOpen(true);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const closeLoading = () => {
+    setIsLoadingOpen(false);
+  };
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -201,6 +255,7 @@ export default function addEvent() {
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <p>Your data has been succesfully inserted</p>
         </Modal>
+        <LoadingIcon isOpen={isLoadingOpen}/>
         <div className="absolute -z-10 bg-purple-200 w-screen h-[20rem] place-items-center block"/>
 
         <div className="absolute -z-10 w-screen h-screen place-items-center xl:mt-0 mt-0 py-60 xl:py-0">
@@ -220,7 +275,8 @@ export default function addEvent() {
                     className="mt-6 items-center justify-center rounded-xl border-none absolute hidden "
                     id="files"
                     accept="image/png, image/gif, image/jpeg"
-                    onChange={handleChangeee}
+                    // onChange={handleChangeee}
+                    onChange={handleImageChange}
                   />
                   <div
                     type="circle"
@@ -252,9 +308,6 @@ export default function addEvent() {
                     />
                   </div>
                 </label>
-                <p className="mt-3 text-xs ">
-                    max size: 100kb
-                </p>
               </div>
 
               <div className="basis-3/4 md:basis-2/6 ml-8 mr-">
@@ -295,7 +348,7 @@ export default function addEvent() {
               </div>
             </div>
 
-            <p className="m-3">Deskripsi Event</p>
+            <p className="m-3 mt-5">Deskripsi Event</p>
             <div className="w-full px-3  ">
               <textarea
                 type="text"

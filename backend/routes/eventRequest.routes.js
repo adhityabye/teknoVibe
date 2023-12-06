@@ -26,4 +26,16 @@ router.get('/:eventId/participants', eventRequest.getRegisteredParticipants);
 // Compare Event Admin Id and current User Id
 router.post('/compareId', eventRequest.compareId);
 
+// Upload image to database
+router.post('/:eventId/uploadImage', eventRequest.uploadImage);
+
+// Get images from the database
+router.get('/:eventId/getImage', eventRequest.getImage);
+
+// Get all images from the database - testing purposes
+router.get('/getImage', eventRequest.getAllImage);
+
+// Delete all images from the database - testing purposes
+router.delete('/delImage', eventRequest.delImage);
+
 module.exports = router;

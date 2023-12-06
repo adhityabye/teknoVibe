@@ -50,3 +50,48 @@ div[type="circle"]{
 div[type="card"]{
   aspect-ratio: 1/1.3;
 }
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  margin: 0 8px;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-75%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.loader-circle1 {
+  background-color: rgb(216 180 254);
+  animation: bounce 1s infinite;
+}
+
+.loader-circle2 {
+  background-color: rgb(168 85 247);
+  animation: bounce 1.25s infinite;
+
+}
+
+.loader-circle3 {
+  background-color: rgb(107 33 168);
+  animation: bounce 1.5s infinite;
+}
+
+.loader-circle4 {
+  background-color: rgb(59 7 100);
+  animation: bounce 1.75s infinite;
+}
