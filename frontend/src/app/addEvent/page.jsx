@@ -10,17 +10,15 @@ import pp from "../../../public/assets/profile-placeholder.svg";
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
-  
+
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-md"/>
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
       <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg ">
-        <p className='font-bold text-purple-200 text-2xl mb-4'>
-          Notice  
-        </p>
+        <p className="font-bold text-purple-200 text-2xl mb-4">Notice</p>
         {children}
-        <button 
-          className="mt-10 p-2 px-4 bg-purple-200 text-white rounded-2xl transition-transform duration-300 transform hover:bg-purple-900 hover:scale-110 active:scale-95" 
+        <button
+          className="mt-10 p-2 px-4 bg-purple-200 text-white rounded-2xl transition-transform duration-300 transform hover:bg-purple-900 hover:scale-110 active:scale-95"
           onClick={onClose}
         >
           Okay
@@ -195,16 +193,16 @@ export default function addEvent() {
 
   return (
     <main className="flex flex-col justify-between w-full">
-      <Navbar ajukan="true"/>
+      <Navbar ajukan="true" />
 
       <div className="relative w-full">
         <Modal isOpen={isModalOpen} onClose={closeModal}>
           <p>Your data has been succesfully inserted</p>
         </Modal>
-        <div className="absolute -z-10 bg-purple-200 w-screen h-[20rem] place-items-center block"/>
+        <div className="absolute -z-10 bg-purple-200 w-screen h-[20rem] place-items-center block" />
 
         <div className="absolute -z-10 w-screen h-screen place-items-center xl:mt-0 mt-0 py-60 xl:py-0">
-          <Image src={wave2} alt="" className="w-screen items-center"/>
+          <Image src={wave2} alt="" className="w-screen items-center" />
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -212,9 +210,11 @@ export default function addEvent() {
             <h1 className="font-bold text-4xl py-10">About Your Event!</h1>
 
             <div className="flex flex-row items-center">
-
               <div className="grid w-3/12 lg:w-2/12 mx-3 mt-3">
-                <label className="hover:cursor-pointer rounded-full w-full" htmlFor="files">
+                <label
+                  className="hover:cursor-pointer rounded-full w-full"
+                  htmlFor="files"
+                >
                   <input
                     type="file"
                     className="mt-6 items-center justify-center rounded-xl border-none absolute hidden "
@@ -225,9 +225,7 @@ export default function addEvent() {
                   <div
                     type="circle"
                     className={`-z-10 relative w-full hover:cursor-pointer rounded-full ${
-                      errorEventProfileUrl
-                        ? "p-0.5 bg-red-600"
-                        : "p-0 bg-white"
+                      errorEventProfileUrl ? "p-0.5 bg-red-600" : "p-0 bg-white"
                     }`}
                   >
                     <Image
@@ -252,9 +250,7 @@ export default function addEvent() {
                     />
                   </div>
                 </label>
-                <p className="mt-3 text-xs ">
-                    max size: 100kb
-                </p>
+                <p className="mt-3 text-xs ">max size: 100kb</p>
               </div>
 
               <div className="basis-3/4 md:basis-2/6 ml-8 mr-">
@@ -267,7 +263,9 @@ export default function addEvent() {
                     onChange={(e) => setEventName(e.target.value)}
                     value={eventName}
                     className={`p-2 bg-gray-input border rounded w-full text-black ${
-                      errorEventName ? "border-red-600 border-2" : "border-gray-200"
+                      errorEventName
+                        ? "border-red-600 border-2"
+                        : "border-gray-200"
                     }`}
                   />
                 </div>
@@ -278,7 +276,9 @@ export default function addEvent() {
                     onChange={(e) => setDepartment(e.target.value)}
                     value={department}
                     className={`p-2 bg-gray-input border rounded w-full text-black cursor-pointer ${
-                      errorDepartment ? "border-red-600 border-2" : "border-gray-200"
+                      errorDepartment
+                        ? "border-red-600 border-2"
+                        : "border-gray-200"
                     } `}
                   >
                     <option>TEKNIK</option>
@@ -303,13 +303,14 @@ export default function addEvent() {
                 onChange={(e) => setEventDescription(e.target.value)}
                 value={eventDescription}
                 className={`p-2 bg-gray-input border rounded w-full text-black h-40 ${
-                  errorEventDescription ? "border-red-600 border-2" : "border-gray-200"
+                  errorEventDescription
+                    ? "border-red-600 border-2"
+                    : "border-gray-200"
                 }`}
               />
             </div>
 
             <div className="w-full mt-60 mb-20 text-black">
-
               <h1 className="font-bold text-4xl">
                 About Your Open Recruitment!
               </h1>
@@ -323,7 +324,9 @@ export default function addEvent() {
                     onChange={(e) => setDeadlineDate(e.target.value)}
                     value={deadlineDate}
                     className={`p-2 bg-gray-input border rounded w-2/3 text-black hover:cursor-pointer ${
-                      errorDeadlineDate ? "border-red-600 border-2" : "border-gray-200"
+                      errorDeadlineDate
+                        ? "border-red-600 border-2"
+                        : "border-gray-200"
                     }`}
                     placeholder="hello"
                   />
@@ -340,7 +343,9 @@ export default function addEvent() {
                     onChange={(e) => setDivisions(e.target.value)}
                     value={divisions}
                     className={`p-2 bg-gray-input border rounded w-full text-black ${
-                      errorDivisions ? "border-red-600 border-2" : "border-gray-200"
+                      errorDivisions
+                        ? "border-red-600 border-2"
+                        : "border-gray-200"
                     }`}
                   />
                 </div>
@@ -360,24 +365,21 @@ export default function addEvent() {
               </div>
 
               <div className="flex flex-col w-full mb-10 mt-5 justify-end items-end">
-                {
-                  error && (
-                    <p className={"text-red-600 text-lb mb-2"}>
-                      {error.toString()}
-                    </p>
-                  )
-                }
+                {error && (
+                  <p className={"text-red-600 text-lb mb-2"}>
+                    {error.toString()}
+                  </p>
+                )}
 
                 <button className="bg-button-dark text-white py-2 px-4 rounded hover:bg-purple-200 transition-transform duration-300 transform hover:scale-110 active:scale-95">
                   Ajukan Event
                 </button>
-
               </div>
             </div>
           </div>
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </main>
   );
 }

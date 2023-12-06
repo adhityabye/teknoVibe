@@ -18,10 +18,12 @@ const Notification = ({ isOpen, onClose, message }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="absolute inset-0 bg-white bg-opacity-100 backdrop-blur-md" />
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-md" />
       <div className="flex flex-col shadow-2xl bg-white p-5 px-10 z-10 place-items-center rounded-lg">
         <p className="font-bold text-purple-200 text-2xl mb-4">Notice</p>
-        <p>Your data has been successfully inserted</p>
+        <p className="bg-white p-4 rounded-md">
+          Your data has been successfully inserted
+        </p>
         <button
           className="mt-10 p-2 px-4 bg-purple-200 text-white rounded-2xl transition-transform duration-300 transform hover:bg-purple-900 hover:scale-110 active:scale-95"
           onClick={onClose}
@@ -122,17 +124,16 @@ export default function ApplicationForm({ eventId }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen gap-8">
+    <div
+      className="flex flex-col items-center justify-start h-screen gap-8"
+      style={{ width: "80%", margin: "auto" }}
+    >
       <div className="text-center mb-8">
         <h1 className="text-black-900 text-4xl font-semibold">
           Form Pendaftaran
         </h1>
       </div>
-      <Notification
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        message={notificationMessage}
-      />
+
       <form className="flex flex-col gap-8" onSubmit={(e) => handleSubmit(e)}>
         <div className="flex flex-row gap-8">
           <div className="flex flex-col gap-4">
@@ -242,6 +243,11 @@ export default function ApplicationForm({ eventId }) {
         <div className="text-center">
           <Button title={"Kirim"} />
         </div>
+        <Notification
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          message={notificationMessage}
+        />
       </form>
     </div>
   );
