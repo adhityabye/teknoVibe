@@ -14,7 +14,7 @@
 | [Pranawa Dinanta Adhyarta Putra](https://github.com/Nantapranawa)   | 21/482959/TK/53395 |
 
 ### 🖇️Link
-- **Deploy Website:** 
+- **Website:** https://tekno-vibe-fe.vercel.app/
 - **Video Presentasi:**
 - **PPT Final Project:** https://bit.ly/PPT-Final-Project-Kelompok-5
 - **PPT Backend:** https://bit.ly/PPTBackend
@@ -22,65 +22,65 @@
 
 ### 🌐Endpoints
 
-1.  Login Pengguna <br>
+1.  Daftar akun <br>
     Pengguna dapat mendaftarkan akun baru. <br>
     Endpoint: <br>
     ````````````
     POST /user/register
     ````````````
-2.  Menambahkan Event <br>
-    Pengguna login pada akun. <br>
-    Endpoint: <br>
-    ````````````
-    POST /event/add
-    ````````````
-3.  Mendaftar Event <br>
-    Pengguna mendaftar pada event tertentu. <br>
-    Endpoint: <br>
-    ````````````
-    POST /api/staff
-    ````````````
-4.  Mencari Event <br>
-    Pengguna dapat mencari nama event tertentu. <br>
-    Endpoint: <br>
-    ````````````
-    GET /search
-    ````````````
-5.  Menghapus Event <br>
-    Pembuat event dapat menghapus event. <br>
-    Endpoint: <br>
-    ````````````
-    DELETE /delete/:eventId
-    ````````````
-6.  Edit Data Event <br>
-    Pembuat event dapat mengubah informasi event. <br>
-    Endpoint: <br>
-    ````````````
-    PATCH /edit/:editId
-    ````````````
-7.  Melihat Pendaftar <br>
-    Pembuat event dapat melihat informasi pendaftar event. <br>
-    Endpoint: <br>
-    ````````````
-    GET /event/:eventId/participants
-    ````````````
-8.  Masuk Akun <br>
+2.  Masuk Akun <br>
     Pengguna dapat masuk ke dalam akun yang sebelumnya telah dibuat. <br>
     Endpoint: <br>
     ````````````
     POST /user/login
     ````````````
-9.  Menghapus Akun <br>
+3.  Menghapus Akun <br>
     Pengguna dapat menghapus akun yang sebelumnya dibuat. <br>
     Endpoint: <br>
     ````````````
-    DELETE /user/:id
+    DELETE /user/users/:id
     ````````````
-10. Update Akun <br>
+4.  Update Akun <br>
     Pengguna dapat memperbarui data diri dari akunnya. <br>
     Endpoint: <br>
     ````````````
     PUT /user/users/:id
+    ````````````
+5.  Menambahkan Event <br>
+    Pengguna dapat mengajukan atau membuat event. <br>
+    Endpoint: <br>
+    ````````````
+    POST /event/add
+    ````````````
+6.  Mendaftar Event <br>
+    Pengguna mendaftar pada event tertentu. <br>
+    Endpoint: <br>
+    ````````````
+    POST /api/staff
+    ````````````
+7.  Mencari Event <br>
+    Pengguna dapat mencari nama event tertentu. <br>
+    Endpoint: <br>
+    ````````````
+    GET /search
+    ````````````
+8.  Menghapus Event <br>
+    Pembuat event dapat menghapus event. <br>
+    Endpoint: <br>
+    ````````````
+    DELETE /delete/:eventId
+    ````````````
+9.  Edit Data Event <br>
+    Pembuat event dapat mengubah informasi event. <br>
+    Endpoint: <br>
+    ````````````
+    PATCH /edit/:editId
+    ````````````
+10.  Melihat Pendaftar <br>
+    Pembuat event dapat melihat informasi pendaftar event. <br>
+    Endpoint: <br>
+    ````````````
+    GET /event/:eventId/participants
     ````````````
 11. Upload Gambar <br>
     Pengguna dapat mengupload gambar untuk eventnya. <br>
