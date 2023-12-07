@@ -28,9 +28,9 @@ const LoadingIcon = () => {
 
 export default function EventDetails({ params }) {
   const [eventData, setEventData] = useState([]);
+  const [imageData, setImageData] = useState(null);
   const [divisionList, setDivisionList] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [imageData, setImageData] = useState(null);
 
   const monthList = {
     "01" : "Januari",
@@ -74,7 +74,6 @@ export default function EventDetails({ params }) {
             loadImage();
         });
       }catch(err){
-        // window.location.href = "https://localhost:3000/404";
         console.error(err);
       };
     };
@@ -90,9 +89,8 @@ export default function EventDetails({ params }) {
 
       await fetch(`https://tekno-vibe-be.vercel.app/event/${Id}/getImage`)
       .then((response) => response.json())
-      .then(imageData => {
-        newData[i].image = imageData.data;
-        setImageData(newData);
+      .then(thisData => {
+        setImageData(thisData.data);
       });
     } catch (error) {
       console.error('Error fetching image data:', error);
@@ -135,7 +133,7 @@ export default function EventDetails({ params }) {
                 imageData && (
                 <img 
                 id='base64image' 
-                src={imageData.image} 
+                src={imageData} 
                 alt="Uploaded Image"
                 className="object-cover w-full h-full rounded-lg"
                 />)
