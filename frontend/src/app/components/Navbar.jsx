@@ -12,7 +12,7 @@ export default function Navbar({ cari, ajukan }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState({});
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -25,7 +25,7 @@ export default function Navbar({ cari, ajukan }) {
       router.refresh();
       router.push("/");
     } else {
-      setUser(JSON.parse(localStorage.getItem("user") || "{}"));
+      setUser(localStorage.getItem("user") || "{}");
     }
 
     const checkToken = () => {
@@ -48,29 +48,29 @@ export default function Navbar({ cari, ajukan }) {
   };
 
   return (
-    <nav className="min-w-full fixed top-0 z-40 bg-purple-200 border-gray-200 h-16">
-      <div className="max-w-[1150px] 2xl:max-w-[1200px] h-full flex flex-wrap items-center justify-between mx-auto px-6 sm:px-10">
+    <nav className="min-w-full fixed top-0 z-40 bg-purple-200 border-gray-200 h-14 md:h-16">
+      <div className="max-w-[1150px] 2xl:max-w-[1200px] h-full flex flex-wrap items-center justify-between mx-auto px-4 sm:px-10">
         <div>
-          <Link className="flex items-center gap-3 md:gap-4" href="/">
+          <Link className="flex items-center gap-2 md:gap-3" href="/">
             <Image
               src={Logo}
-              className="w-8 sm:w-10 md:w-11"
+              className="w-[30px] sm:w-9 md:w-11"
               alt="TeknoVibe Logo"
             />
-            <span className="text-xl md:text-[22px] lg:text-2xl font-bold text-white-100">
+            <span className="text-[16px] sm:text-xl md:text-[22px] lg:text-2xl font-bold text-white-100">
               TeknoVibe
             </span>
           </Link>
         </div>
-        <div className="relative flex md:order-2">
+        <div className="relative flex items-center md:order-2">
           {isLoggedIn ? (
             <div className="relative w-full">
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
                 className="flex space-x-2 text-white-100 focus:outline-none font-medium py-2"
               >
-                <HiUser className="w-6 h-6" />
-                <span className="ml-2">Akun</span>
+                <HiUser className="w-5 h-5 sm:w-6 sm:h-6" />
+                <span className="ml-2 text-[14px] sm:text-[16px]">Akun</span>
               </button>
               {showDropdown && (
                 <div
@@ -79,7 +79,7 @@ export default function Navbar({ cari, ajukan }) {
                 >
                   <button
                     onClick={() => {
-                      router.push("/profile/" + user._id);
+                      router.push("/profile/");
                       setShowDropdown(false);
                     }}
                     className="w-full px-2 py-1.5 hover:bg-[#8B7EFF] text-white-100 rounded-md text-left"
@@ -102,7 +102,7 @@ export default function Navbar({ cari, ajukan }) {
             <Link href="/auth/signin">
               <button
                 type="button"
-                className="text-black bg-white-100 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center hover:bg-button-dark hover:text-white"
+                className="text-black text-[14px] sm:text-[14px] bg-white-100 md:focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg px-3 sm:px-4 py-1 md:py-2 text-center hover:bg-button-dark hover:text-white"
               >
                 Masuk
               </button>
@@ -111,7 +111,7 @@ export default function Navbar({ cari, ajukan }) {
           <button
             data-collapse-toggle="navbar-cta"
             type="button"
-            className="inline-flex items-center ml-3 lg:ml-0 p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center ml-3 lg:ml-0 p-2 w-9 sm:w-10 h-9 sm:h-10 justify-center text-sm rounded-lg lg:hidden hover:bg-purple-900 focus:outline-none focus:ring-0"
             aria-controls="navbar-cta"
             aria-expanded="false"
             onClick={toggleMenu}
@@ -134,7 +134,7 @@ export default function Navbar({ cari, ajukan }) {
             </svg>
           </button>
           {isOpen && (
-            <div className="text-sm absolute bg-white mt-16 w-32 rounded-lg px-1.5 lg:hidden flex flex-col items-center shadow-xl">
+            <div className="text-sm absolute bg-white mt-[310px] w-32 rounded-lg px-1.5 lg:hidden flex flex-col items-center shadow-xl">
               <div className="flex my-1.5 flex-col items-center w-full hover:bg-gray-100 rounded-lg">
                 <a href="/" className="block text-black py-2">
                   Home
