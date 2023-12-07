@@ -68,12 +68,13 @@ export default function addEvent() {
   const [errorTnc, seterrorTnc] = useState("");
 
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState("");
   const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const adminId = localStorage.getItem("user").slice(1, -1);
+    const adminId = JSON.parse(localStorage.getItem("user"))._id;
     console.log(adminId);
 
     let hasError = false;
@@ -136,8 +137,8 @@ export default function addEvent() {
           tnc,
           adminId,
           open,
-        }),
-      });
+      }),
+    });
 
       console.log(
         JSON.stringify({
@@ -172,9 +173,11 @@ export default function addEvent() {
         console.error('Failed to upload image');
       }
     } catch (error) {
+      setImageError('true');
       console.error('Error uploading image:', error);
     }
 
+    if(!imageError){
       setError(msg);
       setSuccess(success);
 
@@ -188,9 +191,11 @@ export default function addEvent() {
       setTnc("");
       setOpen(true);
       setThisEventProfileUrl(pp);
+      setImageError("");
 
-      closeLoading();
       openModal();
+    }
+    closeLoading();
     } catch (err) {
       console.error(err);
       setError(err);

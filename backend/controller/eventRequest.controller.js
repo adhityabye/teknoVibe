@@ -212,7 +212,7 @@ const getAllImage = async(req, res)=> {
   try{
     const images = await imageModel.find();
     
-    console.log(images)
+    // console.log(images)
     return res.status(200).json(images);
   }catch(err){
     console.error(err);
@@ -229,10 +229,10 @@ const addEvent = async (req, res) => {
         }
 
         // Access the user ID from token
-        const decodedToken = jwt.verify(adminId, secretKey);
-        const decodedAdminId = decodedToken.user.id;
+        // const decodedToken = jwt.verify(adminId, secretKey);
+        // const decodedAdminId = decodedToken.user.id;
 
-        const eventInserted = { eventName, eventDescription, department, date, divisions, deadlineDate, adminId: decodedAdminId, tnc, open } 
+        const eventInserted = { eventName, eventDescription, department, date, divisions, deadlineDate, adminId, tnc, open } 
 
         const newEvent= await eventModel.create(eventInserted);
         await newEvent.save();

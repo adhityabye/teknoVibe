@@ -75,7 +75,7 @@ export default function EventDetails({ params }) {
             loadImage();
         });
       }catch(err){
-        window.location.href = "https://localhost:3000/404";
+        // window.location.href = "https://localhost:3000/404";
         console.error(err);
       };
     };
@@ -106,29 +106,14 @@ export default function EventDetails({ params }) {
   // Function to decide if user's an admin for the event
   const loadAdmin = (o) =>{
     const AdminId = o.map((e) => (e.adminId)).toString();
-    const token = localStorage.getItem("user").slice(1, -1);
-    
-    // Fetch to API using POST
-    fetch("http://localhost:9090/event/compareId", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        token,
-        AdminId
-      }),
-    })
-    .then(response => response.json())
-    .then((response) => {
-      // Decide whether user's an admin or not
-      if(response.isAdmin == true){
-        setIsAdmin(true);
-      }
-    })
-    .catch(error => {
-      console.error("couldn't get admin: ", error);
-    });
+    const UserId = JSON.parse(localStorage.getItem("user"))._id;
+
+    // Decide whether user's an admin or not
+    if(UserId == AdminId){
+      setIsAdmin(true);
+    }else{
+      setIsAdmin(false);
+    }
   };
 
   return (
