@@ -167,7 +167,6 @@ const uploadImage = async (req, res) => {
 };
 
 const getImage = async(req, res)=> {
-
   try{
     const {eventId} = req.params;
 
@@ -181,39 +180,13 @@ const getImage = async(req, res)=> {
       return res.status(404).json({ error: 'Image not found' });
     }
 
-    return res.status(200).json({
-      data: image.data,
-      contentType: image.contentType,
-    });
-  }catch(err){
-    console.error(err);
-    return res.status(500).json({ message: 'Internal server error' });
-  }
-}
-
-
-const delImage = async (req, res) => {
-  try {
-      const result = await imageModel.deleteMany({});
-
-      if (result.deletedCount === 0) {
-        return res.status(404).json({ message: 'No images found to delete' });
-      }
+	const data = image.data;
+	const dataBuffer = new Buffer.from(data).toString('base64');
+	const type = image.contentType;
   
-      return res.status(204).send();
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
-  }
-}
+	const result = `data:${type};base64,${dataBuffer}`;
 
-
-const getAllImage = async(req, res)=> {
-  try{
-    const images = await imageModel.find();
-    
-    // console.log(images)
-    return res.status(200).json(images);
+    return res.status(200).json({ data : result });
   }catch(err){
     console.error(err);
     return res.status(500).json({ message: 'Internal server error' });
@@ -227,10 +200,6 @@ const addEvent = async (req, res) => {
         if (!eventName || !eventDescription || !department || !date || !divisions || !deadlineDate || !tnc || !adminId) {
             return res.status(400).json({ message: 'All fields are required' });
         }
-
-        // Access the user ID from token
-        // const decodedToken = jwt.verify(adminId, secretKey);
-        // const decodedAdminId = decodedToken.user.id;
 
         const eventInserted = { eventName, eventDescription, department, date, divisions, deadlineDate, adminId, tnc, open } 
 
@@ -323,6 +292,4 @@ module.exports = {
     compareId,
     uploadImage,
     getImage,
-    delImage,
-    getAllImage
 };
