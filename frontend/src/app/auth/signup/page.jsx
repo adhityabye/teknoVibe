@@ -82,16 +82,19 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post("https://tekno-vibe-be.vercel.app/user/register", {
-        name,
-        email,
-        password,
-      });
-
-      if (response.status === 200) {
+      const response = await axios.post(
+        "https://tekno-vibe-be.vercel.app/user/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
+      console.log(response.data);
+      if (response.status === 201) {
         alert("Sign up berhasil");
         router.push("/auth/signin");
-      } 
+      }
     } catch (error) {
       alert("Sign up gagal, email sudah digunakan");
       console.log("Registration account error: ", error);
