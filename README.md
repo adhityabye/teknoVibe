@@ -15,7 +15,7 @@
 
 ### 🖇️Link
 - **Website:** https://tekno-vibe-fe.vercel.app/
-- **Video Presentasi:**
+- **Video Presentasi:** https://bit.ly/RecordingTeknoVibe
 - **PPT Final Project:** https://bit.ly/PPT-Final-Project-Kelompok-5
 - **PPT Backend:** https://bit.ly/PPTBackend
 - **Video Presentasi Backend:** https://bit.ly/PresentasiTeknoVibeAPI
