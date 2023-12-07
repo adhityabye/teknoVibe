@@ -20,7 +20,7 @@
 - **PPT Backend:** https://bit.ly/PPTBackend
 - **Video Presentasi Backend:** https://bit.ly/PresentasiTeknoVibeAPI
 
-### 🌐Endpoints
+### 🌐API Endpoints
 
 1.  Daftar akun <br>
     Pengguna dapat mendaftarkan akun baru. <br>
@@ -76,7 +76,7 @@
     ````````````
     PATCH /edit/:editId
     ````````````
-10.  Melihat Pendaftar <br>
+10. Melihat Pendaftar <br>
     Pembuat event dapat melihat informasi pendaftar event. <br>
     Endpoint: <br>
     ````````````
@@ -100,6 +100,7 @@
 - Express.js
 - Tailwind CSS
 - MongoDB
+- Node.js
 
 
 <h2 align="left">🌃Getting Started</h2>
