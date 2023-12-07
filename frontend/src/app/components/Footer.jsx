@@ -17,10 +17,10 @@ export default function Footer() {
           </Link>
           <p className="text-white">
             Platform yang mengintegrasikan seluruh informasi event mahasiswa di
-            lingkungan Fakultas Teknik UGM
+            lingkungan Fakultas Teknik UGM.
           </p>
           <p className="text-white">
-            Mulai exkplorasi kegiatanmu dengan lebih mudah
+            Mulai eksplorasi event menarik dengan lebih mudah!
           </p>
           <div className="flex items-center mt-5 space-x-3">
             <p className="text-white">
