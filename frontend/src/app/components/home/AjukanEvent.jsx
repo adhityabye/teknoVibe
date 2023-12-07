@@ -20,6 +20,16 @@ export default function AjukanEvent() {
         </div>
 
         <div className="flex flex-wrap mt-2 w-3/4 mb-8 items-center justify-center">
+
+        <div className="flex flex-col w-60 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
+            <div className='h-3/6 mb-3 mt-3 '>
+              <Image src={illust2} alt='' className='h-full w-auto'/>
+            </div>
+            <div className='h-1/6 text-sm sm:text-md'>
+              Reach out to more applicants
+            </div>
+            <div className='rounded-xl bg-purple-200 h-1/6 w-11/12 m-3 '/>
+          </div>
       
           <div className="flex flex-col w-60 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
             <div className='h-3/6 mb-3 mt-3 '>
@@ -27,16 +37,6 @@ export default function AjukanEvent() {
             </div>
             <div className='h-1/6 text-sm sm:text-md'>
               Get benefits for you
-            </div>
-            <div className='rounded-xl bg-purple-200 h-1/6 w-11/12 m-3 '/>
-          </div>
-
-          <div className="flex flex-col w-60 border-2 bg-white outline-2 outline-black rounded-xl h-40 items-center justify-center m-3">
-            <div className='h-3/6 mb-3 mt-3 '>
-              <Image src={illust2} alt='' className='h-full w-auto'/>
-            </div>
-            <div className='h-1/6 text-sm sm:text-md'>
-              Reach out to more applicants
             </div>
             <div className='rounded-xl bg-purple-200 h-1/6 w-11/12 m-3 '/>
           </div>
