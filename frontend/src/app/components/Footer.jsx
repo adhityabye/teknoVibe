@@ -1,7 +1,8 @@
 "use client";
 
 import Logo from "../../../public/assets/logo-white.svg";
-import { GithubIcon } from "react-icons/hi2";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -26,15 +27,15 @@ export default function Footer() {
               <strong>Support Us:</strong>
             </p>
             <div className="flex items-center gap-2 m-6">
-              <a
+              <Link
                 href="https://github.com/adhityabye/teknoVibe"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2"
               >
-                <GithubIcon className="w-8" />
+                <FontAwesomeIcon icon={faGithub} className="w-8" />
                 <span className="text-sm text-white-100">TeknoVibe</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
