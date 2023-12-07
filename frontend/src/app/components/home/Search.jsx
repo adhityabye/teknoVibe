@@ -56,7 +56,7 @@ export default function Search() {
       </div>
 
       <section className="searchEvent flex-wrap flex justify-center items-center mt-5">
-        <div className="grid grid-cols-4 md:grid-cols-4 grid-rows-2 gap-8 mx-24 cursor-pointer">
+        <div className="grid lg:grid-cols-4 md:grid-cols-2 auto-rows-max gap-8 cursor-pointer">
           {data.slice(0, 8).map((rows) => (
             <>
               <a href={`/eventDetails/${rows._id}`} key={rows._id}>
