@@ -79,12 +79,12 @@ const loginUser = async (req, res) => {
       return res.status(400).json({ message: "Password does not match" });
     }
 
-    // create JWT token
-    const token = jwt.sign({ user: { id: user._id } }, secretKey, {
-      expiresIn: "24h",
-    });
-    
-    return res.status(200).json({ message: "Login successful", token });
+    return res
+      .status(200)
+      .json({
+        message: "Login successful",
+        user: { _id: user._id, name: user.name, email: user.email },
+      });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Internal server error" });
