@@ -64,9 +64,8 @@
     ````````````
     GET /event/:eventId/participants
     ````````````
-
 8.  Masuk Akun <br>
-    Pengguna dapat masuk ke dalam aku yang sebelumnya telah dibuat. <br>
+    Pengguna dapat masuk ke dalam akun yang sebelumnya telah dibuat. <br>
     Endpoint: <br>
     ````````````
     POST /user/login
@@ -82,6 +81,18 @@
     Endpoint: <br>
     ````````````
     PUT /user/users/:id
+    ````````````
+11. Upload Gambar <br>
+    Pengguna dapat mengupload gambar untuk eventnya. <br>
+    Endpoint: <br>
+    ````````````
+    PUT /event/:eventId/uploadImage
+    ````````````
+12. Mengambil Gambar <br>
+    Pengguna dapat mengambil gambar berdasarkan id event. <br>
+    Endpoint: <br>
+    ````````````
+    GET /event/:eventId/getImage
     ````````````
 
 ### ⚙️Tech Stack
