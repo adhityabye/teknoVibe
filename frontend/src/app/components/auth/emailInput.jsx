@@ -17,7 +17,7 @@ export default function EmailInput({ emailError, handleEmailChange }) {
           onChange={handleEmailChange}
         />
         <label
-          className="absolute appearance-none text-base font-medium text-black-900 pt-2 left-0 duration-200 transform -translate-y-6 scale-[0.8] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:left-8 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-gray-500 peer-focus:text-black-900 peer-focus:scale-[0.8] peer-focus:-translate-y-6"
+          className="absolute appearance-none text-base font-medium text-black-900 pt-2 left-0 duration-200 transform -translate-y-6 scale-[0.8] origin-[0] peer-placeholder-shown:scale-100 peer-placeholder-shown:left-8 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:text-neutral-500 peer-focus:text-black-900 peer-focus:scale-[0.8] peer-focus:-translate-y-6"
           htmlFor="email"
         >
           Email
