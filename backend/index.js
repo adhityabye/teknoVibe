@@ -6,7 +6,7 @@ const { connectDB } = require('./config/dbConnect');
 
 // Configure CORS (Cross-Origin Resource Sharing) settings
 const corsOptions ={
-  origin:'https://tekno-vibe-fe.vercel.app/', 
+  origin:'https://tekno-vibe-fe.vercel.app', 
   credentials:true,            
   optionSuccessStatus:200
 }
