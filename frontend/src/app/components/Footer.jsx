@@ -1,7 +1,7 @@
 'use client';
 
 import Logo from "../../../public/assets/logo-white.svg";
-import Github from "../../../public/assets/github.svg";
+import Github from "../../../public/assets/Github.svg";
 import Link from "next/link";
 import Image from "next/image";
 
