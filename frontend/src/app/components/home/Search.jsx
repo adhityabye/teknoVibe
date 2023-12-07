@@ -9,7 +9,7 @@ export default function Search() {
 
 
   useEffect(() => {
-    let url = "http://localhost:9090/search";
+    let url = "https://tekno-vibe-be.vercel.app/search";
 
     console.log(url);
 
@@ -29,7 +29,7 @@ export default function Search() {
       const currentURL = window.location.href;
       const Id = currentURL.split('/').pop();
 
-      await fetch(`http://localhost:9090/event/${Id}/getImage`)
+      await fetch(`https://tekno-vibe-be.vercel.app/event/${Id}/getImage`)
       .then((response) => response.json())
       .then((data) => {
         setImageData(data.data.data);

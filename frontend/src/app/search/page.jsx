@@ -49,7 +49,7 @@ export default function SearchEvent() {
   };
 
   useEffect(() => {
-    let url = "http://localhost:9090/search";
+    let url = "https://tekno-vibe-be.vercel.app/search";
 
     const params = new URLSearchParams();
     if (searchString !== "") params.append("name", searchString);
@@ -79,7 +79,7 @@ export default function SearchEvent() {
       let len = data.length;
 
       // try {
-        fetch(`http://localhost:9090/event/${each._id}/getImage`)
+        fetch(`https://tekno-vibe-be.vercel.app/event/${each._id}/getImage`)
         .then((response) => response.json())
         .then((o) => {
 

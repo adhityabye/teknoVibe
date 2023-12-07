@@ -36,7 +36,7 @@ export default function EditEvent() {
 
     try {
       const response = await axios.patch(
-        `http://localhost:9090/edit/${eventId}`,
+        `https://tekno-vibe-be.vercel.app/edit/${eventId}`,
         formData
       );
       console.log("Event updated:", response.data);
@@ -55,7 +55,7 @@ export default function EditEvent() {
     console.log("Event ID:", eventId);
     try {
       const response = await axios.delete(
-        `http://localhost:9090/delete/${eventId}`
+        `https://tekno-vibe-be.vercel.app/delete/${eventId}`
       );
       console.log("Event deleted:", response.data);
       // Hanya menampilkan toast jika penghapusan berhasil

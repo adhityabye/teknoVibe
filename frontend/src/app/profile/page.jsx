@@ -47,7 +47,7 @@ export default function Profile() {
       }
 
       const response = await axios.delete(
-        `http://localhost:9090/user/users/${user._id}`
+        `https://tekno-vibe-be.vercel.app/user/users/${user._id}`
       );
 
       if (response.status === 200) {
@@ -78,9 +78,9 @@ export default function Profile() {
     }
 
     try {
-      console.log(`http://localhost:9090/user/users/${user._id}`);
+      console.log(`https://tekno-vibe-be.vercel.app/user/users/${user._id}`);
       const response = await axios.put(
-        `http://localhost:9090/user/users/${user._id}`,
+        `https://tekno-vibe-be.vercel.app/user/users/${user._id}`,
         {
           name: userData.name,
           email: userData.email,

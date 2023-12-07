@@ -31,7 +31,7 @@ export default function ViewParticipant() {
     const fetchParticipants = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:9090/event/${eventId}/participants`
+          `https://tekno-vibe-be.vercel.app/event/${eventId}/participants`
         );
         if (Array.isArray(response.data.participants)) {
           console.log(response.data.participants);

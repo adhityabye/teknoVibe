@@ -50,7 +50,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9090/user/login", {
+      const response = await axios.post("https://tekno-vibe-be.vercel.app/user/login", {
         email,
         password,
       });

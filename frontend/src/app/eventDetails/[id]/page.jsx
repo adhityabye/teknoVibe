@@ -57,7 +57,7 @@ export default function EventDetails({ params }) {
         const Id = currentURL.split('/').pop();
 
         // Create url to access API
-        let url = "http://localhost:9090/search";
+        let url = "https://tekno-vibe-be.vercel.app/search";
         const param = new URLSearchParams();
         param.append("id", Id);
         url = url + "?" + param.toString();
@@ -90,7 +90,7 @@ export default function EventDetails({ params }) {
       const currentURL = window.location.href;
       const Id = currentURL.split('/').pop();
 
-      await fetch(`http://localhost:9090/event/${Id}/getImage`)
+      await fetch(`https://tekno-vibe-be.vercel.app/event/${Id}/getImage`)
       .then((response) => response.json())
       .then((data) => {
         setImageData(data.data.data);

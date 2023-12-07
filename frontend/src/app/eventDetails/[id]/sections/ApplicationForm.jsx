@@ -90,7 +90,7 @@ export default function ApplicationForm({ eventId }) {
 
   const postApplicantInfo = async (data) => {
     try {
-      const res = await fetch("http://localhost:9090/api/staff", {
+      const res = await fetch("https://tekno-vibe-be.vercel.app/api/staff", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

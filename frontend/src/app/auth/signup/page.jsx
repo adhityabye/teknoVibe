@@ -82,7 +82,7 @@ export default function SignUp() {
     }
 
     try {
-      const response = await axios.post("http://localhost:9090/user/register", {
+      const response = await axios.post("https://tekno-vibe-be.vercel.app/user/register", {
         name,
         email,
         password,

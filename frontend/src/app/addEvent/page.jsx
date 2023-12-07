@@ -122,7 +122,7 @@ export default function addEvent() {
     openLoading();
 
     try {
-      const res = await fetch("http://localhost:9090/event/add", {
+      const res = await fetch("https://tekno-vibe-be.vercel.app/event/add", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -162,7 +162,7 @@ export default function addEvent() {
     console.log(formData);
 
     try {
-      const response = await fetch(`http://localhost:9090/event/${thisEventId}/uploadImage`, {
+      const response = await fetch(`https://tekno-vibe-be.vercel.app/event/${thisEventId}/uploadImage`, {
         method: 'POST',
         body: formData,
       });
