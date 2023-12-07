@@ -15,7 +15,7 @@ export default function Hero() {
   return (
     <main className="bg-purple-200 w-full">
       <div className="flex flex-col items-center justify-center">
-        <div className="flex flex-col lg:flex-row mx-auto max-w-[1000px] lg:max-w-[1150px] space-x-0 lg:space-x-20 xl:space-x-32 mt-28 xl:mt-36 px-6 sm:px-10">
+        <div className="flex flex-col lg:flex-row mx-auto max-w-[1000px] lg:max-w-[1150px] space-x-0 lg:space-x-20 xl:space-x-32 mt-28 xl:mt-36 px-4 sm:px-10">
           <div className="md:max-w-[750px] lg:max-w-[600px] text-center lg:text-left flex flex-col gap-5 lg:gap-4 justify-center">
             <h1 className="text-white-100 text-[30px] md:text-[32px] lg:text-[36px] xl:text-[42px] font-semibold leading-normal xl:leading-snug">
               Cari dan Ajukan Event untuk Seluruh Mahasiswa FT UGM
