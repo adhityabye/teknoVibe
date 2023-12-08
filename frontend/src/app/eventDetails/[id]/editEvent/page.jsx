@@ -1,11 +1,13 @@
 "use client";
-import Navbar from "../../../components/Navbar";
+
 import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+
+import Navbar from "../../../components/Navbar";
 
 export default function EditEvent() {
   const pathName = window.location.pathname.split("/");
@@ -52,24 +54,27 @@ export default function EditEvent() {
   };
 
   const handleDelete = async (eventId) => {
-    console.log("Event ID:", eventId);
-    try {
-      const response = await axios.delete(
-        `https://tekno-vibe-be.vercel.app/delete/${eventId}`
-      );
-      console.log("Event deleted:", response.data);
-      // Hanya menampilkan toast jika penghapusan berhasil
-      if (response.status === 200) {
-        setToastMessage("Event deleted successfully");
-        // Handle deletion success, e.g., redirect or show a success message
-      } else {
-        // Handle deletion failure
+    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus event ini?");
+  
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(
+          `https://tekno-vibe-be.vercel.app/delete/${eventId}`
+        );
+        console.log("Event deleted:", response.data);
+        
+        if (response.status === 200) {
+          setToastMessage("Event deleted successfully");
+          
+        } else {
+          
+          setToastMessage("Failed to delete event");
+        }
+      } catch (error) {
+        console.error("Error deleting event:", error);
+        
         setToastMessage("Failed to delete event");
       }
-    } catch (error) {
-      console.error("Error deleting event:", error);
-      // Handle deletion error, e.g., show an error message
-      setToastMessage("Failed to delete event");
     }
   };
 
