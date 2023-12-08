@@ -10,7 +10,7 @@ export default function Home(){
   console.log(Search);
   return (
     <main>
-      <div className="flex flex-col gap-28 overflow-hidden">
+      <div className="flex flex-col overflow-hidden">
         <Navbar />
         <Hero />
         <Tentang />

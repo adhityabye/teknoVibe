@@ -25,7 +25,7 @@ export default function Profile() {
   useEffect(() => {
     if (!localStorage.getItem("user")) {
       router.refresh();
-      router.push("/");
+      router.push("/profile/");
       return;
     }
 
@@ -68,7 +68,7 @@ export default function Profile() {
     e.preventDefault();
 
     if (userData.password.length < 8 || confirmPassword.length < 8) {
-      alert("Kata sandi dan konfirmasi kata sandi harus lebih dari 7");
+      alert("Kata sandi dan konfirmasi kata sandi harus lebih dari 8 karakter");
       return;
     }
 
@@ -78,7 +78,6 @@ export default function Profile() {
     }
 
     try {
-      console.log(`https://tekno-vibe-be.vercel.app/user/users/${user._id}`);
       const response = await axios.put(
         `https://tekno-vibe-be.vercel.app/user/users/${user._id}`,
         {
@@ -87,6 +86,7 @@ export default function Profile() {
           password: userData.password,
         }
       );
+
       if (response.status === 200) {
         alert("Berhasil memperbarui data akun");
         router.refresh();
@@ -128,23 +128,23 @@ export default function Profile() {
   return (
     <div className="min-h-screen bg-purple-200 relative">
       <Navbar />
-      <div className="max-w-[1150px] 2xl:max-w-[1200px] mx-auto py-20 px-6 sm:px-10">
+      <div className="max-w-[1150px] 2xl:max-w-[1200px] mx-auto py-16 md:py-20 px-6 sm:px-10">
         <button
           type="button"
           className="w-fit flex items-center justify-start space-x-3"
           onClick={() => router.back()}
         >
-          <HiArrowLongLeft className="w-8 h-8 text-white-100" />
-          <p className="text-base text-white-100">Kembali</p>
+          <HiArrowLongLeft className="w-7 h-7 md:w-8 md:h-8 text-white-100" />
+          <p className="text-sm md:text-base text-white-100">Kembali</p>
         </button>
         <div className="mx-auto relative">
-          <h1 className="text-[30px] text-center font-bold text-white-100 pt-5">
+          <h1 className="text-[24px] md:text-[30px] text-center font-bold text-white-100 pt-5">
             Profile Dashboard
           </h1>
-          <div className="flex justify-center space-x-5 py-8">
+          <div className="flex justify-center space-x-5 py-5 md:py-8">
             <button
               type="button"
-              className={`px-5 py-1.5 font-josefin rounded-lg ${
+              className={`px-5 py-1.5 font-josefin text-sm md:text-base rounded-lg ${
                 isUpdateFormVisible
                   ? "bg-purple-900 text-white-100"
                   : "bg-purple-200 text-white-100 border-2 border-white-100"
@@ -155,7 +155,7 @@ export default function Profile() {
             </button>
             <button
               type="button"
-              className={`px-5 py-1.5 font-josefin rounded-lg ${
+              className={`px-5 py-1.5 font-josefin rounded-lg text-sm md:text-base ${
                 isUpdateFormVisible
                   ? "bg-purple-200 text-white-100 border-2 border-white-100"
                   : "bg-purple-900 text-white-100"
@@ -167,12 +167,12 @@ export default function Profile() {
           </div>
           {isUpdateFormVisible ? (
             <form
-              className="w-[380px] flex flex-col mt-4 mx-auto"
+              className="max-w-[300px] md:max-w-[380px] flex flex-col mt-4 mx-auto"
               onSubmit={handleSubmitUpdate}
             >
               <div className="w-full font-josefin">
                 <label
-                  className="text-base font-medium text-white-100"
+                  className="text-sm md:text-base font-medium text-white-100"
                   htmlFor="name"
                 >
                   Nama
@@ -191,7 +191,7 @@ export default function Profile() {
               </div>
               <div className="w-full font-josefin mt-5">
                 <label
-                  className="text-base font-medium text-white-100"
+                  className="text-sm md:text-base font-medium text-white-100"
                   htmlFor="email"
                 >
                   Email
@@ -210,7 +210,7 @@ export default function Profile() {
               </div>
               <div className="w-full relative font-josefin mt-5">
                 <label
-                  className="text-base font-medium text-white-100"
+                  className="text-sm md:text-base font-medium text-white-100"
                   htmlFor="password"
                 >
                   Kata Sandi
@@ -240,7 +240,7 @@ export default function Profile() {
               </div>
               <div className="w-full relative font-josefin mt-5">
                 <label
-                  className="text-base font-medium text-white-100"
+                  className="text-sm md:text-base font-medium text-white-100"
                   htmlFor="password"
                 >
                   Konfirmasi Kata Sandi
@@ -270,20 +270,20 @@ export default function Profile() {
               </div>
               <button
                 type="submit"
-                className="bg-purple-900 mt-10 px-3 py-[8px] rounded-[20px] text-base font-medium font-josefin text-white-100"
+                className="bg-purple-900 mt-10 px-3 py-[8px] rounded-[20px] text-sm md:text-base font-medium font-josefin text-white-100"
               >
                 Perbarui
               </button>
             </form>
           ) : (
-            <div className="w-[700px] flex flex-col mt-4 mx-auto">
-              <p className="w-full text-center text-white-100 text-lg">
+            <div className="max-w-[700px] flex flex-col mt-4 mx-auto">
+              <p className="w-full text-center text-white-100 text-base md:text-lg">
                 Jika Anda ingin menghapus akun, silahkan klik tombol “Hapus” di
                 bawah ini.
               </p>
               <button
                 type="button"
-                className="mx-auto w-32 bg-red-900 mt-10 px-3 py-1.5 rounded-[20px] text-base font-medium font-josefin text-white-100"
+                className="mx-auto w-32 bg-red-900 mt-10 px-3 py-1.5 rounded-[20px] text-sm md:text-base font-medium font-josefin text-white-100"
                 onClick={handleDeleteClick}
               >
                 Hapus
@@ -291,23 +291,23 @@ export default function Profile() {
             </div>
           )}
           {isDeleteModalVisible && (
-            <div className="z-40 fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+            <div className="z-40 fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center px-10">
               <div className="bg-white p-8 rounded-lg w-[450px]">
-                <p className="text-lg text-center mb-6">
+                <p className="text-base md:text-lg text-center mb-6">
                   Apakah Anda yakin ingin menghapus akun?
                 </p>
                 <div className="flex justify-center space-x-4">
                   <button
                     type="button"
                     onClick={handleDeleteConfirm}
-                    className="bg-red-900 px-8 py-1.5 rounded-[20px] text-base font-medium font-josefin text-white-100"
+                    className="bg-red-900 px-8 py-1.5 rounded-[20px] text-sm md:text-base font-medium font-josefin text-white-100"
                   >
                     Yakin
                   </button>
                   <button
                     type="button"
                     onClick={handleDeleteCancel}
-                    className="px-8 py-1.5 rounded-[20px] text-base font-medium font-josefin bg-gray-400 text-black "
+                    className="px-8 py-1.5 rounded-[20px] text-sm md:text-base font-medium font-josefin bg-gray-400 text-black "
                   >
                     Tidak
                   </button>
