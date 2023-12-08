@@ -14,7 +14,8 @@
 | [Pranawa Dinanta Adhyarta Putra](https://github.com/Nantapranawa)   | 21/482959/TK/53395 |
 
 ### 🖇️Link
-- **Website:** https://tekno-vibe-fe.vercel.app/
+- **Frontend:** https://tekno-vibe-fe.vercel.app/
+- **Backend:** https://tekno-vibe-be.vercel.app/
 - **Video Presentasi:** https://bit.ly/RecordingTeknoVibe
 - **PPT Final Project:** https://bit.ly/PPT-Final-Project-Kelompok-5
 - **PPT Backend:** https://bit.ly/PPTBackend
