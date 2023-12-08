@@ -63,20 +63,20 @@ export default function EditEvent() {
         );
         console.log("Event deleted:", response.data);
         
-        if (response.status === 200) {
+        if (response.status === 204) {
           setToastMessage("Event deleted successfully");
           
         } else {
           
-          setToastMessage("Failed to delete event");
+          setToastMessage("Failed to delete the event");
         }
       } catch (error) {
         console.error("Error deleting event:", error);
-        
-        setToastMessage("Failed to delete event");
+        setToastMessage("Failed to delete event!");
       }
     }
   };
+  
 
   useEffect(() => {
     if (toastMessage) {
