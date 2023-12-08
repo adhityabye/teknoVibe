@@ -54,26 +54,23 @@ export default function EditEvent() {
   };
 
   const handleDelete = async (eventId) => {
-    const confirmDelete = window.confirm("Apakah Anda yakin ingin menghapus event ini?");
-  
-    if (confirmDelete) {
-      try {
-        const response = await axios.delete(
-          `https://tekno-vibe-be.vercel.app/delete/${eventId}`
-        );
-        console.log("Event deleted:", response.data);
+    console.log("Event ID:", eventId);
+    try {
+      const response = await axios.delete(
+        `https://tekno-vibe-be.vercel.app/delete/${eventId}`
+      );
+      console.log("Event deleted:", response.data);
+      
+      if (response.status === 200) {
+        setToastMessage("Event deleted successfully");
         
-        if (response.status === 204) {
-          setToastMessage("Event deleted successfully");
-          
-        } else {
-          
-          setToastMessage("Failed to delete the event");
-        }
-      } catch (error) {
-        console.error("Error deleting event:", error);
-        setToastMessage("Failed to delete event!");
+      } else {
+        
+        setToastMessage("Failed to delete event");
       }
+    } catch (error) {
+      console.error("Error deleting event:", error);
+      setToastMessage("Failed to delete event");
     }
   };
   
